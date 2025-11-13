@@ -1,0 +1,103 @@
+{
+  "stats": {
+    "submitted": 5,
+    "finished": 5,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      953453411,
+      null,
+      0.7050489821110741,
+      0.18219256401062012,
+      1,
+      1763050743.408478,
+      1763050743.5921772,
+      {}
+    ],
+    [
+      2,
+      null,
+      953453411,
+      null,
+      0.6966145045739909,
+      0.0691227912902832,
+      1,
+      1763050744.59789,
+      1763050744.668738,
+      {}
+    ],
+    [
+      3,
+      null,
+      953453411,
+      null,
+      0.509264938899184,
+      0.08469414710998535,
+      1,
+      1763050744.6750815,
+      1763050744.7616446,
+      {}
+    ],
+    [
+      4,
+      null,
+      953453411,
+      null,
+      0.4426252477282385,
+      0.07631683349609375,
+      1,
+      1763050744.7657087,
+      1763050744.843112,
+      {}
+    ],
+    [
+      5,
+      null,
+      953453411,
+      null,
+      0.5312441653974167,
+      0.0652611255645752,
+      1,
+      1763050744.849353,
+      1763050744.9163628,
+      {}
+    ]
+  ],
+  "configs": {
+    "1": {
+      "Counters": 6,
+      "Max_spout": 1000000.0,
+      "Spliters": 1
+    },
+    "2": {
+      "Counters": 1,
+      "Max_spout": 1.0,
+      "Spliters": 3
+    },
+    "3": {
+      "Counters": 12,
+      "Max_spout": 100.0,
+      "Spliters": 3
+    },
+    "4": {
+      "Counters": 12,
+      "Max_spout": 1000000.0,
+      "Spliters": 6
+    },
+    "5": {
+      "Counters": 15,
+      "Max_spout": 10000.0,
+      "Spliters": 3
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol",
+    "2": "Acquisition Function Maximizer: Local Search",
+    "3": "Acquisition Function Maximizer: Local Search",
+    "4": "Acquisition Function Maximizer: Local Search",
+    "5": "Acquisition Function Maximizer: Local Search"
+  }
+}

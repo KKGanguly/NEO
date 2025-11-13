@@ -1,0 +1,21 @@
+iteration,config,value,elapsed_time
+0,"{'root': 1, 'fsync': 1, 'synchronousCommit': 0, 'fullPageWrites': 1, 'trackActivities': 1, 'trackCounts': 0, 'SharedBuffers': 64, 'TempBuffers': 2, 'WorkMem': 4096}",0.9188226796536879,1
+1,"{'root': 1, 'fsync': 1, 'synchronousCommit': 1, 'fullPageWrites': 0, 'trackActivities': 1, 'trackCounts': 1, 'SharedBuffers': 256, 'TempBuffers': 32, 'WorkMem': 1024}",0.7936243407360393,1
+2,"{'root': 1, 'fsync': 1, 'synchronousCommit': 1, 'fullPageWrites': 0, 'trackActivities': 1, 'trackCounts': 1, 'SharedBuffers': 64, 'TempBuffers': 2, 'WorkMem': 256}",0.8584264106642576,1
+3,"{'root': 1, 'fsync': 1, 'synchronousCommit': 0, 'fullPageWrites': 1, 'trackActivities': 0, 'trackCounts': 1, 'SharedBuffers': 256, 'TempBuffers': 32, 'WorkMem': 256}",0.8893098487075604,1
+4,"{'root': 1, 'fsync': 1, 'synchronousCommit': 0, 'fullPageWrites': 1, 'trackActivities': 1, 'trackCounts': 1, 'SharedBuffers': 128, 'TempBuffers': 8, 'WorkMem': 4096}",0.8839014019519469,1
+5,"{'root': 1, 'fsync': 0, 'synchronousCommit': 1, 'fullPageWrites': 1, 'trackActivities': 0, 'trackCounts': 1, 'SharedBuffers': 128, 'TempBuffers': 8, 'WorkMem': 1024}",0.0025893571580150043,1
+6,"{'root': 1, 'fsync': 1, 'synchronousCommit': 1, 'fullPageWrites': 0, 'trackActivities': 0, 'trackCounts': 1, 'SharedBuffers': 128, 'TempBuffers': 8, 'WorkMem': 256}",0.892985567740893,1
+7,"{'root': 1, 'fsync': 0, 'synchronousCommit': 0, 'fullPageWrites': 1, 'trackActivities': 0, 'trackCounts': 0, 'SharedBuffers': 128, 'TempBuffers': 8, 'WorkMem': 256}",0.0021143171981987674,1
+8,"{'root': 1, 'fsync': 0, 'synchronousCommit': 1, 'fullPageWrites': 1, 'trackActivities': 1, 'trackCounts': 0, 'SharedBuffers': 128, 'TempBuffers': 8, 'WorkMem': 1024}",0.0061151660400941,1
+9,"{'root': 1, 'fsync': 0, 'synchronousCommit': 1, 'fullPageWrites': 0, 'trackActivities': 0, 'trackCounts': 1, 'SharedBuffers': 64, 'TempBuffers': 8, 'WorkMem': 1024}",0.001282997268520214,1
+10,"{'root': 1, 'fsync': 1, 'synchronousCommit': 1, 'fullPageWrites': 1, 'trackActivities': 1, 'trackCounts': 1, 'SharedBuffers': 256, 'TempBuffers': 2, 'WorkMem': 4096}",0.7943485819862511,1
+11,"{'root': 1, 'fsync': 0, 'synchronousCommit': 0, 'fullPageWrites': 1, 'trackActivities': 0, 'trackCounts': 1, 'SharedBuffers': 256, 'TempBuffers': 2, 'WorkMem': 1024}",0.0024764378233045337,1
+12,"{'root': 1, 'fsync': 0, 'synchronousCommit': 1, 'fullPageWrites': 1, 'trackActivities': 0, 'trackCounts': 1, 'SharedBuffers': 256, 'TempBuffers': 32, 'WorkMem': 256}",0.002404403075299655,1
+13,"{'root': 1, 'fsync': 1, 'synchronousCommit': 0, 'fullPageWrites': 1, 'trackActivities': 1, 'trackCounts': 1, 'SharedBuffers': 256, 'TempBuffers': 32, 'WorkMem': 1024}",0.9089948037637183,1
+14,"{'root': 1, 'fsync': 0, 'synchronousCommit': 0, 'fullPageWrites': 0, 'trackActivities': 0, 'trackCounts': 1, 'SharedBuffers': 128, 'TempBuffers': 32, 'WorkMem': 1024}",0.0036640377228452925,1
+15,"{'root': 1, 'fsync': 1, 'synchronousCommit': 0, 'fullPageWrites': 1, 'trackActivities': 1, 'trackCounts': 0, 'SharedBuffers': 128, 'TempBuffers': 32, 'WorkMem': 1024}",0.9027511433082638,1
+16,"{'root': 1, 'fsync': 1, 'synchronousCommit': 0, 'fullPageWrites': 1, 'trackActivities': 0, 'trackCounts': 1, 'SharedBuffers': 128, 'TempBuffers': 8, 'WorkMem': 1024}",0.8843258228996517,1
+17,"{'root': 1, 'fsync': 1, 'synchronousCommit': 1, 'fullPageWrites': 0, 'trackActivities': 1, 'trackCounts': 0, 'SharedBuffers': 256, 'TempBuffers': 32, 'WorkMem': 256}",0.8605485154027812,1
+18,"{'root': 1, 'fsync': 1, 'synchronousCommit': 1, 'fullPageWrites': 1, 'trackActivities': 0, 'trackCounts': 0, 'SharedBuffers': 128, 'TempBuffers': 32, 'WorkMem': 256}",0.8636148594056938,1
+19,"{'root': 1, 'fsync': 1, 'synchronousCommit': 0, 'fullPageWrites': 1, 'trackActivities': 1, 'trackCounts': 0, 'SharedBuffers': 256, 'TempBuffers': 2, 'WorkMem': 4096}",0.9108949636029834,1

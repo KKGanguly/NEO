@@ -1,0 +1,21 @@
+iteration,config,value,elapsed_time
+0,"{'N_estimators': 70, 'criterion': 'poisson', 'Min_sample_leaves': 12, 'Min_impurity_decrease': 1.25, 'Max_depth': 16}",0.642250671434759,1
+1,"{'N_estimators': 120, 'criterion': 'absolute_error', 'Min_sample_leaves': 7, 'Min_impurity_decrease': 2.75, 'Max_depth': 5}",0.6040954139130118,1
+2,"{'N_estimators': 90, 'criterion': 'absolute_error', 'Min_sample_leaves': 4, 'Min_impurity_decrease': 7.25, 'Max_depth': 12}",0.5917953574851113,1
+3,"{'N_estimators': 30, 'criterion': 'squared_error', 'Min_sample_leaves': 20, 'Min_impurity_decrease': 3.5, 'Max_depth': 19}",0.6385433904634837,1
+4,"{'N_estimators': 180, 'criterion': 'poisson', 'Min_sample_leaves': 19, 'Min_impurity_decrease': 8.75, 'Max_depth': 3}",0.636469880755266,1
+5,"{'N_estimators': 50, 'criterion': 'squared_error', 'Min_sample_leaves': 12, 'Min_impurity_decrease': 3.5, 'Max_depth': 17}",0.6422603512575977,1
+6,"{'N_estimators': 80, 'criterion': 'absolute_error', 'Min_sample_leaves': 15, 'Min_impurity_decrease': 9.0, 'Max_depth': 14}",0.6026824883111983,1
+7,"{'N_estimators': 180, 'criterion': 'poisson', 'Min_sample_leaves': 5, 'Min_impurity_decrease': 0.75, 'Max_depth': 3}",0.6572162638168135,1
+8,"{'N_estimators': 190, 'criterion': 'squared_error', 'Min_sample_leaves': 17, 'Min_impurity_decrease': 8.0, 'Max_depth': 15}",0.641021131976875,1
+9,"{'N_estimators': 30, 'criterion': 'absolute_error', 'Min_sample_leaves': 17, 'Min_impurity_decrease': 8.5, 'Max_depth': 11}",0.6110935530872619,1
+10,"{'N_estimators': 190, 'criterion': 'poisson', 'Min_sample_leaves': 3, 'Min_impurity_decrease': 4.25, 'Max_depth': 8}",0.6350700975341369,1
+11,"{'N_estimators': 90, 'criterion': 'squared_error', 'Min_sample_leaves': 5, 'Min_impurity_decrease': 9.25, 'Max_depth': 7}",0.6462063349118943,1
+12,"{'N_estimators': 120, 'criterion': 'poisson', 'Min_sample_leaves': 10, 'Min_impurity_decrease': 8.25, 'Max_depth': 16}",0.6464118332397294,1
+13,"{'N_estimators': 150, 'criterion': 'absolute_error', 'Min_sample_leaves': 1, 'Min_impurity_decrease': 2.75, 'Max_depth': 17}",0.6072254414590441,1
+14,"{'N_estimators': 100, 'criterion': 'squared_error', 'Min_sample_leaves': 15, 'Min_impurity_decrease': 2.75, 'Max_depth': 6}",0.6364139057684952,1
+15,"{'N_estimators': 160, 'criterion': 'absolute_error', 'Min_sample_leaves': 18, 'Min_impurity_decrease': 2.75, 'Max_depth': 16}",0.6021720760444328,1
+16,"{'N_estimators': 180, 'criterion': 'squared_error', 'Min_sample_leaves': 2, 'Min_impurity_decrease': 9.5, 'Max_depth': 12}",0.6395618746246006,1
+17,"{'N_estimators': 30, 'criterion': 'squared_error', 'Min_sample_leaves': 15, 'Min_impurity_decrease': 5.5, 'Max_depth': 15}",0.6311035382414921,1
+18,"{'N_estimators': 170, 'criterion': 'absolute_error', 'Min_sample_leaves': 18, 'Min_impurity_decrease': 6.75, 'Max_depth': 16}",0.6037977861680889,1
+19,"{'N_estimators': 30, 'criterion': 'poisson', 'Min_sample_leaves': 11, 'Min_impurity_decrease': 6.25, 'Max_depth': 6}",0.6368361001822578,1

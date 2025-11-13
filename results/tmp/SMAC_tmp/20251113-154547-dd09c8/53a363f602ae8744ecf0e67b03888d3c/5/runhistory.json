@@ -1,0 +1,157 @@
+{
+  "stats": {
+    "submitted": 9,
+    "finished": 9,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      953453411,
+      null,
+      0.0,
+      3.164865493774414,
+      1,
+      1763066747.2976787,
+      1763066750.4960732,
+      {}
+    ],
+    [
+      2,
+      null,
+      953453411,
+      null,
+      0.0,
+      2.1854326725006104,
+      1,
+      1763066836.1726148,
+      1763066838.3931,
+      {}
+    ],
+    [
+      3,
+      null,
+      953453411,
+      null,
+      0.0,
+      2.4062952995300293,
+      1,
+      1763066838.3964345,
+      1763066840.8379827,
+      {}
+    ],
+    [
+      4,
+      null,
+      953453411,
+      null,
+      0.0,
+      2.4395086765289307,
+      1,
+      1763066840.8421865,
+      1763066843.316128,
+      {}
+    ],
+    [
+      5,
+      null,
+      953453411,
+      null,
+      0.0,
+      2.389484167098999,
+      1,
+      1763066843.3232255,
+      1763066845.7468936,
+      {}
+    ],
+    [
+      6,
+      null,
+      953453411,
+      null,
+      1.0,
+      1.968764305114746,
+      1,
+      1763066845.749989,
+      1763066847.750719,
+      {}
+    ],
+    [
+      7,
+      null,
+      953453411,
+      null,
+      1.0,
+      1.950695514678955,
+      1,
+      1763066847.7537916,
+      1763066849.7376091,
+      {}
+    ],
+    [
+      8,
+      null,
+      953453411,
+      null,
+      1.0,
+      1.9870216846466064,
+      1,
+      1763066849.7406862,
+      1763066851.7610486,
+      {}
+    ],
+    [
+      9,
+      null,
+      953453411,
+      null,
+      0.0,
+      2.707524538040161,
+      1,
+      1763066851.7646224,
+      1763066854.5136237,
+      {}
+    ]
+  ],
+  "configs": {
+    "1": {
+      "row_id": "3503"
+    },
+    "2": {
+      "row_id": "8345"
+    },
+    "3": {
+      "row_id": "9207"
+    },
+    "4": {
+      "row_id": "3047"
+    },
+    "5": {
+      "row_id": "2"
+    },
+    "6": {
+      "row_id": "1523"
+    },
+    "7": {
+      "row_id": "8309"
+    },
+    "8": {
+      "row_id": "9451"
+    },
+    "9": {
+      "row_id": "9444"
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol",
+    "2": "Acquisition Function Maximizer: Local Search",
+    "3": "Acquisition Function Maximizer: Local Search",
+    "4": "Acquisition Function Maximizer: Local Search",
+    "5": "Acquisition Function Maximizer: Local Search",
+    "6": "Acquisition Function Maximizer: Local Search",
+    "7": "Acquisition Function Maximizer: Local Search",
+    "8": "Acquisition Function Maximizer: Local Search",
+    "9": "Acquisition Function Maximizer: Local Search"
+  }
+}

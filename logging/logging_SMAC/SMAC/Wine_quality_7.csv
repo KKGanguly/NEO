@@ -1,0 +1,21 @@
+iteration,config,value,elapsed_time
+0,"{'Fixedacidity': 9.7, 'Volatileacidity': 0.42, 'Citricacid': 0.46, 'Residualsugar': 2.1, 'CL': 0.074, 'FreeSO2': 5.0, 'TotalS02': 16.0, 'Density': 0.99649, 'PH': 3.27, 'Sulphates': 0.74}",0.5099019513592785,1
+1,"{'Fixedacidity': 9.3, 'Volatileacidity': 0.655, 'Citricacid': 0.26, 'Residualsugar': 2.0, 'CL': 0.096, 'FreeSO2': 5.0, 'TotalS02': 35.0, 'Density': 0.99738, 'PH': 3.25, 'Sulphates': 0.42}",0.4438934783462618,1
+2,"{'Fixedacidity': 7.3, 'Volatileacidity': 0.45, 'Citricacid': 0.36, 'Residualsugar': 5.9, 'CL': 0.074, 'FreeSO2': 12.0, 'TotalS02': 87.0, 'Density': 0.9978, 'PH': 3.33, 'Sulphates': 0.83}",0.48186030041125605,1
+3,"{'Fixedacidity': 6.9, 'Volatileacidity': 0.41, 'Citricacid': 0.33, 'Residualsugar': 2.2, 'CL': 0.081, 'FreeSO2': 22.0, 'TotalS02': 36.0, 'Density': 0.9949, 'PH': 3.41, 'Sulphates': 0.75}",0.4077648701753406,1
+4,"{'Fixedacidity': 6.6, 'Volatileacidity': 0.58, 'Citricacid': 0.02, 'Residualsugar': 2.0, 'CL': 0.062, 'FreeSO2': 37.0, 'TotalS02': 53.0, 'Density': 0.99374, 'PH': 3.35, 'Sulphates': 0.76}",0.37574383820984036,1
+5,"{'Fixedacidity': 9.4, 'Volatileacidity': 0.34, 'Citricacid': 0.37, 'Residualsugar': 2.2, 'CL': 0.075, 'FreeSO2': 5.0, 'TotalS02': 13.0, 'Density': 0.998, 'PH': 3.22, 'Sulphates': 0.62}",0.4330981003156691,1
+6,"{'Fixedacidity': 10.3, 'Volatileacidity': 0.27, 'Citricacid': 0.24, 'Residualsugar': 2.1, 'CL': 0.072, 'FreeSO2': 15.0, 'TotalS02': 33.0, 'Density': 0.9956, 'PH': 3.22, 'Sulphates': 0.66}",0.5559787999874662,1
+7,"{'Fixedacidity': 6.6, 'Volatileacidity': 0.61, 'Citricacid': 0.01, 'Residualsugar': 1.9, 'CL': 0.08, 'FreeSO2': 8.0, 'TotalS02': 25.0, 'Density': 0.99746, 'PH': 3.69, 'Sulphates': 0.73}",0.48186030041125605,1
+8,"{'Fixedacidity': 7.1, 'Volatileacidity': 0.59, 'Citricacid': 0.01, 'Residualsugar': 2.3, 'CL': 0.08, 'FreeSO2': 27.0, 'TotalS02': 43.0, 'Density': 0.9955, 'PH': 3.42, 'Sulphates': 0.58}",0.3776288525733408,1
+9,"{'Fixedacidity': 8.9, 'Volatileacidity': 0.4, 'Citricacid': 0.51, 'Residualsugar': 2.6, 'CL': 0.052, 'FreeSO2': 13.0, 'TotalS02': 27.0, 'Density': 0.995, 'PH': 3.32, 'Sulphates': 0.9}",0.5620124448494717,1
+10,"{'Fixedacidity': 9.6, 'Volatileacidity': 0.56, 'Citricacid': 0.23, 'Residualsugar': 3.4, 'CL': 0.102, 'FreeSO2': 37.0, 'TotalS02': 92.0, 'Density': 0.9996, 'PH': 3.3, 'Sulphates': 0.65}",0.46281873712280996,1
+11,"{'Fixedacidity': 6.6, 'Volatileacidity': 0.7, 'Citricacid': 0.08, 'Residualsugar': 2.6, 'CL': 0.106, 'FreeSO2': 14.0, 'TotalS02': 27.0, 'Density': 0.99665, 'PH': 3.44, 'Sulphates': 0.58}",0.4672720784149982,1
+12,"{'Fixedacidity': 5.2, 'Volatileacidity': 0.49, 'Citricacid': 0.26, 'Residualsugar': 2.3, 'CL': 0.09, 'FreeSO2': 23.0, 'TotalS02': 74.0, 'Density': 0.9953, 'PH': 3.71, 'Sulphates': 0.62}",0.5008867875722985,1
+13,"{'Fixedacidity': 7.4, 'Volatileacidity': 0.39, 'Citricacid': 0.48, 'Residualsugar': 2.0, 'CL': 0.082, 'FreeSO2': 14.0, 'TotalS02': 67.0, 'Density': 0.9972, 'PH': 3.34, 'Sulphates': 0.55}",0.4330981003156691,1
+14,"{'Fixedacidity': 6.3, 'Volatileacidity': 0.36, 'Citricacid': 0.19, 'Residualsugar': 3.2, 'CL': 0.075, 'FreeSO2': 15.0, 'TotalS02': 39.0, 'Density': 0.9956, 'PH': 3.56, 'Sulphates': 0.52}",0.5466411693673805,1
+15,"{'Fixedacidity': 6.4, 'Volatileacidity': 0.69, 'Citricacid': 0.0, 'Residualsugar': 1.65, 'CL': 0.055, 'FreeSO2': 7.0, 'TotalS02': 12.0, 'Density': 0.99162, 'PH': 3.47, 'Sulphates': 0.53}",0.5653715330773218,1
+16,"{'Fixedacidity': 11.1, 'Volatileacidity': 0.31, 'Citricacid': 0.53, 'Residualsugar': 2.2, 'CL': 0.06, 'FreeSO2': 3.0, 'TotalS02': 10.0, 'Density': 0.99572, 'PH': 3.02, 'Sulphates': 0.83}",0.3065362899257119,1
+17,"{'Fixedacidity': 6.9, 'Volatileacidity': 0.4, 'Citricacid': 0.24, 'Residualsugar': 2.5, 'CL': 0.083, 'FreeSO2': 30.0, 'TotalS02': 45.0, 'Density': 0.9959, 'PH': 3.26, 'Sulphates': 0.58}",0.4585802634088887,1
+18,"{'Fixedacidity': 6.3, 'Volatileacidity': 0.39, 'Citricacid': 0.08, 'Residualsugar': 1.7, 'CL': 0.066, 'FreeSO2': 3.0, 'TotalS02': 20.0, 'Density': 0.9954, 'PH': 3.34, 'Sulphates': 0.58}",0.4379889490919002,1
+19,"{'Fixedacidity': 7.5, 'Volatileacidity': 0.51, 'Citricacid': 0.02, 'Residualsugar': 1.7, 'CL': 0.084, 'FreeSO2': 13.0, 'TotalS02': 31.0, 'Density': 0.99538, 'PH': 3.36, 'Sulphates': 0.54}",0.3635785322491223,1

@@ -1,0 +1,62 @@
+{
+  "incumbent_ids": [
+    3
+  ],
+  "rejected_config_ids": [
+    1,
+    2,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "incumbents_changed": 3,
+  "trajectory": [
+    {
+      "config_ids": [
+        1
+      ],
+      "costs": [
+        0.642250671434759
+      ],
+      "trial": 1,
+      "walltime": 2.157790422439575
+    },
+    {
+      "config_ids": [
+        2
+      ],
+      "costs": [
+        0.6040954139130118
+      ],
+      "trial": 2,
+      "walltime": 4.338810682296753
+    },
+    {
+      "config_ids": [
+        3
+      ],
+      "costs": [
+        0.5917953574851113
+      ],
+      "trial": 3,
+      "walltime": 6.513235092163086
+    }
+  ],
+  "state": {
+    "queue": []
+  }
+}

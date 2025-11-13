@@ -1,0 +1,93 @@
+{
+  "stats": {
+    "submitted": 5,
+    "finished": 5,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      2005877882,
+      null,
+      0.0,
+      2.0195295810699463,
+      1,
+      1763066570.4502516,
+      1763066572.5033529,
+      {}
+    ],
+    [
+      2,
+      null,
+      2005877882,
+      null,
+      0.0,
+      2.159564733505249,
+      1,
+      1763066641.8427851,
+      1763066644.0404172,
+      {}
+    ],
+    [
+      3,
+      null,
+      2005877882,
+      null,
+      1.0,
+      2.218158006668091,
+      1,
+      1763066644.043391,
+      1763066646.2942955,
+      {}
+    ],
+    [
+      4,
+      null,
+      2005877882,
+      null,
+      1.0,
+      2.3163352012634277,
+      1,
+      1763066646.2972639,
+      1763066648.6463087,
+      {}
+    ],
+    [
+      5,
+      null,
+      2005877882,
+      null,
+      1.0,
+      2.2575631141662598,
+      1,
+      1763066648.6494937,
+      1763066650.9396605,
+      {}
+    ]
+  ],
+  "configs": {
+    "1": {
+      "row_id": "1139"
+    },
+    "2": {
+      "row_id": "6178"
+    },
+    "3": {
+      "row_id": "4496"
+    },
+    "4": {
+      "row_id": "2131"
+    },
+    "5": {
+      "row_id": "2035"
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol",
+    "2": "Acquisition Function Maximizer: Local Search",
+    "3": "Acquisition Function Maximizer: Local Search",
+    "4": "Acquisition Function Maximizer: Local Search",
+    "5": "Acquisition Function Maximizer: Local Search"
+  }
+}

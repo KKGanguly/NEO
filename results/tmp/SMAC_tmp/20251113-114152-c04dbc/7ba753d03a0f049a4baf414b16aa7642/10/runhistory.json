@@ -1,0 +1,55 @@
+{
+  "stats": {
+    "submitted": 1,
+    "finished": 1,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      1165313289,
+      null,
+      Infinity,
+      0.0,
+      2,
+      1763052112.2983456,
+      1763052114.2876344,
+      {
+        "traceback": "Traceback (most recent call last):\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 186, in run\n    rval = self(config_copy, target_function, kwargs)\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 259, in __call__\n    return algorithm(config, **algorithm_kwargs)\n  File \"/home/kgangul/Downloads/SEOptBench/optimizers/SMACOptimizer.py\", line 75, in objective\n    score = self.model_wrapper.run_model(mapped)\n  File \"/home/kgangul/Downloads/SEOptBench/models/model_wrapper_static.py\", line 17, in run_model\n    scores = self.get_score(hyperparams)\n  File \"/home/kgangul/Downloads/SEOptBench/models/model_wrapper_static.py\", line 50, in get_score\n    raise ValueError(\"No matching hyperparameters found in the dataset.\")\nValueError: No matching hyperparameters found in the dataset.\n",
+        "error": "ValueError('No matching hyperparameters found in the dataset.')"
+      }
+    ]
+  ],
+  "configs": {
+    "1": {
+      " ACAP": 3.219,
+      " AEXP": 3.626,
+      " CPLx": 2.679,
+      " DOCU": 4.506,
+      " ETAT": 3.801,
+      " FLEx": 4.1,
+      " KLOC": 37.951,
+      " LTEx": 2.417,
+      " PCAP": 3.03,
+      " PCON": 4.232,
+      " PLEx": 3.291,
+      " PMAT": 2.281,
+      " PREC": 1.479,
+      " PVOL": 4.731,
+      " RELY": 3.301,
+      " RESL": 2.4,
+      " RUSE": 5.079,
+      " SCED": 3.0,
+      " SITE": 1.376,
+      " STOR": 3.077,
+      " TEAM": 3.375,
+      " TIME": 3.804,
+      " TOOL": 2.0,
+      "DATA": 2.595
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol"
+  }
+}

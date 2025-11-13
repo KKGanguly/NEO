@@ -1,0 +1,21 @@
+iteration,config,value,elapsed_time
+0,"{'Spouts': 1.0, 'Max_spout': 10.0, 'Sorters': 1.0, 'Emit_freq': 60.0, 'Chunk_size': 2000000.0, 'Message_size': 100000.0}",0.002087984544111743,1
+1,"{'Spouts': 3.0, 'Max_spout': 100.0, 'Sorters': 9.0, 'Emit_freq': 300.0, 'Chunk_size': 10000000.0, 'Message_size': 10000.0}",0.0022548954683266897,1
+2,"{'Spouts': 3.0, 'Max_spout': 10000.0, 'Sorters': 2.0, 'Emit_freq': 120.0, 'Chunk_size': 100000.0, 'Message_size': 10000.0}",0.29460915433142054,1
+3,"{'Spouts': 1.0, 'Max_spout': 1000.0, 'Sorters': 12.0, 'Emit_freq': 300.0, 'Chunk_size': 100000.0, 'Message_size': 10000.0}",0.003370754165574974,1
+4,"{'Spouts': 1.0, 'Max_spout': 10000.0, 'Sorters': 2.0, 'Emit_freq': 60.0, 'Chunk_size': 10000000.0, 'Message_size': 1000.0}",0.37543009003457994,1
+5,"{'Spouts': 3.0, 'Max_spout': 1000.0, 'Sorters': 12.0, 'Emit_freq': 300.0, 'Chunk_size': 10000000.0, 'Message_size': 100000.0}",0.00549622672475103,1
+6,"{'Spouts': 3.0, 'Max_spout': 10.0, 'Sorters': 1.0, 'Emit_freq': 120.0, 'Chunk_size': 100000.0, 'Message_size': 100000.0}",0.08603816176280055,1
+7,"{'Spouts': 1.0, 'Max_spout': 100.0, 'Sorters': 9.0, 'Emit_freq': 300.0, 'Chunk_size': 100000.0, 'Message_size': 100000.0}",0.0005030937689851633,1
+8,"{'Spouts': 1.0, 'Max_spout': 100.0, 'Sorters': 3.0, 'Emit_freq': 60.0, 'Chunk_size': 1000000.0, 'Message_size': 1000.0}",0.0005044470229851328,1
+9,"{'Spouts': 3.0, 'Max_spout': 10.0, 'Sorters': 15.0, 'Emit_freq': 1.0, 'Chunk_size': 100000.0, 'Message_size': 10000.0}",0.0006206541111568598,1
+10,"{'Spouts': 3.0, 'Max_spout': 1000.0, 'Sorters': 6.0, 'Emit_freq': 10.0, 'Chunk_size': 10000000.0, 'Message_size': 10000.0}",0.005264158060067192,1
+11,"{'Spouts': 1.0, 'Max_spout': 10000.0, 'Sorters': 18.0, 'Emit_freq': 1.0, 'Chunk_size': 10000000.0, 'Message_size': 10000.0}",0.010489733984814786,1
+12,"{'Spouts': 1.0, 'Max_spout': 1000.0, 'Sorters': 6.0, 'Emit_freq': 60.0, 'Chunk_size': 100000.0, 'Message_size': 100000.0}",0.0026091312973098857,1
+13,"{'Spouts': 3.0, 'Max_spout': 10000.0, 'Sorters': 18.0, 'Emit_freq': 1.0, 'Chunk_size': 100000.0, 'Message_size': 1000.0}",0.03429491147703356,1
+14,"{'Spouts': 3.0, 'Max_spout': 100.0, 'Sorters': 3.0, 'Emit_freq': 10.0, 'Chunk_size': 10000000.0, 'Message_size': 1000.0}",0.0020434999179409497,1
+15,"{'Spouts': 1.0, 'Max_spout': 10.0, 'Sorters': 15.0, 'Emit_freq': 1.0, 'Chunk_size': 10000000.0, 'Message_size': 1000.0}",0.00013491078601024498,1
+16,"{'Spouts': 1.0, 'Max_spout': 10.0, 'Sorters': 9.0, 'Emit_freq': 120.0, 'Chunk_size': 100000.0, 'Message_size': 10000.0}",2.8792638298025253e-06,1
+17,"{'Spouts': 3.0, 'Max_spout': 100.0, 'Sorters': 1.0, 'Emit_freq': 300.0, 'Chunk_size': 2000000.0, 'Message_size': 10000.0}",0.1056171558056036,1
+18,"{'Spouts': 3.0, 'Max_spout': 10000.0, 'Sorters': 12.0, 'Emit_freq': 120.0, 'Chunk_size': 2000000.0, 'Message_size': 1000.0}",0.03236868397488135,1
+19,"{'Spouts': 1.0, 'Max_spout': 1000.0, 'Sorters': 2.0, 'Emit_freq': 120.0, 'Chunk_size': 10000000.0, 'Message_size': 10000.0}",0.1657217882531794,1

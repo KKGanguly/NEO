@@ -1,0 +1,108 @@
+{
+  "stats": {
+    "submitted": 5,
+    "finished": 5,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      953453411,
+      null,
+      Infinity,
+      0.0,
+      2,
+      1763062931.8094857,
+      1763062931.8458853,
+      {
+        "traceback": "Traceback (most recent call last):\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 186, in run\n    rval = self(config_copy, target_function, kwargs)\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 259, in __call__\n    return algorithm(config, **algorithm_kwargs)\n  File \"/home/kgangul/Downloads/SEOptBench/optimizers/SMACOptimizer.py\", line 77, in objective\n    score = self.model_wrapper.run_model(hyperparams)\n  File \"/home/kgangul/Downloads/SEOptBench/models/model_wrapper_static.py\", line 18, in run_model\n    _, avg_d2h = self.__get_avg_d2h__(scores)\n  File \"/home/kgangul/Downloads/SEOptBench/models/model_wrapper_static.py\", line 57, in __get_avg_d2h__\n    d2h = DistanceUtil.d2h([1] * len(scores), scores)\n  File \"/home/kgangul/Downloads/SEOptBench/utils/DistanceUtil.py\", line 8, in d2h\n    return  math.sqrt(sum((goals[index]-value)**2 for index, value in enumerate(values))/len(values))\nZeroDivisionError: division by zero\n",
+        "error": "ZeroDivisionError('division by zero')"
+      }
+    ],
+    [
+      2,
+      null,
+      953453411,
+      null,
+      Infinity,
+      0.0,
+      2,
+      1763062932.6447532,
+      1763062932.6703918,
+      {
+        "traceback": "Traceback (most recent call last):\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 186, in run\n    rval = self(config_copy, target_function, kwargs)\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 259, in __call__\n    return algorithm(config, **algorithm_kwargs)\n  File \"/home/kgangul/Downloads/SEOptBench/optimizers/SMACOptimizer.py\", line 77, in objective\n    score = self.model_wrapper.run_model(hyperparams)\n  File \"/home/kgangul/Downloads/SEOptBench/models/model_wrapper_static.py\", line 18, in run_model\n    _, avg_d2h = self.__get_avg_d2h__(scores)\n  File \"/home/kgangul/Downloads/SEOptBench/models/model_wrapper_static.py\", line 57, in __get_avg_d2h__\n    d2h = DistanceUtil.d2h([1] * len(scores), scores)\n  File \"/home/kgangul/Downloads/SEOptBench/utils/DistanceUtil.py\", line 8, in d2h\n    return  math.sqrt(sum((goals[index]-value)**2 for index, value in enumerate(values))/len(values))\nZeroDivisionError: division by zero\n",
+        "error": "ZeroDivisionError('division by zero')"
+      }
+    ],
+    [
+      3,
+      null,
+      953453411,
+      null,
+      Infinity,
+      0.0,
+      2,
+      1763062932.6734943,
+      1763062932.6988232,
+      {
+        "traceback": "Traceback (most recent call last):\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 186, in run\n    rval = self(config_copy, target_function, kwargs)\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 259, in __call__\n    return algorithm(config, **algorithm_kwargs)\n  File \"/home/kgangul/Downloads/SEOptBench/optimizers/SMACOptimizer.py\", line 77, in objective\n    score = self.model_wrapper.run_model(hyperparams)\n  File \"/home/kgangul/Downloads/SEOptBench/models/model_wrapper_static.py\", line 18, in run_model\n    _, avg_d2h = self.__get_avg_d2h__(scores)\n  File \"/home/kgangul/Downloads/SEOptBench/models/model_wrapper_static.py\", line 57, in __get_avg_d2h__\n    d2h = DistanceUtil.d2h([1] * len(scores), scores)\n  File \"/home/kgangul/Downloads/SEOptBench/utils/DistanceUtil.py\", line 8, in d2h\n    return  math.sqrt(sum((goals[index]-value)**2 for index, value in enumerate(values))/len(values))\nZeroDivisionError: division by zero\n",
+        "error": "ZeroDivisionError('division by zero')"
+      }
+    ],
+    [
+      4,
+      null,
+      953453411,
+      null,
+      Infinity,
+      0.0,
+      2,
+      1763062932.70158,
+      1763062932.7268715,
+      {
+        "traceback": "Traceback (most recent call last):\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 186, in run\n    rval = self(config_copy, target_function, kwargs)\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 259, in __call__\n    return algorithm(config, **algorithm_kwargs)\n  File \"/home/kgangul/Downloads/SEOptBench/optimizers/SMACOptimizer.py\", line 77, in objective\n    score = self.model_wrapper.run_model(hyperparams)\n  File \"/home/kgangul/Downloads/SEOptBench/models/model_wrapper_static.py\", line 18, in run_model\n    _, avg_d2h = self.__get_avg_d2h__(scores)\n  File \"/home/kgangul/Downloads/SEOptBench/models/model_wrapper_static.py\", line 57, in __get_avg_d2h__\n    d2h = DistanceUtil.d2h([1] * len(scores), scores)\n  File \"/home/kgangul/Downloads/SEOptBench/utils/DistanceUtil.py\", line 8, in d2h\n    return  math.sqrt(sum((goals[index]-value)**2 for index, value in enumerate(values))/len(values))\nZeroDivisionError: division by zero\n",
+        "error": "ZeroDivisionError('division by zero')"
+      }
+    ],
+    [
+      5,
+      null,
+      953453411,
+      null,
+      Infinity,
+      0.0,
+      2,
+      1763062932.7296934,
+      1763062932.7553802,
+      {
+        "traceback": "Traceback (most recent call last):\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 186, in run\n    rval = self(config_copy, target_function, kwargs)\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 259, in __call__\n    return algorithm(config, **algorithm_kwargs)\n  File \"/home/kgangul/Downloads/SEOptBench/optimizers/SMACOptimizer.py\", line 77, in objective\n    score = self.model_wrapper.run_model(hyperparams)\n  File \"/home/kgangul/Downloads/SEOptBench/models/model_wrapper_static.py\", line 18, in run_model\n    _, avg_d2h = self.__get_avg_d2h__(scores)\n  File \"/home/kgangul/Downloads/SEOptBench/models/model_wrapper_static.py\", line 57, in __get_avg_d2h__\n    d2h = DistanceUtil.d2h([1] * len(scores), scores)\n  File \"/home/kgangul/Downloads/SEOptBench/utils/DistanceUtil.py\", line 8, in d2h\n    return  math.sqrt(sum((goals[index]-value)**2 for index, value in enumerate(values))/len(values))\nZeroDivisionError: division by zero\n",
+        "error": "ZeroDivisionError('division by zero')"
+      }
+    ]
+  ],
+  "configs": {
+    "1": {
+      "row_id": "32"
+    },
+    "2": {
+      "row_id": "25"
+    },
+    "3": {
+      "row_id": "35"
+    },
+    "4": {
+      "row_id": "47"
+    },
+    "5": {
+      "row_id": "39"
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol",
+    "2": "Acquisition Function Maximizer: Local Search",
+    "3": "Acquisition Function Maximizer: Local Search",
+    "4": "Acquisition Function Maximizer: Local Search",
+    "5": "Acquisition Function Maximizer: Local Search"
+  }
+}
