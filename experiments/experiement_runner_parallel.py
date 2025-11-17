@@ -62,12 +62,10 @@ def run_experiment(datasets, optimizers, repeats, checkpoints, tmp_output_dir, l
 
 
 def run_repeat_wrapper(args):
-    (logging_dir, data_name, dataset_file, hyperparameter_configs,
-     model_wrapper, optimizer, checkpoint, optimizer_name, i) = args
+    (logging_dir, data_name, model_wrapper, model_config, optimizer, checkpoint, optimizer_name, i) = args
 
     elapsed, best_cfg, best_val = run_single_repeat(
-        logging_dir, data_name, dataset_file,
-        hyperparameter_configs, model_wrapper,
+        logging_dir, data_name, model_wrapper, model_config,
         optimizer, checkpoint, optimizer_name, i
     )
     return str(best_cfg), str(best_val), str(elapsed)
@@ -85,7 +83,7 @@ def optimize_single_dataset(optimizers, repeats, checkpoints, tmp_output_dir, lo
     hyperparameter_configs = {col: X[col].tolist() for col in X.columns}
 
     model_wrapper = ModelWrapperStatic(X, Y)
-
+    model_config = ModelConfigurationStatic(hyperparameter_configs, dataset_file, 1)
     for optimizer in optimizers:
         if optimizer.get('disable'):
             continue
@@ -105,8 +103,8 @@ def optimize_single_dataset(optimizers, repeats, checkpoints, tmp_output_dir, lo
             results = {"configs": [], "best_values": [], "runtimes": []}
 
             args_list = [
-                (logging_dir, data_name, dataset_file, hyperparameter_configs,
-                 model_wrapper, optimizer, checkpoint, optimizer_name, i)
+                (logging_dir, data_name,
+                 model_wrapper, model_config, optimizer, checkpoint, optimizer_name, i)
                 for i in range(repeats)
             ]
 
@@ -138,14 +136,12 @@ def optimize_single_dataset(optimizers, repeats, checkpoints, tmp_output_dir, lo
                 write_to_file(results_path, content)
 
 
-def run_single_repeat(logging_dir, data_name, dataset_file,
-                      hyperparameter_configs, model_wrapper,
+def run_single_repeat(logging_dir, data_name, model_wrapper, model_config,
                       optimizer, checkpoint, optimizer_name, i):
 
     seed = i + 1
     log_filename = os.path.join(logging_dir, optimizer_name, f"{data_name}_{seed}.csv")
-
-    model_config = ModelConfigurationStatic(hyperparameter_configs, dataset_file, seed)
+    model_config.set_seed(seed)
     optimizer_obj = init_optimizer(optimizer_name, optimizer, model_wrapper)
     optimizer_obj.set_seed(seed)
     optimizer_obj.set_model_config(model_config)
