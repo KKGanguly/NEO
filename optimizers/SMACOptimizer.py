@@ -3,72 +3,112 @@ import uuid
 import numpy as np
 
 from optimizers.base_optimizer import BaseOptimizer
-from ConfigSpace import ConfigurationSpace, CategoricalHyperparameter
 from ConfigSpace.configuration import Configuration
 from smac import HyperparameterOptimizationFacade as HPOFacade
 from smac import Scenario
+
+from models.Data import Data   # adjust path
 
 
 class SMACOptimizer(BaseOptimizer):
 
     def __init__(self, config, model_wrapper, model_config, logging_util, seed):
         super().__init__(config, model_wrapper, model_config, logging_util, seed)
+
         self.best_config = None
         self.best_value = None
-        self.config_space = None
+
         self.X_df = self.model_wrapper.X
+        self.columns = list(self.X_df.columns)
 
         self.cache = {}
 
+        # NN structure for fallback
+        rows = self.X_df.values.tolist()
+        self.data_nn = Data(
+            rows
+        )
+
+    # ----------------------------------------
+    # Utility helpers
+    # ----------------------------------------
+
+    def _clean(self, v):
+        if isinstance(v, (np.integer, np.int64)):
+            return int(v)
+        if isinstance(v, (np.floating, np.float64)):
+            return float(v)
+        return v
+
+    def _config_to_dict(self, config: Configuration):
+        """Convert SMAC config → Python dict using model_config param order."""
+        return {p: self._clean(config[p]) for p in self.model_config.param_names}
+
+    def _row_tuple(self, hyperparams: dict):
+        """Hashable row representation."""
+        return tuple(hyperparams[p] for p in self.model_config.param_names)
+
+    def _valid_row(self, hyperparams: dict):
+        """
+        Ensure the hyperparams represent a real row:
+        - try direct lookup
+        - fall back to nearest neighbor
+        """
+
+        key = self._row_tuple(hyperparams)
+
+        # Try exact match via ModelWrapperStatic.lookup
+        if key in self.model_wrapper.lookup:
+            idx = self.model_wrapper.lookup[key]
+            row_series = self.X_df.iloc[idx]
+            return {col: self._clean(v) for col, v in row_series.items()}
+
+        # NN fallback (continuous or unseen config)
+        q = [hyperparams[col] for col in self.columns]
+        nn_row = self.data_nn.nearestRow(q)
+        return {col: self._clean(v) for col, v in zip(self.columns, nn_row)}
+
+    # ----------------------------------------
 
     def optimize(self):
 
         if not self.logging_util:
             raise ValueError("Logging utils not set!!")
 
-        print("Starting SMAC optimization (row-based, cached)")
+        print("Starting SMAC optimization with ModelConfigurationStatic")
 
         total_budget = self.config["n_trials"]
-        initial_ratio = self.config.get("initial_ratio", 0.1)  # default: 10%
-
-        initial_design_size = max(1, int(total_budget * initial_ratio))
-        bo_trials = max(1, total_budget - initial_design_size)
-
+        init_ratio = self.config.get("initial_ratio", 0.1)
+        init_design_size = max(1, int(total_budget * init_ratio))
 
         random_seed = self.seed
 
-        n_rows = len(self.X_df)
-        row_ids = [str(i) for i in range(n_rows)]  # SMAC likes strings
+        # Get ConfigSpace from ModelConfigurationStatic
+        self.config_space, _, _ = self.model_config.get_configspace()
 
-        cs = ConfigurationSpace(seed=random_seed)
-        row_hp = CategoricalHyperparameter("row_id", choices=row_ids)
-        cs.add_hyperparameter(row_hp)
-        self.config_space = cs
-
+        # ----------------------------------------
+        # SMAC objective
+        # ----------------------------------------
         def objective(config: Configuration, seed: int = 0):
-            # SMAC gives us a config with a single key: "row_id"
-            row_id_str = config["row_id"]
-            row_id = int(row_id_str)
+            raw_hp = self._config_to_dict(config)
+            eval_hp = self._valid_row(raw_hp)
 
-            # Cache lookup: if we already evaluated this row, return immediately
-            if row_id in self.cache:
-                return self.cache[row_id]
+            key = self._row_tuple(eval_hp)
 
-            # Get hyperparameters for this row as a dict
-            row_series = self.X_df.iloc[row_id]
-            hyperparams = row_series.to_dict()
+            if key in self.cache:
+                return self.cache[key]
 
-            score = self.model_wrapper.run_model(hyperparams)
+            score = self.model_wrapper.run_model(eval_hp)
+            fitness = 1 - score  # SMAC minimizes
+            self.logging_util.log(eval_hp, fitness, 1)
+            self.cache[key] = fitness
 
-            fitness = 1 - score
-
-            self.logging_util.log(hyperparams, fitness, 1)
-            self.cache[row_id] = fitness
             return fitness
 
-        # ------------------------------------------------------------------
+        # ----------------------------------------
         # SMAC Scenario
-        # ------------------------------------------------------------------
+        # ----------------------------------------
+
         output_dir = (
             f"{self.config['output_directory']}/"
             f"{time.strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:6]}"
@@ -76,16 +116,15 @@ class SMACOptimizer(BaseOptimizer):
 
         scenario = Scenario(
             configspace=self.config_space,
-            n_trials=bo_trials,      # BO trials (initial handled via initial_design)
-            output_directory=output_dir,
+            n_trials=total_budget,
             deterministic=True,
+            output_directory=output_dir,
             seed=random_seed,
         )
 
-        # initial = exact percentage of total budget (rows)
         initial_design = HPOFacade.get_initial_design(
             scenario,
-            n_configs=initial_design_size
+            n_configs=init_design_size
         )
 
         smac = HPOFacade(
@@ -96,34 +135,30 @@ class SMACOptimizer(BaseOptimizer):
 
         self.logging_util.start_logging()
 
-        print(f"SMAC optimization started (rows={len(self.X_df)})...")
-        print(f"[Initial={initial_design_size}] + [BO={bo_trials}] = {total_budget} total labels")
-
         try:
             incumbent = smac.optimize()
         except Exception as e:
-            print(f"SMAC stopped early: {e}")
+            print("SMAC failed / early stopped:", e)
             incumbent = smac.optimizer.intensifier.get_incumbent()
 
-        # ------------------------------------------------------------------
-        # Best solution
-        # ------------------------------------------------------------------
-        best_row_id = int(incumbent["row_id"])
-        best_row_series = self.X_df.iloc[best_row_id]
-        best_hyperparams = best_row_series.to_dict()
+        # ----------------------------------------
+        # Best Solution
+        # ----------------------------------------
 
-        self.best_config = best_hyperparams
-        # get fitness from cache (or recompute safely)
-        if best_row_id in self.cache:
-            best_fitness = self.cache[best_row_id]
-        else:
-            score = self.model_wrapper.run_model(best_hyperparams)
+        raw_hp = self._config_to_dict(incumbent)
+        best_hp = self._valid_row(raw_hp)
+
+        key = self._row_tuple(best_hp)
+        best_fitness = self.cache.get(key)
+
+        if best_fitness is None:
+            score = self.model_wrapper.run_model(best_hp)
             best_fitness = 1 - score
 
+        self.best_config = best_hp
         self.best_value = best_fitness
 
-        print(f"Best row id: {best_row_id}")
-        print(f"Best config: {self.best_config}")
-        print(f"Best value (fitness): {self.best_value}")
-
         self.logging_util.stop_logging()
+
+        print("Best config:", best_hp)
+        print("Best fitness:", best_fitness)

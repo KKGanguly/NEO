@@ -1,0 +1,33 @@
+{
+  "stats": {
+    "submitted": 1,
+    "finished": 1,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      218175338,
+      null,
+      Infinity,
+      0.004609823226928711,
+      2,
+      1763363030.4180193,
+      1763363030.4245453,
+      {}
+    ]
+  ],
+  "configs": {
+    "1": {
+      "Max_depth": 15,
+      "Min_impurity_decrease": 1.25,
+      "Min_sample_leaves": 7,
+      "N_estimators": 170,
+      "criterion": "poisson"
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol"
+  }
+}

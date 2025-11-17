@@ -1,0 +1,56 @@
+{
+  "stats": {
+    "submitted": 2,
+    "finished": 2,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      953453411,
+      null,
+      Infinity,
+      0.004385948181152344,
+      2,
+      1763363030.419819,
+      1763363030.4259148,
+      {}
+    ],
+    [
+      2,
+      null,
+      953453411,
+      null,
+      Infinity,
+      0.0,
+      2,
+      1763363032.2290251,
+      1763363033.299499,
+      {
+        "traceback": "Traceback (most recent call last):\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 186, in run\n    rval = self(config_copy, target_function, kwargs)\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 259, in __call__\n    return algorithm(config, **algorithm_kwargs)\n  File \"/home/kgangul/SEOptBench/optimizers/SMACOptimizer.py\", line 101, in objective\n    score = self.model_wrapper.run_model(eval_hp)\n  File \"/home/kgangul/SEOptBench/models/model_wrapper_static.py\", line 47, in run_model\n    scores = self.get_score(hyperparams)\n  File \"/home/kgangul/SEOptBench/models/model_wrapper_static.py\", line 44, in get_score\n    return self._score_tuple(idx)\n  File \"/home/kgangul/SEOptBench/models/model_wrapper_static.py\", line 34, in _score_tuple\n    print(\"the row found was\", row)\n  File \"/home/kgangul/SEOptBench/experiments/experiement_runner_parallel.py\", line 77, in terminate_all\n    print(\"Terminating all processes...\")\nRuntimeError: reentrant call inside <_io.BufferedWriter name='<stdout>'>\n",
+        "error": "RuntimeError(\"reentrant call inside <_io.BufferedWriter name='<stdout>'>\")"
+      }
+    ]
+  ],
+  "configs": {
+    "1": {
+      "Max_depth": 8,
+      "Min_impurity_decrease": 9.0,
+      "Min_sample_leaves": 1,
+      "N_estimators": 170,
+      "criterion": "absolute_error"
+    },
+    "2": {
+      "Max_depth": 2,
+      "Min_impurity_decrease": 6.25,
+      "Min_sample_leaves": 7,
+      "N_estimators": 200,
+      "criterion": "poisson"
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol",
+    "2": "Acquisition Function Maximizer: Local Search"
+  }
+}

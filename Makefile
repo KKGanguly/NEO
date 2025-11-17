@@ -1,6 +1,6 @@
-DATASETS_DIR = data_small
+DATASETS_DIR = moot/optimize
 COMMAND_FILE = commands.sh
-NAME ?= DEHB
+NAME ?= SMAC
 BASE_CMD = python3 experiement_runner_parallel.py --name $(NAME) --repeats 20 --budget 6 12 18 24 50 100 200 --runs_output_folder ../results/results_$(NAME) --logging_folder ../logging/logging_$(NAME) --output_directory ../results/tmp/$(NAME)_tmp
 generate-commands:
 	@echo "#!/bin/bash" > $(COMMAND_FILE)

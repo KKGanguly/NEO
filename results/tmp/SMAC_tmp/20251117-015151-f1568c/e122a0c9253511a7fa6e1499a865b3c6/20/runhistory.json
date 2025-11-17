@@ -1,0 +1,36 @@
+{
+  "stats": {
+    "submitted": 1,
+    "finished": 1,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      378518883,
+      null,
+      Infinity,
+      0.0,
+      2,
+      1763362311.1958356,
+      1763362311.2518208,
+      {
+        "traceback": "Traceback (most recent call last):\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 186, in run\n    rval = self(config_copy, target_function, kwargs)\n  File \"/home/kgangul/.local/lib/python3.10/site-packages/smac/runner/target_function_runner.py\", line 259, in __call__\n    return algorithm(config, **algorithm_kwargs)\n  File \"/home/kgangul/SEOptBench/optimizers/SMACOptimizer.py\", line 96, in objective\n    eval_hp = self._valid_row(raw_hp)\n  File \"/home/kgangul/SEOptBench/optimizers/SMACOptimizer.py\", line 69, in _valid_row\n    print(\"NNW ROWWWWWW\")\n  File \"/home/kgangul/SEOptBench/experiments/experiement_runner_parallel.py\", line 77, in terminate_all\n    print(\"Terminating all processes...\")\nRuntimeError: reentrant call inside <_io.BufferedWriter name='<stdout>'>\n",
+        "error": "RuntimeError(\"reentrant call inside <_io.BufferedWriter name='<stdout>'>\")"
+      }
+    ]
+  ],
+  "configs": {
+    "1": {
+      "Max_depth": 2,
+      "Min_impurity_decrease": 0.0,
+      "Min_sample_leaves": 5,
+      "N_estimators": 180,
+      "criterion": "squared_error"
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol"
+  }
+}

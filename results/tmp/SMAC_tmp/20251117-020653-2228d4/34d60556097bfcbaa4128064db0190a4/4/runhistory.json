@@ -1,0 +1,493 @@
+{
+  "stats": {
+    "submitted": 24,
+    "finished": 24,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      2005877882,
+      null,
+      0.7946885727239745,
+      0.0032243728637695312,
+      1,
+      1763363213.0729449,
+      1763363213.0796678,
+      {}
+    ],
+    [
+      2,
+      null,
+      2005877882,
+      null,
+      0.7953627250223835,
+      0.0013689994812011719,
+      1,
+      1763363213.0903723,
+      1763363213.0947506,
+      {}
+    ],
+    [
+      3,
+      null,
+      2005877882,
+      null,
+      0.7952176729955366,
+      0.0010998249053955078,
+      1,
+      1763363215.2913826,
+      1763363215.2947538,
+      {}
+    ],
+    [
+      4,
+      null,
+      2005877882,
+      null,
+      0.7941175229798446,
+      0.0006551742553710938,
+      1,
+      1763363215.2986038,
+      1763363215.3022578,
+      {}
+    ],
+    [
+      5,
+      null,
+      2005877882,
+      null,
+      0.7927490163822407,
+      0.0005643367767333984,
+      1,
+      1763363215.305904,
+      1763363215.307905,
+      {}
+    ],
+    [
+      6,
+      null,
+      2005877882,
+      null,
+      0.786461549248995,
+      0.0005586147308349609,
+      1,
+      1763363215.311924,
+      1763363215.3137858,
+      {}
+    ],
+    [
+      7,
+      null,
+      2005877882,
+      null,
+      0.8062688676068228,
+      0.0005276203155517578,
+      1,
+      1763363215.3176856,
+      1763363215.3197868,
+      {}
+    ],
+    [
+      8,
+      null,
+      2005877882,
+      null,
+      0.7883659018131742,
+      0.0005207061767578125,
+      1,
+      1763363215.3234727,
+      1763363215.32526,
+      {}
+    ],
+    [
+      9,
+      null,
+      2005877882,
+      null,
+      0.7958954928505709,
+      0.0008897781372070312,
+      1,
+      1763363215.3438442,
+      1763363215.346361,
+      {}
+    ],
+    [
+      10,
+      null,
+      2005877882,
+      null,
+      0.7916875146567781,
+      0.0006725788116455078,
+      1,
+      1763363215.35139,
+      1763363215.3534427,
+      {}
+    ],
+    [
+      11,
+      null,
+      2005877882,
+      null,
+      0.792892421752856,
+      0.0009531974792480469,
+      1,
+      1763363217.2428324,
+      1763363217.2454433,
+      {}
+    ],
+    [
+      12,
+      null,
+      2005877882,
+      null,
+      0.7888831228856359,
+      0.0006086826324462891,
+      1,
+      1763363217.2503636,
+      1763363217.2523534,
+      {}
+    ],
+    [
+      13,
+      null,
+      2005877882,
+      null,
+      0.7896889121094576,
+      0.0005290508270263672,
+      1,
+      1763363217.265783,
+      1763363217.267864,
+      {}
+    ],
+    [
+      14,
+      null,
+      2005877882,
+      null,
+      0.7925225147325886,
+      0.0005218982696533203,
+      1,
+      1763363217.27301,
+      1763363217.274844,
+      {}
+    ],
+    [
+      15,
+      null,
+      2005877882,
+      null,
+      0.7898650748583506,
+      0.0006299018859863281,
+      1,
+      1763363217.2799406,
+      1763363217.281889,
+      {}
+    ],
+    [
+      16,
+      null,
+      2005877882,
+      null,
+      0.7946885727239745,
+      0.0003006458282470703,
+      1,
+      1763363217.288641,
+      1763363217.2902305,
+      {}
+    ],
+    [
+      17,
+      null,
+      2005877882,
+      null,
+      0.7851845447759918,
+      0.0007364749908447266,
+      1,
+      1763363217.298612,
+      1763363217.3007324,
+      {}
+    ],
+    [
+      18,
+      null,
+      2005877882,
+      null,
+      0.786435370183652,
+      0.0005128383636474609,
+      1,
+      1763363217.306865,
+      1763363217.3087862,
+      {}
+    ],
+    [
+      19,
+      null,
+      2005877882,
+      null,
+      0.7919098424251463,
+      0.0009341239929199219,
+      1,
+      1763363219.238327,
+      1763363219.2406452,
+      {}
+    ],
+    [
+      20,
+      null,
+      2005877882,
+      null,
+      0.7848872478536225,
+      0.000865936279296875,
+      1,
+      1763363219.246611,
+      1763363219.2487698,
+      {}
+    ],
+    [
+      21,
+      null,
+      2005877882,
+      null,
+      0.7851845447759918,
+      0.0004467964172363281,
+      1,
+      1763363219.2573261,
+      1763363219.259117,
+      {}
+    ],
+    [
+      22,
+      null,
+      2005877882,
+      null,
+      0.7848656226925108,
+      0.00115203857421875,
+      1,
+      1763363219.2653365,
+      1763363219.2678654,
+      {}
+    ],
+    [
+      23,
+      null,
+      2005877882,
+      null,
+      0.7918697758663641,
+      0.0008511543273925781,
+      1,
+      1763363219.2746665,
+      1763363219.2769492,
+      {}
+    ],
+    [
+      24,
+      null,
+      2005877882,
+      null,
+      0.7890569101230807,
+      0.0006167888641357422,
+      1,
+      1763363219.2837005,
+      1763363219.285585,
+      {}
+    ]
+  ],
+  "configs": {
+    "1": {
+      "Max_depth": 3,
+      "Min_impurity_decrease": 7.0,
+      "Min_sample_leaves": 1,
+      "N_estimators": 160,
+      "criterion": "squared_error"
+    },
+    "2": {
+      "Max_depth": 15,
+      "Min_impurity_decrease": 8.25,
+      "Min_sample_leaves": 18,
+      "N_estimators": 60,
+      "criterion": "absolute_error"
+    },
+    "3": {
+      "Max_depth": 20,
+      "Min_impurity_decrease": 9.75,
+      "Min_sample_leaves": 10,
+      "N_estimators": 110,
+      "criterion": "squared_error"
+    },
+    "4": {
+      "Max_depth": 1,
+      "Min_impurity_decrease": 9.75,
+      "Min_sample_leaves": 6,
+      "N_estimators": 100,
+      "criterion": "squared_error"
+    },
+    "5": {
+      "Max_depth": 13,
+      "Min_impurity_decrease": 4.75,
+      "Min_sample_leaves": 1,
+      "N_estimators": 40,
+      "criterion": "squared_error"
+    },
+    "6": {
+      "Max_depth": 12,
+      "Min_impurity_decrease": 7.0,
+      "Min_sample_leaves": 1,
+      "N_estimators": 110,
+      "criterion": "squared_error"
+    },
+    "7": {
+      "Max_depth": 20,
+      "Min_impurity_decrease": 1.5,
+      "Min_sample_leaves": 10,
+      "N_estimators": 30,
+      "criterion": "poisson"
+    },
+    "8": {
+      "Max_depth": 3,
+      "Min_impurity_decrease": 10.0,
+      "Min_sample_leaves": 13,
+      "N_estimators": 60,
+      "criterion": "squared_error"
+    },
+    "9": {
+      "Max_depth": 4,
+      "Min_impurity_decrease": 6.25,
+      "Min_sample_leaves": 10,
+      "N_estimators": 140,
+      "criterion": "poisson"
+    },
+    "10": {
+      "Max_depth": 5,
+      "Min_impurity_decrease": 8.75,
+      "Min_sample_leaves": 10,
+      "N_estimators": 120,
+      "criterion": "absolute_error"
+    },
+    "11": {
+      "Max_depth": 12,
+      "Min_impurity_decrease": 10.0,
+      "Min_sample_leaves": 13,
+      "N_estimators": 110,
+      "criterion": "absolute_error"
+    },
+    "12": {
+      "Max_depth": 12,
+      "Min_impurity_decrease": 10.0,
+      "Min_sample_leaves": 12,
+      "N_estimators": 130,
+      "criterion": "absolute_error"
+    },
+    "13": {
+      "Max_depth": 12,
+      "Min_impurity_decrease": 1.75,
+      "Min_sample_leaves": 13,
+      "N_estimators": 180,
+      "criterion": "squared_error"
+    },
+    "14": {
+      "Max_depth": 3,
+      "Min_impurity_decrease": 9.0,
+      "Min_sample_leaves": 13,
+      "N_estimators": 120,
+      "criterion": "squared_error"
+    },
+    "15": {
+      "Max_depth": 12,
+      "Min_impurity_decrease": 5.75,
+      "Min_sample_leaves": 12,
+      "N_estimators": 130,
+      "criterion": "absolute_error"
+    },
+    "16": {
+      "Max_depth": 4,
+      "Min_impurity_decrease": 6.25,
+      "Min_sample_leaves": 1,
+      "N_estimators": 170,
+      "criterion": "squared_error"
+    },
+    "17": {
+      "Max_depth": 12,
+      "Min_impurity_decrease": 5.75,
+      "Min_sample_leaves": 13,
+      "N_estimators": 110,
+      "criterion": "poisson"
+    },
+    "18": {
+      "Max_depth": 8,
+      "Min_impurity_decrease": 4.75,
+      "Min_sample_leaves": 5,
+      "N_estimators": 10,
+      "criterion": "poisson"
+    },
+    "19": {
+      "Max_depth": 8,
+      "Min_impurity_decrease": 6.0,
+      "Min_sample_leaves": 13,
+      "N_estimators": 110,
+      "criterion": "poisson"
+    },
+    "20": {
+      "Max_depth": 10,
+      "Min_impurity_decrease": 4.5,
+      "Min_sample_leaves": 8,
+      "N_estimators": 120,
+      "criterion": "squared_error"
+    },
+    "21": {
+      "Max_depth": 12,
+      "Min_impurity_decrease": 6.0,
+      "Min_sample_leaves": 13,
+      "N_estimators": 110,
+      "criterion": "poisson"
+    },
+    "22": {
+      "Max_depth": 9,
+      "Min_impurity_decrease": 4.5,
+      "Min_sample_leaves": 20,
+      "N_estimators": 40,
+      "criterion": "squared_error"
+    },
+    "23": {
+      "Max_depth": 3,
+      "Min_impurity_decrease": 7.75,
+      "Min_sample_leaves": 8,
+      "N_estimators": 150,
+      "criterion": "squared_error"
+    },
+    "24": {
+      "Max_depth": 3,
+      "Min_impurity_decrease": 5.0,
+      "Min_sample_leaves": 12,
+      "N_estimators": 190,
+      "criterion": "squared_error"
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol",
+    "2": "Initial Design: Sobol",
+    "3": "Acquisition Function Maximizer: Local Search",
+    "4": "Acquisition Function Maximizer: Local Search",
+    "5": "Acquisition Function Maximizer: Local Search",
+    "6": "Acquisition Function Maximizer: Local Search",
+    "7": "Acquisition Function Maximizer: Local Search",
+    "8": "Acquisition Function Maximizer: Local Search",
+    "9": "Acquisition Function Maximizer: Local Search",
+    "10": "Random Search",
+    "11": "Acquisition Function Maximizer: Local Search",
+    "12": "Acquisition Function Maximizer: Local Search",
+    "13": "Acquisition Function Maximizer: Local Search",
+    "14": "Random Search",
+    "15": "Acquisition Function Maximizer: Local Search",
+    "16": "Random Search",
+    "17": "Acquisition Function Maximizer: Local Search",
+    "18": "Random Search",
+    "19": "Acquisition Function Maximizer: Local Search",
+    "20": "Random Search",
+    "21": "Acquisition Function Maximizer: Local Search",
+    "22": "Random Search",
+    "23": "Random Search",
+    "24": "Random Search"
+  }
+}

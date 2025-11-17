@@ -1,0 +1,373 @@
+{
+  "stats": {
+    "submitted": 18,
+    "finished": 18,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      1872583848,
+      null,
+      0.795314983951323,
+      0.002348661422729492,
+      1,
+      1763363204.1557648,
+      1763363204.160002,
+      {}
+    ],
+    [
+      2,
+      null,
+      1872583848,
+      null,
+      0.7955560789204394,
+      0.0012884140014648438,
+      1,
+      1763363205.7425323,
+      1763363205.7460082,
+      {}
+    ],
+    [
+      3,
+      null,
+      1872583848,
+      null,
+      0.790183468691235,
+      0.0013530254364013672,
+      1,
+      1763363205.7499628,
+      1763363205.7526505,
+      {}
+    ],
+    [
+      4,
+      null,
+      1872583848,
+      null,
+      0.7951700462901283,
+      0.0012068748474121094,
+      1,
+      1763363205.7565532,
+      1763363205.7590702,
+      {}
+    ],
+    [
+      5,
+      null,
+      1872583848,
+      null,
+      0.7830739955538459,
+      0.001184701919555664,
+      1,
+      1763363205.762493,
+      1763363205.7650669,
+      {}
+    ],
+    [
+      6,
+      null,
+      1872583848,
+      null,
+      0.7860361222231296,
+      0.001664876937866211,
+      1,
+      1763363205.7693732,
+      1763363205.772369,
+      {}
+    ],
+    [
+      7,
+      null,
+      1872583848,
+      null,
+      0.8044326791775389,
+      0.0014350414276123047,
+      1,
+      1763363205.775827,
+      1763363205.7786045,
+      {}
+    ],
+    [
+      8,
+      null,
+      1872583848,
+      null,
+      0.7873782833434686,
+      0.0013928413391113281,
+      1,
+      1763363205.782255,
+      1763363205.7849932,
+      {}
+    ],
+    [
+      9,
+      null,
+      1872583848,
+      null,
+      0.7888184282586614,
+      0.0016307830810546875,
+      1,
+      1763363205.789288,
+      1763363205.7922063,
+      {}
+    ],
+    [
+      10,
+      null,
+      1872583848,
+      null,
+      0.7943509822693445,
+      0.0008759498596191406,
+      1,
+      1763363207.2215154,
+      1763363207.223816,
+      {}
+    ],
+    [
+      11,
+      null,
+      1872583848,
+      null,
+      0.7928561018914465,
+      0.0005071163177490234,
+      1,
+      1763363207.227979,
+      1763363207.229804,
+      {}
+    ],
+    [
+      12,
+      null,
+      1872583848,
+      null,
+      0.7950251437543779,
+      0.0005121231079101562,
+      1,
+      1763363207.2338614,
+      1763363207.2356856,
+      {}
+    ],
+    [
+      13,
+      null,
+      1872583848,
+      null,
+      0.7966611924615161,
+      0.0005049705505371094,
+      1,
+      1763363207.2398667,
+      1763363207.2416706,
+      {}
+    ],
+    [
+      14,
+      null,
+      1872583848,
+      null,
+      0.7903250487510152,
+      0.00048804283142089844,
+      1,
+      1763363207.2463884,
+      1763363207.248178,
+      {}
+    ],
+    [
+      15,
+      null,
+      1872583848,
+      null,
+      0.792236347063061,
+      0.0005376338958740234,
+      1,
+      1763363207.2534544,
+      1763363207.2552416,
+      {}
+    ],
+    [
+      16,
+      null,
+      1872583848,
+      null,
+      0.7958465865442385,
+      0.0005059242248535156,
+      1,
+      1763363207.2601974,
+      1763363207.2620056,
+      {}
+    ],
+    [
+      17,
+      null,
+      1872583848,
+      null,
+      0.7900064642210698,
+      0.0004849433898925781,
+      1,
+      1763363207.2667675,
+      1763363207.2685704,
+      {}
+    ],
+    [
+      18,
+      null,
+      1872583848,
+      null,
+      0.7870995706336509,
+      0.0010418891906738281,
+      1,
+      1763363208.9095767,
+      1763363208.9119842,
+      {}
+    ]
+  ],
+  "configs": {
+    "1": {
+      "Max_depth": 14,
+      "Min_impurity_decrease": 0.75,
+      "Min_sample_leaves": 18,
+      "N_estimators": 30,
+      "criterion": "poisson"
+    },
+    "2": {
+      "Max_depth": 3,
+      "Min_impurity_decrease": 7.25,
+      "Min_sample_leaves": 11,
+      "N_estimators": 50,
+      "criterion": "absolute_error"
+    },
+    "3": {
+      "Max_depth": 7,
+      "Min_impurity_decrease": 1.75,
+      "Min_sample_leaves": 10,
+      "N_estimators": 70,
+      "criterion": "absolute_error"
+    },
+    "4": {
+      "Max_depth": 19,
+      "Min_impurity_decrease": 1.75,
+      "Min_sample_leaves": 18,
+      "N_estimators": 200,
+      "criterion": "squared_error"
+    },
+    "5": {
+      "Max_depth": 3,
+      "Min_impurity_decrease": 2.0,
+      "Min_sample_leaves": 20,
+      "N_estimators": 140,
+      "criterion": "poisson"
+    },
+    "6": {
+      "Max_depth": 13,
+      "Min_impurity_decrease": 0.75,
+      "Min_sample_leaves": 7,
+      "N_estimators": 100,
+      "criterion": "poisson"
+    },
+    "7": {
+      "Max_depth": 6,
+      "Min_impurity_decrease": 0.0,
+      "Min_sample_leaves": 14,
+      "N_estimators": 20,
+      "criterion": "poisson"
+    },
+    "8": {
+      "Max_depth": 2,
+      "Min_impurity_decrease": 9.75,
+      "Min_sample_leaves": 15,
+      "N_estimators": 80,
+      "criterion": "squared_error"
+    },
+    "9": {
+      "Max_depth": 1,
+      "Min_impurity_decrease": 9.25,
+      "Min_sample_leaves": 19,
+      "N_estimators": 110,
+      "criterion": "squared_error"
+    },
+    "10": {
+      "Max_depth": 18,
+      "Min_impurity_decrease": 2.0,
+      "Min_sample_leaves": 7,
+      "N_estimators": 190,
+      "criterion": "poisson"
+    },
+    "11": {
+      "Max_depth": 11,
+      "Min_impurity_decrease": 1.5,
+      "Min_sample_leaves": 7,
+      "N_estimators": 190,
+      "criterion": "poisson"
+    },
+    "12": {
+      "Max_depth": 18,
+      "Min_impurity_decrease": 4.5,
+      "Min_sample_leaves": 7,
+      "N_estimators": 190,
+      "criterion": "absolute_error"
+    },
+    "13": {
+      "Max_depth": 11,
+      "Min_impurity_decrease": 2.75,
+      "Min_sample_leaves": 7,
+      "N_estimators": 190,
+      "criterion": "poisson"
+    },
+    "14": {
+      "Max_depth": 16,
+      "Min_impurity_decrease": 9.0,
+      "Min_sample_leaves": 14,
+      "N_estimators": 140,
+      "criterion": "squared_error"
+    },
+    "15": {
+      "Max_depth": 11,
+      "Min_impurity_decrease": 9.5,
+      "Min_sample_leaves": 7,
+      "N_estimators": 190,
+      "criterion": "squared_error"
+    },
+    "16": {
+      "Max_depth": 14,
+      "Min_impurity_decrease": 5.0,
+      "Min_sample_leaves": 10,
+      "N_estimators": 90,
+      "criterion": "absolute_error"
+    },
+    "17": {
+      "Max_depth": 18,
+      "Min_impurity_decrease": 9.5,
+      "Min_sample_leaves": 7,
+      "N_estimators": 190,
+      "criterion": "squared_error"
+    },
+    "18": {
+      "Max_depth": 8,
+      "Min_impurity_decrease": 2.0,
+      "Min_sample_leaves": 15,
+      "N_estimators": 100,
+      "criterion": "poisson"
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol",
+    "2": "Acquisition Function Maximizer: Local Search",
+    "3": "Random Search",
+    "4": "Acquisition Function Maximizer: Local Search",
+    "5": "Acquisition Function Maximizer: Local Search",
+    "6": "Acquisition Function Maximizer: Local Search",
+    "7": "Acquisition Function Maximizer: Local Search",
+    "8": "Acquisition Function Maximizer: Local Search",
+    "9": "Acquisition Function Maximizer: Local Search",
+    "10": "Acquisition Function Maximizer: Local Search",
+    "11": "Acquisition Function Maximizer: Local Search",
+    "12": "Acquisition Function Maximizer: Local Search",
+    "13": "Acquisition Function Maximizer: Local Search",
+    "14": "Random Search",
+    "15": "Acquisition Function Maximizer: Local Search",
+    "16": "Random Search",
+    "17": "Acquisition Function Maximizer: Local Search",
+    "18": "Acquisition Function Maximizer: Local Search"
+  }
+}

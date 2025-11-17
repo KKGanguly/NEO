@@ -1,0 +1,53 @@
+{
+  "stats": {
+    "submitted": 2,
+    "finished": 2,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      662124363,
+      null,
+      0.7893386512179794,
+      0.006880760192871094,
+      1,
+      1763363148.5228674,
+      1763363148.532102,
+      {}
+    ],
+    [
+      2,
+      null,
+      662124363,
+      null,
+      0.7763293970691916,
+      0.0044939517974853516,
+      1,
+      1763363148.5642908,
+      1763363148.5706396,
+      {}
+    ]
+  ],
+  "configs": {
+    "1": {
+      "Max_depth": 13,
+      "Min_impurity_decrease": 0.5,
+      "Min_sample_leaves": 1,
+      "N_estimators": 120,
+      "criterion": "poisson"
+    },
+    "2": {
+      "Max_depth": 4,
+      "Min_impurity_decrease": 1.0,
+      "Min_sample_leaves": 6,
+      "N_estimators": 180,
+      "criterion": "absolute_error"
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol",
+    "2": "Random Search"
+  }
+}

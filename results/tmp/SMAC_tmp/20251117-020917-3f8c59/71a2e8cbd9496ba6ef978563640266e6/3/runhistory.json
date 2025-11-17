@@ -1,0 +1,169 @@
+{
+  "stats": {
+    "submitted": 6,
+    "finished": 6,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      218175338,
+      null,
+      0.48436983378291887,
+      0.0036499500274658203,
+      1,
+      1763363357.780998,
+      1763363357.7865977,
+      {}
+    ],
+    [
+      2,
+      null,
+      218175338,
+      null,
+      0.5100994208197149,
+      0.00138092041015625,
+      1,
+      1763363359.4536207,
+      1763363359.4568655,
+      {}
+    ],
+    [
+      3,
+      null,
+      218175338,
+      null,
+      0.11798818976994285,
+      0.0012104511260986328,
+      1,
+      1763363359.4614317,
+      1763363359.4641743,
+      {}
+    ],
+    [
+      4,
+      null,
+      218175338,
+      null,
+      0.5344634730718929,
+      0.0006084442138671875,
+      1,
+      1763363359.4692411,
+      1763363359.4713187,
+      {}
+    ],
+    [
+      5,
+      null,
+      218175338,
+      null,
+      0.31001163449789515,
+      0.0007538795471191406,
+      1,
+      1763363359.4760954,
+      1763363359.4783542,
+      {}
+    ],
+    [
+      6,
+      null,
+      218175338,
+      null,
+      0.48222320237122496,
+      0.0007824897766113281,
+      1,
+      1763363359.483317,
+      1763363359.4855325,
+      {}
+    ]
+  ],
+  "configs": {
+    "1": {
+      "data_alignFieldPointers": 1,
+      "explorationId": 1,
+      "no_explorationId": 0,
+      "opt_unroll": 2,
+      "opt_unroll_interleave": 0,
+      "opt_useAddressPrecalc": 1,
+      "opt_vectorize": 1,
+      "poly_tileSize_x": 8,
+      "poly_tileSize_y": 32,
+      "poly_tileSize_z": 8,
+      "simd_avoidUnaligned": 1
+    },
+    "2": {
+      "data_alignFieldPointers": 1,
+      "explorationId": 4,
+      "no_explorationId": 0,
+      "opt_unroll": 3,
+      "opt_unroll_interleave": 0,
+      "opt_useAddressPrecalc": 1,
+      "opt_vectorize": 1,
+      "poly_tileSize_x": 32,
+      "poly_tileSize_y": 20,
+      "poly_tileSize_z": 32,
+      "simd_avoidUnaligned": 0
+    },
+    "3": {
+      "data_alignFieldPointers": 1,
+      "explorationId": 3,
+      "no_explorationId": 1,
+      "opt_unroll": 4,
+      "opt_unroll_interleave": 0,
+      "opt_useAddressPrecalc": 0,
+      "opt_vectorize": 1,
+      "poly_tileSize_x": 20,
+      "poly_tileSize_y": 20,
+      "poly_tileSize_z": 20,
+      "simd_avoidUnaligned": 0
+    },
+    "4": {
+      "data_alignFieldPointers": 1,
+      "explorationId": 2,
+      "no_explorationId": 0,
+      "opt_unroll": 4,
+      "opt_unroll_interleave": 0,
+      "opt_useAddressPrecalc": 1,
+      "opt_vectorize": 1,
+      "poly_tileSize_x": 128,
+      "poly_tileSize_y": 16,
+      "poly_tileSize_z": 64,
+      "simd_avoidUnaligned": 1
+    },
+    "5": {
+      "data_alignFieldPointers": 0,
+      "explorationId": 1,
+      "no_explorationId": 0,
+      "opt_unroll": 2,
+      "opt_unroll_interleave": 0,
+      "opt_useAddressPrecalc": 0,
+      "opt_vectorize": 0,
+      "poly_tileSize_x": 0,
+      "poly_tileSize_y": 20,
+      "poly_tileSize_z": 10,
+      "simd_avoidUnaligned": 1
+    },
+    "6": {
+      "data_alignFieldPointers": 1,
+      "explorationId": 0,
+      "no_explorationId": 1,
+      "opt_unroll": 2,
+      "opt_unroll_interleave": 0,
+      "opt_useAddressPrecalc": 1,
+      "opt_vectorize": 1,
+      "poly_tileSize_x": 64,
+      "poly_tileSize_y": 32,
+      "poly_tileSize_z": 128,
+      "simd_avoidUnaligned": 1
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol",
+    "2": "Acquisition Function Maximizer: Local Search",
+    "3": "Acquisition Function Maximizer: Local Search",
+    "4": "Acquisition Function Maximizer: Local Search",
+    "5": "Acquisition Function Maximizer: Local Search",
+    "6": "Acquisition Function Maximizer: Local Search"
+  }
+}

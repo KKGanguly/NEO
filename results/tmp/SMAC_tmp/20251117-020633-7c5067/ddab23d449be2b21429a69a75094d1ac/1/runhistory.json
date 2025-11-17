@@ -1,0 +1,133 @@
+{
+  "stats": {
+    "submitted": 6,
+    "finished": 6,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      1791095845,
+      null,
+      0.7893723936621555,
+      0.0020072460174560547,
+      1,
+      1763363193.8484266,
+      1763363193.8522153,
+      {}
+    ],
+    [
+      2,
+      null,
+      1791095845,
+      null,
+      0.7813267803957499,
+      0.001407623291015625,
+      1,
+      1763363195.4544618,
+      1763363195.457657,
+      {}
+    ],
+    [
+      3,
+      null,
+      1791095845,
+      null,
+      0.7939732911750225,
+      0.0008084774017333984,
+      1,
+      1763363195.466207,
+      1763363195.4685454,
+      {}
+    ],
+    [
+      4,
+      null,
+      1791095845,
+      null,
+      0.7900419251961273,
+      0.0005893707275390625,
+      1,
+      1763363195.4732056,
+      1763363195.4776914,
+      {}
+    ],
+    [
+      5,
+      null,
+      1791095845,
+      null,
+      0.610842716537921,
+      0.0005674362182617188,
+      1,
+      1763363195.483275,
+      1763363195.4852386,
+      {}
+    ],
+    [
+      6,
+      null,
+      1791095845,
+      null,
+      0.7918697758663641,
+      0.0005919933319091797,
+      1,
+      1763363195.491241,
+      1763363195.4932592,
+      {}
+    ]
+  ],
+  "configs": {
+    "1": {
+      "Max_depth": 8,
+      "Min_impurity_decrease": 9.0,
+      "Min_sample_leaves": 18,
+      "N_estimators": 120,
+      "criterion": "squared_error"
+    },
+    "2": {
+      "Max_depth": 10,
+      "Min_impurity_decrease": 3.25,
+      "Min_sample_leaves": 12,
+      "N_estimators": 10,
+      "criterion": "poisson"
+    },
+    "3": {
+      "Max_depth": 10,
+      "Min_impurity_decrease": 6.5,
+      "Min_sample_leaves": 4,
+      "N_estimators": 10,
+      "criterion": "squared_error"
+    },
+    "4": {
+      "Max_depth": 18,
+      "Min_impurity_decrease": 0.0,
+      "Min_sample_leaves": 11,
+      "N_estimators": 180,
+      "criterion": "squared_error"
+    },
+    "5": {
+      "Max_depth": 14,
+      "Min_impurity_decrease": 1.0,
+      "Min_sample_leaves": 8,
+      "N_estimators": 90,
+      "criterion": "poisson"
+    },
+    "6": {
+      "Max_depth": 16,
+      "Min_impurity_decrease": 9.0,
+      "Min_sample_leaves": 5,
+      "N_estimators": 110,
+      "criterion": "squared_error"
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol",
+    "2": "Acquisition Function Maximizer: Local Search",
+    "3": "Acquisition Function Maximizer: Local Search",
+    "4": "Random Search",
+    "5": "Acquisition Function Maximizer: Local Search",
+    "6": "Random Search"
+  }
+}
