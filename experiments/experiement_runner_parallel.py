@@ -27,7 +27,7 @@ def write_to_file(filepath, content):
         f.write(content)
 
 
-def init_optimizer(optimizer_name, optimizer_config, model_wrapper, seed=1):
+def init_optimizer(optimizer_name, optimizer_config, model_wrapper, model_config, seed):
     optimizer_classes = {
         'DEHB': DEHBOptimizer,
         'Active_Learning': ActLearnOptimizer,
@@ -37,7 +37,7 @@ def init_optimizer(optimizer_name, optimizer_config, model_wrapper, seed=1):
         raise ValueError(f"Unknown optimizer: {optimizer_name}")
 
     return optimizer_classes[optimizer_name](
-        optimizer_config, model_wrapper, None, None, seed
+        optimizer_config, model_wrapper, model_config, None, seed
     )
 
 
@@ -142,9 +142,7 @@ def run_single_repeat(logging_dir, data_name, model_wrapper, model_config,
     seed = i + 1
     log_filename = os.path.join(logging_dir, optimizer_name, f"{data_name}_{seed}.csv")
     model_config.set_seed(seed)
-    optimizer_obj = init_optimizer(optimizer_name, optimizer, model_wrapper)
-    optimizer_obj.set_seed(seed)
-    optimizer_obj.set_model_config(model_config)
+    optimizer_obj = init_optimizer(optimizer_name, optimizer, model_wrapper, model_config, seed)
     optimizer_obj.set_logging_util(LoggingUtil(log_filename))
 
     start = time.time()
