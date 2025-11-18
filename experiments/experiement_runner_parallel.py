@@ -16,6 +16,7 @@ from models.model_wrapper_static import ModelWrapperStatic
 from optimizers.ActLearnOptimizer import ActLearnOptimizer
 from optimizers.DEHBOptimizer import DEHBOptimizer
 from optimizers.SMACOptimizer import SMACOptimizer
+from optimizers.AroundOptimizer import AroundOptimizer
 
 from utils.LoggingUtil import LoggingUtil
 from utils.data_loader_templated import load_data
@@ -32,6 +33,7 @@ def init_optimizer(optimizer_name, optimizer_config, model_wrapper, model_config
         'DEHB': DEHBOptimizer,
         'Active_Learning': ActLearnOptimizer,
         'SMAC': SMACOptimizer,
+        'KMPlusPlus': AroundOptimizer
     }
     if optimizer_name not in optimizer_classes:
         raise ValueError(f"Unknown optimizer: {optimizer_name}")

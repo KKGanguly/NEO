@@ -479,7 +479,71 @@ class Data:
         times = parse_list(list2_str)
         
         return scores, times
-    
+    def smac(self, file=None, budget=0, rp=0):
+        # Define the Python command to execute
+        filepath = file or the['data']
+        command = f'python3 ../FileResultsReader.py --data_file_path {filepath} --folder_name ../../results/results_SMAC/SMAC --budget {budget}'
+        
+        # Run the command using subprocess
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        output = result.stdout
+        
+        # Step 1: Extract the two lists using pattern matching
+        match = re.search(r'\((\[.*?\])\s*,\s*(\[.*?\])\)', output, re.DOTALL)
+        
+        if not match:
+            return [], []
+        
+        list1_str = match.group(1)
+        list2_str = match.group(2)
+        
+        # Helper function to process each list string
+        def parse_list(list_str):
+            numbers = []
+            for value in re.findall(r"'(.*?)'", list_str):
+                num = float(value.strip())
+                numbers.append(num)
+            return numbers
+        
+        # Step 2: Parse both lists
+        scores = parse_list(list1_str)
+        times = parse_list(list2_str)
+        
+        return scores, times
+
+    def kmplusplus(self, file=None, budget=0, rp=0):
+        # Define the Python command to execute
+        filepath = file or the['data']
+        command = f'python3 ../FileResultsReader.py --data_file_path {filepath} --folder_name ../../results/results_KMPlusPlus/KMPlusPlus --budget {budget}'
+        
+        # Run the command using subprocess
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        output = result.stdout
+        
+        # Step 1: Extract the two lists using pattern matching
+        match = re.search(r'\((\[.*?\])\s*,\s*(\[.*?\])\)', output, re.DOTALL)
+        
+        if not match:
+            return [], []
+        
+        list1_str = match.group(1)
+        list2_str = match.group(2)
+        
+        # Helper function to process each list string
+        def parse_list(list_str):
+            numbers = []
+            for value in re.findall(r"'(.*?)'", list_str):
+                num = float(value.strip())
+                numbers.append(num)
+            return numbers
+        
+        # Step 2: Parse both lists
+        scores = parse_list(list1_str)
+        times = parse_list(list2_str)
+        
+        return scores, times
+
+
     def to_vec(self, row):
         """
         Convert a row into a numeric NumPy vector of its x columns.
@@ -1019,26 +1083,60 @@ def _acquire_adapt(data, budget):
     return done
 
 import time, re, sys
-
 def _comparez(file=None, IT="mu"):
     file = file or the['data']
     Budget = 25
     Repeats = 20
     Epsilon = 0.35
+
+    from sklearn.model_selection import train_test_split
+
     data = Data.new(csv(file))
     Y = lambda row: data.ydist(row)
-    B4 = adds(map(data.rows, Y))
     BEST = lambda a: Y(keysort(a, Y)[0])
     N = lambda x: fmt("%.0f", 100 * x)
 
+    # ----------------------------------------------------------
+    # NEW B4 COMPUTATION USING TRAIN/TEST SPLIT PER SEED (50/50)
+    # ----------------------------------------------------------
+    B4_mus = []
+    B4_sds = []
+    B4_los = []
+
+    for r in range(Repeats):
+        seed = r + 1
+
+        train_rows, test_rows = train_test_split(
+            data.rows,
+            test_size=0.5,
+            random_state=seed,
+            shuffle=True
+        )
+
+        Ys = [Y(row) for row in test_rows]
+
+        mu_seed = mean(Ys)
+        sd_seed = std(Ys)
+        lo_seed = min(Ys)
+
+        B4_mus.append(mu_seed)
+        B4_sds.append(sd_seed)
+        B4_los.append(lo_seed)
+
+    # Final aggregated B4 (Option B)
+    class B4Obj:
+        pass
+
+    B4 = B4Obj()
+    B4.mu = sum(B4_mus) / len(B4_mus)
+    B4.sd = sum(B4_sds) / len(B4_sds)
+    B4.lo = sum(B4_los) / len(B4_los)
+
+    # ----------------------------------------------------------
+    # TASK DEFINITIONS (algorithms unchanged)
+    # ----------------------------------------------------------
     TASKS = [
-        ["DEHB-6", lambda: data.dehb(file, 6, Repeats)],
-        ["DEHB-12", lambda: data.dehb(file, 12, Repeats)],
-        ["DEHB-18", lambda: data.dehb(file, 18, Repeats)],
-        ["DEHB-24", lambda: data.dehb(file, 24, Repeats)],
-        ["DEHB-50", lambda: data.dehb(file, 50, Repeats)],
-        ["DEHB-100", lambda: data.dehb(file, 100, Repeats)],
-        ["DEHB-200", lambda: data.dehb(file, 200, Repeats)],
+
         ["ACT-6", lambda: data.actLearn(file, 6, Repeats)],
         ["ACT-12", lambda: data.actLearn(file, 12, Repeats)],
         ["ACT-18", lambda: data.actLearn(file, 18, Repeats)],
@@ -1046,26 +1144,42 @@ def _comparez(file=None, IT="mu"):
         ["ACT-50", lambda: data.actLearn(file, 50, Repeats)],
         ["ACT-100", lambda: data.actLearn(file, 100, Repeats)],
         ["ACT-200", lambda: data.actLearn(file, 200, Repeats)],
-        # ["XPLOIT", lambda: _acquire_xploit(data, Budget)],
-        # ["XPLORE", lambda: _acquire_xplore(data, Budget)],
-        # ["ADAPT", lambda: _acquire_adapt(data, Budget)],
-        #["SWAY", lambda: data.branch(Budget - 1)],
+
+        ["SMAC-6", lambda: data.smac(file, 6, Repeats)],
+        ["SMAC-12", lambda: data.smac(file, 12, Repeats)],
+        ["SMAC-18", lambda: data.smac(file, 18, Repeats)],
+        ["SMAC-24", lambda: data.smac(file, 24, Repeats)],
+        ["SMAC-50", lambda: data.smac(file, 50, Repeats)],
+        ["SMAC-100", lambda: data.smac(file, 100, Repeats)],
+        ["SMAC-200", lambda: data.smac(file, 200, Repeats)],
+
+        ["KM++-6", lambda: data.kmplusplus(file, 6, Repeats)],
+        ["KM++-12", lambda: data.kmplusplus(file, 12, Repeats)],
+        ["KM++-18", lambda: data.kmplusplus(file, 18, Repeats)],
+        ["KM++-24", lambda: data.kmplusplus(file, 24, Repeats)],
+        ["KM++-50", lambda: data.kmplusplus(file, 50, Repeats)],
+        ["KM++-100", lambda: data.kmplusplus(file, 100, Repeats)],
+        ["KM++-200", lambda: data.kmplusplus(file, 200, Repeats)],
+
         ["  6 ", lambda: data.around(6)],
         ["  6r", lambda: data.anys(6)], 
         [" 12", lambda: data.around(12)],
         [" 12r", lambda: data.anys(12)],
         [" 18", lambda: data.around(18)],
         [" 18r", lambda: data.anys(18)],
-        [" 24 ", lambda: data.around(24)],
+        [" 24", lambda: data.around(24)],
         [" 24r", lambda: data.anys(24)],
-        [" 50 ", lambda: data.around(50)],
+        [" 50", lambda: data.around(50)],
         [" 50r", lambda: data.anys(50)],
-        ["100 ", lambda: data.around(100)],
+        ["100", lambda: data.around(100)],
         ["100r", lambda: data.anys(100)],
-        ["200 ", lambda: data.around(200)],
-        ["200r", lambda: data.anys(200)]
+        ["200", lambda: data.around(200)],
+        ["200r", lambda: data.anys(200)],
     ]
 
+    # ----------------------------------------------------------
+    # MAIN EVALUATION LOOP
+    # ----------------------------------------------------------
     rxs = []
     total_start = time.time()
 
@@ -1073,14 +1187,15 @@ def _comparez(file=None, IT="mu"):
         print(f"\n=== Running {task[0]} ===")
         sys.stderr.write("<" + task[0])
 
-        # Attach result and timing samples
         push(rxs, push(task, Sample.new(task[0])))
         push(task, Sample.new(task[0] + "_time"))
 
         task_start = time.time()
 
         for _ in range(Repeats):
-            if re.match(r'^DEHB', task[0]):
+
+            # DEHB / ACT / SMAC / KM++ → unchanged logic
+            if re.match(r'^(DEHB|ACT|SMAC|KM\+\+)', task[0]):
                 scores, times = task[1]()
                 for val in scores:
                     task[2].add(float(val))
@@ -1088,20 +1203,12 @@ def _comparez(file=None, IT="mu"):
                     task[3].add(float(val))
                 break
 
-            elif re.match(r'^ACT', task[0]):
-                scores, times = task[1]()
-                for val in scores:
-                    task[2].add(float(val))
-                for val in times:
-                    task[3].add(float(val))
-                break
-
-            else:
-                shuffle(data.rows)
-                start_time = time.time()
-                task[2].add(BEST(task[1]()))
-                end_time = time.time()
-                task[3].add(end_time - start_time)
+            # Baselines (around, anys)
+            shuffle(data.rows)
+            start_time = time.time()
+            task[2].add(BEST(task[1]()))
+            end_time = time.time()
+            task[3].add(end_time - start_time)
 
         task_end = time.time()
         elapsed = task_end - task_start
@@ -1112,8 +1219,11 @@ def _comparez(file=None, IT="mu"):
     total_end = time.time()
     print(f"\n=== All tasks completed in {total_end - total_start:.2f} seconds ===\n")
 
-    # === Post-processing and summary output ===
+    # ----------------------------------------------------------
+    # REPORTING
+    # ----------------------------------------------------------
     print(" ")
+
     push(rxs, B4)
     push(TASKS, ["Before", True, B4])
 
