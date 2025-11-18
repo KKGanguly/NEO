@@ -1,0 +1,89 @@
+{
+  "hyperparameters": [
+    {
+      "name": "Criticality",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0025778496435144,
+      "upper": 0.9991562853549872,
+      "default": 0.5251345253,
+      "q": null
+    },
+    {
+      "name": "Criticality Modifier",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0007367356696418,
+      "upper": 0.999729195801954,
+      "default": 0.5090817384,
+      "q": null
+    },
+    {
+      "name": "Culture",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0008438965265021,
+      "upper": 0.9990844361683612,
+      "default": 0.5533691292,
+      "q": null
+    },
+    {
+      "name": "Dynamism",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0020712748694906,
+      "upper": 0.9985645959369128,
+      "default": 0.4897025746,
+      "q": null
+    },
+    {
+      "name": "Initial Known",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0032956974819147,
+      "upper": 0.9996826423448932,
+      "default": 0.5051815175,
+      "q": null
+    },
+    {
+      "name": "Inter-Dependency",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0009772746143527,
+      "upper": 0.9986242597711538,
+      "default": 0.4954401426,
+      "q": null
+    },
+    {
+      "name": "Plan",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0007746918516795,
+      "upper": 0.9984870167243224,
+      "default": 0.5097815611,
+      "q": null
+    },
+    {
+      "name": "Size",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 6.34265641163978e-05,
+      "upper": 0.998200731013447,
+      "default": 0.421718885,
+      "q": null
+    },
+    {
+      "name": "Team Size",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0019914902810511,
+      "upper": 0.9976339610486816,
+      "default": 0.495046768,
+      "q": null
+    }
+  ],
+  "conditions": [],
+  "forbiddens": [],
+  "python_module_version": "0.6.1",
+  "json_format_version": 0.4
+}

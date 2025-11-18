@@ -1,0 +1,303 @@
+{
+  "hyperparameters": [
+    {
+      "name": "Age",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 18.0,
+      "upper": 80.0,
+      "default": 49.0,
+      "q": null
+    },
+    {
+      "name": "BankruptcyHistory",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 1.0,
+      "default": 0.5,
+      "q": null
+    },
+    {
+      "name": "BaseInterestRate",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.130101,
+      "upper": 0.405029,
+      "default": 0.236597,
+      "q": null
+    },
+    {
+      "name": "CheckingAccountBalance",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 24.0,
+      "upper": 52572.0,
+      "default": 2678.0,
+      "q": null
+    },
+    {
+      "name": "CreditCardUtilizationRate",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.000974491,
+      "upper": 0.917380082,
+      "default": 0.266672602,
+      "q": null
+    },
+    {
+      "name": "CreditScore",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 343.0,
+      "upper": 712.0,
+      "default": 541.5,
+      "q": null
+    },
+    {
+      "name": "DebtToIncomeRatio",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.001720029,
+      "upper": 0.90225269,
+      "default": 0.2644540175,
+      "q": null
+    },
+    {
+      "name": "InterestRate",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.113309595,
+      "upper": 0.446787321,
+      "default": 0.235388257,
+      "q": null
+    },
+    {
+      "name": "JobTenure",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 16.0,
+      "default": 8.0,
+      "q": null
+    },
+    {
+      "name": "LengthOfCreditHistory",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 1.0,
+      "upper": 29.0,
+      "default": 15.0,
+      "q": null
+    },
+    {
+      "name": "LoanApproved",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 1.0,
+      "default": 0.5,
+      "q": null
+    },
+    {
+      "name": "MonthlyDebtPayments",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 50.0,
+      "upper": 2919.0,
+      "default": 723.0,
+      "q": null
+    },
+    {
+      "name": "MonthlyIncome",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 1250.0,
+      "upper": 25000.0,
+      "default": 4244.583333,
+      "q": null
+    },
+    {
+      "name": "MonthlyLoanPayment",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 97.03019289,
+      "upper": 10892.62952,
+      "default": 728.51145155,
+      "q": null
+    },
+    {
+      "name": "NetWorth",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 1000.0,
+      "upper": 2603208.0,
+      "default": 40275.5,
+      "q": null
+    },
+    {
+      "name": "NumberOfCreditInquiries",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 7.0,
+      "default": 3.5,
+      "q": null
+    },
+    {
+      "name": "NumberOfDependents",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 5.0,
+      "default": 2.5,
+      "q": null
+    },
+    {
+      "name": "NumberOfOpenCreditLines",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 13.0,
+      "default": 6.5,
+      "q": null
+    },
+    {
+      "name": "PaymentHistory",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 8.0,
+      "upper": 45.0,
+      "default": 26.5,
+      "q": null
+    },
+    {
+      "name": "PreviousLoanDefaults",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 1.0,
+      "default": 0.5,
+      "q": null
+    },
+    {
+      "name": "SavingsAccountBalance",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 73.0,
+      "upper": 200089.0,
+      "default": 5150.0,
+      "q": null
+    },
+    {
+      "name": "TotalAssets",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 2098.0,
+      "upper": 2619627.0,
+      "default": 63167.0,
+      "q": null
+    },
+    {
+      "name": "TotalDebtToIncomeRatio",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.016043211,
+      "upper": 4.647656816,
+      "default": 0.302711465,
+      "q": null
+    },
+    {
+      "name": "TotalLiabilities",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 372.0,
+      "upper": 1417302.0,
+      "default": 24585.0,
+      "q": null
+    },
+    {
+      "name": "UtilityBillsPaymentHistory",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.259203058,
+      "upper": 0.99943276,
+      "default": 0.820961761,
+      "q": null
+    },
+    {
+      "name": "applicationDate",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 19690101.0,
+      "upper": 20681231.0,
+      "default": 20185666.0,
+      "q": null
+    },
+    {
+      "name": "educationLevel",
+      "type": "categorical",
+      "choices": [
+        "Bachelor",
+        "Doctorate",
+        "Master",
+        "Associate",
+        "High School"
+      ],
+      "default": "Bachelor",
+      "weights": null
+    },
+    {
+      "name": "employmentStatus",
+      "type": "categorical",
+      "choices": [
+        "Employed",
+        "Self-Employed",
+        "Unemployed"
+      ],
+      "default": "Employed",
+      "weights": null
+    },
+    {
+      "name": "homeOwnershipStatus",
+      "type": "categorical",
+      "choices": [
+        "Rent",
+        "Own",
+        "Other",
+        "Mortgage"
+      ],
+      "default": "Rent",
+      "weights": null
+    },
+    {
+      "name": "loanPurpose",
+      "type": "categorical",
+      "choices": [
+        "Home",
+        "Debt Consolidation",
+        "Education",
+        "Auto",
+        "Other"
+      ],
+      "default": "Home",
+      "weights": null
+    },
+    {
+      "name": "maritalStatus",
+      "type": "categorical",
+      "choices": [
+        "Divorced",
+        "Married",
+        "Widowed",
+        "Single"
+      ],
+      "default": "Divorced",
+      "weights": null
+    }
+  ],
+  "conditions": [],
+  "forbiddens": [],
+  "python_module_version": "0.6.1",
+  "json_format_version": 0.4
+}

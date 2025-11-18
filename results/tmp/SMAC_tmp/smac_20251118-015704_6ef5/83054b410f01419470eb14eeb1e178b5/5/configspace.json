@@ -1,0 +1,89 @@
+{
+  "hyperparameters": [
+    {
+      "name": "Criticality",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 1.665916198934081e-05,
+      "upper": 0.9999833961402796,
+      "default": 0.5020730758,
+      "q": null
+    },
+    {
+      "name": "Criticality Modifier",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 1.8491242828377885e-05,
+      "upper": 0.999924462501341,
+      "default": 0.5014983823,
+      "q": null
+    },
+    {
+      "name": "Culture",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 1.2150945188471596e-05,
+      "upper": 0.9999687805741488,
+      "default": 0.5019810561,
+      "q": null
+    },
+    {
+      "name": "Dynamism",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 4.899558642246227e-06,
+      "upper": 0.999925439763906,
+      "default": 0.498577983,
+      "q": null
+    },
+    {
+      "name": "Initial Known",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 2.0689034214149693e-05,
+      "upper": 0.9999427805307188,
+      "default": 0.5042996901,
+      "q": null
+    },
+    {
+      "name": "Inter-Dependency",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 1.5734933949129726e-06,
+      "upper": 0.999996235301661,
+      "default": 0.5037691225,
+      "q": null
+    },
+    {
+      "name": "Plan",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 1.161979804309432e-05,
+      "upper": 0.9999948216739468,
+      "default": 0.5024870302,
+      "q": null
+    },
+    {
+      "name": "Size",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0001254587849467,
+      "upper": 0.9999775658992344,
+      "default": 0.5002274254,
+      "q": null
+    },
+    {
+      "name": "Team Size",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 3.7373635297544006e-05,
+      "upper": 0.9999032603056358,
+      "default": 0.5016385675,
+      "q": null
+    }
+  ],
+  "conditions": [],
+  "forbiddens": [],
+  "python_module_version": "0.6.1",
+  "json_format_version": 0.4
+}

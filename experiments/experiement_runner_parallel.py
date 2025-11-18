@@ -82,8 +82,9 @@ def optimize_single_dataset(optimizers, repeats, checkpoints, tmp_output_dir, lo
     X, Y = load_data(dataset_file)
     hyperparameter_configs = {col: X[col].tolist() for col in X.columns}
 
-    model_wrapper = ModelWrapperStatic(X, Y)
+   
     model_config = ModelConfigurationStatic(hyperparameter_configs, dataset_file, 1)
+    model_wrapper = ModelWrapperStatic(X, Y, model_config)
     for optimizer in optimizers:
         if optimizer.get('disable'):
             continue

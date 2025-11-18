@@ -1,0 +1,59 @@
+{
+  "stats": {
+    "submitted": 1,
+    "finished": 1,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      59886187,
+      null,
+      0.653041325920824,
+      0.006330728530883789,
+      1,
+      1763458167.4009242,
+      1763458167.5134084,
+      {}
+    ]
+  ],
+  "configs": {
+    "1": {
+      "Age": 19.81003020517528,
+      "BankruptcyHistory": 0.6576717989519238,
+      "BaseInterestRate": 0.20256521487349272,
+      "CheckingAccountBalance": 42862.7185106948,
+      "CreditCardUtilizationRate": 0.22052902137728153,
+      "CreditScore": 373.88232300430536,
+      "DebtToIncomeRatio": 0.7523646700884895,
+      "InterestRate": 0.15873081495642308,
+      "JobTenure": 4.299729406833649,
+      "LengthOfCreditHistory": 19.619540628045797,
+      "LoanApproved": 0.702241132967174,
+      "MonthlyDebtPayments": 149.86168200988322,
+      "MonthlyIncome": 13436.670786468312,
+      "MonthlyLoanPayment": 6097.569018916949,
+      "NetWorth": 2218164.9985311925,
+      "NumberOfCreditInquiries": 4.005853253416717,
+      "NumberOfDependents": 0.045936484821140766,
+      "NumberOfOpenCreditLines": 2.8202778808772564,
+      "PaymentHistory": 32.89632025081664,
+      "PreviousLoanDefaults": 0.3373857317492366,
+      "SavingsAccountBalance": 193960.63372659683,
+      "TotalAssets": 360344.92002353445,
+      "TotalDebtToIncomeRatio": 3.7174563288846705,
+      "TotalLiabilities": 1002741.4515478425,
+      "UtilityBillsPaymentHistory": 0.47758614316487724,
+      "applicationDate": "8/4/19",
+      "educationLevel": "Associate",
+      "employmentStatus": "Employed",
+      "homeOwnershipStatus": "Own",
+      "loanPurpose": "Home",
+      "maritalStatus": "Widowed"
+    }
+  },
+  "config_origins": {
+    "1": "Initial Design: Sobol"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "stats": {
+    "submitted": 2,
+    "finished": 2,
+    "running": 0
+  },
+  "data": [
+    [
+      1,
+      null,
+      662124363,
+      null,
+      0.6412771420546779,
+      0.025284767150878906,
+      1,
+      1763458166.401555,
+      1763458166.6064954,
+      {}
+    ],
+    [
+      2,
+      null,
+      662124363,
+      null,
+      0.6803976681506777,
+      0.004391670227050781,
+      1,
+      1763458166.632022,
+      1763458166.7193365,
+      {}
+    ]
+  ],
+  "configs": {
+    "1": {
+      "Age": 56.835548121482134,
+      "BankruptcyHistory": 0.3235064363107085,
+      "BaseInterestRate": 0.1327776144105792,
+      "CheckingAccountBalance": 52164.405734527856,
+      "CreditCardUtilizationRate": 0.6844715296318642,
+      "CreditScore": 412.5680878655985,
+      "DebtToIncomeRatio": 0.3397800102946543,
+      "InterestRate": 0.4091304312940756,
+      "JobTenure": 7.306887194514275,
+      "LengthOfCreditHistory": 1.7422858476638794,
+      "LoanApproved": 0.1730300197377801,
+      "MonthlyDebtPayments": 2112.453880042769,
+      "MonthlyIncome": 17721.709557808936,
+      "MonthlyLoanPayment": 7760.556965878281,
+      "NetWorth": 2568203.9922935367,
+      "NumberOfCreditInquiries": 5.052470028400421,
+      "NumberOfDependents": 2.263267943635583,
+      "NumberOfOpenCreditLines": 6.73491701297462,
+      "PaymentHistory": 26.674677442759275,
+      "PreviousLoanDefaults": 0.6328869508579373,
+      "SavingsAccountBalance": 109862.97902290523,
+      "TotalAssets": 1570150.3834154336,
+      "TotalDebtToIncomeRatio": 0.7904157528990252,
+      "TotalLiabilities": 37739.00561371632,
+      "UtilityBillsPaymentHistory": 0.9402453292413081,
+      "applicationDate": "12/7/44",
+      "educationLevel": "Associate",
+      "employmentStatus": "Self-Employed",
+      "homeOwnershipStatus": "Other",
+      "loanPurpose": "Auto",
+      "maritalStatus": "Divorced"
+    },
+    "2": {
+      "Age": 27.558096227539686,
+      "BankruptcyHistory": 0.7400496965154048,
+      "BaseInterestRate": 0.2024936704948187,
+      "CheckingAccountBalance": 28070.937643347886,
+      "CreditCardUtilizationRate": 0.014331068110253843,
+      "CreditScore": 682.0176459888576,
+      "DebtToIncomeRatio": 0.8128431733802198,
+      "InterestRate": 0.12445489668450697,
+      "JobTenure": 

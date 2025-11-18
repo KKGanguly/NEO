@@ -1,0 +1,198 @@
+{
+  "hyperparameters": [
+    {
+      "name": "Avg_Utilization_Ratio",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 0.999,
+      "default": 0.4845,
+      "q": null
+    },
+    {
+      "name": "CLIENTNUM",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 708082083.0,
+      "upper": 828343083.0,
+      "default": 717926358.0,
+      "q": null
+    },
+    {
+      "name": "Contacts_Count_12_mon",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 6.0,
+      "default": 3.0,
+      "q": null
+    },
+    {
+      "name": "Customer_Age",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 26.0,
+      "upper": 73.0,
+      "default": 48.0,
+      "q": null
+    },
+    {
+      "name": "Dependent_count",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 5.0,
+      "default": 2.5,
+      "q": null
+    },
+    {
+      "name": "Months_Inactive_12_mon",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 6.0,
+      "default": 3.0,
+      "q": null
+    },
+    {
+      "name": "Months_on_book",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 13.0,
+      "upper": 56.0,
+      "default": 34.5,
+      "q": null
+    },
+    {
+      "name": "Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_1",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 7.66e-06,
+      "upper": 0.99958,
+      "default": 0.00024955,
+      "q": null
+    },
+    {
+      "name": "Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_2",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.00041998,
+      "upper": 0.99999,
+      "default": 0.0045564,
+      "q": null
+    },
+    {
+      "name": "Total_Amt_Chng_Q4_Q1",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 3.397,
+      "default": 0.8545,
+      "q": null
+    },
+    {
+      "name": "Total_Relationship_Count",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 1.0,
+      "upper": 6.0,
+      "default": 3.5,
+      "q": null
+    },
+    {
+      "name": "Total_Trans_Amt",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 510.0,
+      "upper": 18484.0,
+      "default": 4014.0,
+      "q": null
+    },
+    {
+      "name": "Total_Trans_Ct",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 10.0,
+      "upper": 139.0,
+      "default": 72.5,
+      "q": null
+    },
+    {
+      "name": "attrition_Flag",
+      "type": "categorical",
+      "choices": [
+        "Attrited Customer",
+        "Existing Customer"
+      ],
+      "default": "Attrited Customer",
+      "weights": null
+    },
+    {
+      "name": "card_Category",
+      "type": "categorical",
+      "choices": [
+        "Blue",
+        "Gold",
+        "Platinum",
+        "Silver"
+      ],
+      "default": "Blue",
+      "weights": null
+    },
+    {
+      "name": "education_Level",
+      "type": "categorical",
+      "choices": [
+        "College",
+        "Doctorate",
+        "Graduate",
+        "High School",
+        "Post-Graduate",
+        "Uneducated",
+        "Unknown"
+      ],
+      "default": "College",
+      "weights": null
+    },
+    {
+      "name": "gender",
+      "type": "categorical",
+      "choices": [
+        "F",
+        "M"
+      ],
+      "default": "F",
+      "weights": null
+    },
+    {
+      "name": "income_Category",
+      "type": "categorical",
+      "choices": [
+        "$120K +",
+        "$40K - $60K",
+        "$60K - $80K",
+        "$80K - $120K",
+        "Less than $40K",
+        "Unknown"
+      ],
+      "default": "$120K +",
+      "weights": null
+    },
+    {
+      "name": "marital_Status",
+      "type": "categorical",
+      "choices": [
+        "Divorced",
+        "Married",
+        "Single",
+        "Unknown"
+      ],
+      "default": "Divorced",
+      "weights": null
+    }
+  ],
+  "conditions": [],
+  "forbiddens": [],
+  "python_module_version": "0.6.1",
+  "json_format_version": 0.4
+}
