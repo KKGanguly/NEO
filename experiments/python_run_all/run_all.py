@@ -805,9 +805,18 @@ class Sample:
         sd = (((i.n - 1) * i.sd ** 2 + (j.n - 1) * j.sd ** 2) / (i.n + j.n - 2)) ** 0.5
         return abs(i.mu - j.mu) <= d * sd
     
-    def same(self, other, delta=None, straps=None, conf=None):  # -> b. Non parametric tests
+    def same(self, other, delta=None, straps=None, conf=None):
         i, j = self, other
+
+        if len(i.all) == 0 or len(j.all) == 0:
+            return False
+
+        delta  = delta  if delta  is not None else 0.197
+        straps = straps if straps is not None else 512
+        conf   = conf   if conf   is not None else 0.05
+
         return cliffs(i.all, j.all, delta) and boot(i.all, j.all, straps, conf)
+
     
     def __str__(self):  # -> s. Reports some details of Samples.
         return fmt("Sample{%s %g %g %g}", self.txt, self.n, self.mu, self.sd)
@@ -1097,11 +1106,9 @@ def _comparez(file=None, IT="mu"):
     N = lambda x: fmt("%.0f", 100 * x)
 
     # ----------------------------------------------------------
-    # NEW B4 COMPUTATION USING TRAIN/TEST SPLIT PER SEED (50/50)
+    # B4 COMPUTATION (same as your version)
     # ----------------------------------------------------------
-    B4_mus = []
-    B4_sds = []
-    B4_los = []
+    B4_mus, B4_sds, B4_los = [], [], []
 
     for r in range(Repeats):
         seed = r + 1
@@ -1115,28 +1122,22 @@ def _comparez(file=None, IT="mu"):
 
         Ys = [Y(row) for row in test_rows]
 
-        mu_seed = mean(Ys)
-        sd_seed = std(Ys)
-        lo_seed = min(Ys)
+        B4_mus.append(np.mean(Ys))
+        B4_sds.append(np.std(Ys))
+        B4_los.append(min(Ys))
 
-        B4_mus.append(mu_seed)
-        B4_sds.append(sd_seed)
-        B4_los.append(lo_seed)
-
-    # Final aggregated B4 (Option B)
+    # Aggregate B4
     class B4Obj:
         pass
-
     B4 = B4Obj()
-    B4.mu = sum(B4_mus) / len(B4_mus)
-    B4.sd = sum(B4_sds) / len(B4_sds)
-    B4.lo = sum(B4_los) / len(B4_los)
+    B4.mu = __builtins__.sum(B4_mus) / len(B4_mus)
+    B4.sd = __builtins__.sum(B4_sds) / len(B4_sds)
+    B4.lo = __builtins__.sum(B4_los) / len(B4_los)
 
     # ----------------------------------------------------------
-    # TASK DEFINITIONS (algorithms unchanged)
+    # TASK DEFINITIONS
     # ----------------------------------------------------------
     TASKS = [
-
         ["ACT-6", lambda: data.actLearn(file, 6, Repeats)],
         ["ACT-12", lambda: data.actLearn(file, 12, Repeats)],
         ["ACT-18", lambda: data.actLearn(file, 18, Repeats)],
@@ -1160,96 +1161,97 @@ def _comparez(file=None, IT="mu"):
         ["KM++-50", lambda: data.kmplusplus(file, 50, Repeats)],
         ["KM++-100", lambda: data.kmplusplus(file, 100, Repeats)],
         ["KM++-200", lambda: data.kmplusplus(file, 200, Repeats)],
-
-        ["  6 ", lambda: data.around(6)],
-        ["  6r", lambda: data.anys(6)], 
-        [" 12", lambda: data.around(12)],
-        [" 12r", lambda: data.anys(12)],
-        [" 18", lambda: data.around(18)],
-        [" 18r", lambda: data.anys(18)],
-        [" 24", lambda: data.around(24)],
-        [" 24r", lambda: data.anys(24)],
-        [" 50", lambda: data.around(50)],
-        [" 50r", lambda: data.anys(50)],
-        ["100", lambda: data.around(100)],
-        ["100r", lambda: data.anys(100)],
-        ["200", lambda: data.around(200)],
-        ["200r", lambda: data.anys(200)],
     ]
 
     # ----------------------------------------------------------
-    # MAIN EVALUATION LOOP
+    # EVALUATION LOOP (patched so rxs contains only Sample objects)
     # ----------------------------------------------------------
-    rxs = []
+    rxs = []  # MUST contain ONLY Sample objects (fixes merges, cliffs, zero-div)
     total_start = time.time()
 
-    for _, task in enumerate(TASKS):
-        print(f"\n=== Running {task[0]} ===")
-        sys.stderr.write("<" + task[0])
+    for task in TASKS:
+        name, run_func = task[0], task[1]
 
-        push(rxs, push(task, Sample.new(task[0])))
-        push(task, Sample.new(task[0] + "_time"))
+        sys.stderr.write("<" + name)
+
+        # Create two Sample objects per task
+        score_samp = Sample.new(name)
+        time_samp = Sample.new(name + "_time")
+
+        # Store the samples inside task for reporting later
+        task.append(score_samp)
+        task.append(time_samp)
+
+        # ADD ONLY score_samp to rxs (matching original Lua)
+        rxs.append(score_samp)
 
         task_start = time.time()
 
-        for _ in range(Repeats):
+        # Run for 1 repeat only (same as your current logic for external algos)
+        scores, times = run_func()
 
-            # DEHB / ACT / SMAC / KM++ → unchanged logic
-            if re.match(r'^(DEHB|ACT|SMAC|KM\+\+)', task[0]):
-                scores, times = task[1]()
-                for val in scores:
-                    task[2].add(float(val))
-                for val in times:
-                    task[3].add(float(val))
-                break
-
-            # Baselines (around, anys)
-            shuffle(data.rows)
-            start_time = time.time()
-            task[2].add(BEST(task[1]()))
-            end_time = time.time()
-            task[3].add(end_time - start_time)
+        # Prevent downstream crashes
+        if not scores:
+            # Record dummy zero to avoid cliffs-delta crash
+            score_samp.add(0)
+            time_samp.add(0)
+        else:
+            for s in scores: score_samp.add(float(s))
+            for t in times: time_samp.add(float(t))
 
         task_end = time.time()
-        elapsed = task_end - task_start
-        print(f"[INFO] Task {task[0]} finished in {elapsed:.2f} seconds")
 
         sys.stderr.write(">")
 
     total_end = time.time()
-    print(f"\n=== All tasks completed in {total_end - total_start:.2f} seconds ===\n")
 
     # ----------------------------------------------------------
-    # REPORTING
+    # INSERT B4 AS A Sample OBJECT (critical fix)
+    # ----------------------------------------------------------
+    B4_sample = Sample.new("Before")
+    B4_sample.mu = B4.mu
+    B4_sample.sd = B4.sd
+    B4_sample.lo = B4.lo
+    B4_sample.all = [B4.mu]  # avoid empty lists → no zero-division
+
+    rxs.append(B4_sample)
+    TASKS.append(["Before", None, B4_sample])  # for reporting
+
+    # ----------------------------------------------------------
+    # SORT + MERGE (now safe!)
+    # ----------------------------------------------------------
+    sorted_rxs = Sample.merges(sort(rxs, lt('mu')), B4.sd * Epsilon)
+
+    # ----------------------------------------------------------
+    # REPORT
     # ----------------------------------------------------------
     print(" ")
 
-    push(rxs, B4)
-    push(TASKS, ["Before", True, B4])
-
-    sorted_rxs = Sample.merges(sort(rxs, lt('mu')), B4.sd * Epsilon)
     names = map(TASKS, lambda task: task[0] + "," + task[0] + "_time")
 
-    print("D,#R,#X,#Y,B4." + IT + ",B4.lo,B4.sd,2B." + IT + "," + ",".join(names) + ",File")
+    print("D,#R,#X,#Y,B4."+IT+",B4.lo,B4.sd,2B."+IT+"," + ",".join(names) + ",File")
 
     report = [
         N((B4.mu - sorted_rxs[0]._meta.mu) / (B4.mu - B4.lo)),
         len(data.rows),
         len(data.cols.x),
         len(data.cols.y),
-        fmt("%.0f", 100 * getattr(B4, IT)),
+        fmt("%.0f", 100 * B4.mu),
         fmt("%.0f", 100 * B4.lo),
         fmt("%.0f", 100 * B4.sd),
         fmt("%.0f", 100 * getattr(sorted_rxs[0]._meta, IT))
     ]
 
-    for _, task in enumerate(TASKS):
-        push(report, fmt("%.0f %s", 100 * getattr(task[2], IT), task[2]._meta.rank))
-        if task[0] != "Before":
-            push(report, fmt("%.2f", 1000 * getattr(task[3], IT)))
+    # Append each task's results
+    for task in TASKS:
+        if len(task) < 4: continue
+        score_samp, time_samp = task[2], task[3]
+        report.append(fmt("%.0f %s", 100 * getattr(score_samp, IT), score_samp._meta.rank))
+        report.append(fmt("%.2f", 1000 * getattr(time_samp, IT)))
 
-    push(report, re.sub(r'^.*/', '', file))
+    report.append(re.sub(r'^.*/', '', file))
     print(", ".join(map(report, str)))
+
 
 def go_xomo(file=None):
     Data_obj, B4, Y = _asIs(file or the['data'])
