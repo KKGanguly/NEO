@@ -14,7 +14,23 @@ class ModelWrapperStatic:
         self.X_encoded = EncodingUtils.encode_dataframe(X, self.column_types)
         self.X = self.X_encoded  # Store encoded version
         
-        # Normalize y
+	# Convert only binary columns of y
+        if isinstance(y, pd.Series):
+            y = y.to_frame()  # make sure we can loop consistently
+
+        for col in y.columns:
+            col_series = y[col]
+
+            # Boolean → float
+            if pd.api.types.is_bool_dtype(col_series):
+                y[col] = col_series.astype(float)
+ 
+            # Numeric binary (only two unique numbers)
+            elif pd.api.types.is_numeric_dtype(col_series):
+                uniq = col_series.dropna().unique()
+                if len(uniq) == 2:
+                    y[col] = col_series.astype(float)
+	 # Normalize y
         self.y = (y - y.min()) / (y.max() - y.min())
         
         # Build lookup table with encoded values

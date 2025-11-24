@@ -33,50 +33,76 @@ class AroundOptimizer(BaseOptimizer):
     # Helper: clean numpy values
     # -----------------------------
     def _clean(self, v):
-        if isinstance(v, (np.integer, np.int64)): return int(v)
-        if isinstance(v, (np.floating, np.float64)): return float(v)
+        if isinstance(v, (np.integer, np.int64)): 
+            return int(v)
+        if isinstance(v, (np.floating, np.float64)): 
+            return float(v)
         return v
 
     def _row_dict(self, row_list):
         return {col: self._clean(v) for col, v in zip(self.columns, row_list)}
 
-    def _vec(self, row):
-        return np.array(row, dtype=float)
+    # -----------------------------
+    # Encode row via Data class
+    # -----------------------------
+    def _encode_row_vector(self, row):
+        """
+        Encode a raw row into a numeric vector using Data._encode_value_for_kdtree.
+        Ensures categorical → hashed floats, numeric → normalized floats.
+        """
+        return np.array([
+            self.nn._encode_value_for_kdtree(v, idx)
+            for idx, v in enumerate(row)
+        ], dtype=float)
 
     # -----------------------------
     # AROUND sampler (diversity)
     # -----------------------------
     def _around(self, rows, budget, sample_size=32):
+        """
+        rows: list of original mixed-type rows (strings, ints, floats)
+        Returns: list of selected raw rows (not vectors)
+        """
+
         rows = list(rows)
-        if len(rows) == 0:
+        n = len(rows)
+        if n == 0:
             return []
 
-        chosen = [random.choice(rows)]
-        chosen_vecs = [self._vec(chosen[0])]
-        remaining = list(rows)
-        remaining.remove(chosen[0])
+        # === STEP 1: pick one random row ===
+        first = random.choice(rows)
+
+        chosen = [first]
+        chosen_vecs = [self._encode_row_vector(first)]
+
+        remaining = rows.copy()
+        remaining.remove(first)
 
         for _ in range(1, budget):
             if not remaining:
                 break
 
-            # Candidate subset
+            # === STEP 2: random candidate subset ===
             k = min(sample_size, len(remaining))
             candidates = random.sample(remaining, k)
 
-            best_dist = -1
             best_candidate = None
+            best_dist = -1
 
             for c in candidates:
-                c_vec = self._vec(c)
-                # distance to nearest selected
-                d = min(np.linalg.norm(c_vec - z) for z in chosen_vecs)
+                # === STEP 3: mixed-type distance via Data.xdist ===
+                d = min(
+                    self.nn.xdist(c, chosen_row)
+                    for chosen_row in chosen
+                )
+
                 if d > best_dist:
                     best_dist = d
                     best_candidate = c
 
+            # === STEP 4: add best candidate ===
             chosen.append(best_candidate)
-            chosen_vecs.append(self._vec(best_candidate))
+            chosen_vecs.append(self._encode_row_vector(best_candidate))
             remaining.remove(best_candidate)
 
         return chosen

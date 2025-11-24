@@ -1,2 +1,0 @@
-iteration,config,value,elapsed_time
-0,"{'customerID': '6341_JVQGF', 'gender': 'Female', 'SeniorCitizen': 0, 'partner': 'Yes', 'dependents': 'Yes', 'tenure': 31, 'phoneService': 'Yes', 'multipleLines': 'No', 'internetService': 'DSL', 'onlineSecurity': 'Yes', 'onlineBackup': 'No', 'deviceProtection': 'Yes', 'techSupport': 'Yes', 'streamingTV': 'Yes', 'streamingMovies': 'Yes', 'contract': 'One_year', 'paperlessBilling': 'Yes', 'paymentMethod': 'Mailed_check', 'churn': 'No'}",0.4882319555214163,1

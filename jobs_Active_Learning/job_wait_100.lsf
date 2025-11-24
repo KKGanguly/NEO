@@ -1,0 +1,12 @@
+#!/bin/bash -l
+#BSUB -J Active_Learning_wait_100
+#BSUB -n 1
+#BSUB -q short
+#BSUB -o out_%J.log
+#BSUB -e err_%J.log
+
+source /usr/local/apps/miniconda20240526/etc/profile.d/conda.sh
+conda activate /share/tjmenzie/kgangul/SEOptBench/smac_env
+
+cd /share/tjmenzie/kgangul/SEOptBench/experiments
+wait --budget 100

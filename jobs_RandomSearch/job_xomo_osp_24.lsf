@@ -1,0 +1,12 @@
+#!/bin/bash -l
+#BSUB -J RandomSearch_xomo_osp_24
+#BSUB -n 1
+#BSUB -q short
+#BSUB -o out_%J.log
+#BSUB -e err_%J.log
+
+source /usr/local/apps/miniconda20240526/etc/profile.d/conda.sh
+conda activate /share/tjmenzie/kgangul/SEOptBench/smac_env
+
+cd /share/tjmenzie/kgangul/SEOptBench/experiments
+python3 experiment_runner_cluster.py --name RandomSearch --repeats 20 --runs_output_folder /share/tjmenzie/kgangul/results/results_RandomSearch --logging_folder /share/tjmenzie/kgangul/logging/logging_RandomSearch --output_directory /share/tjmenzie/kgangul/results/tmp/RandomSearch_tmp --datasets ../moot/optimize/process/xomo_osp.csv --budget 24
