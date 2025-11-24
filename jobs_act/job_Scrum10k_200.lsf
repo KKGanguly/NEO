@@ -1,6 +1,0 @@
-#!/bin/bash -l
-#BSUB -J ACT_Scrum10k_200
-#BSUB -n 1
-#BSUB -q short
-#BSUB -o out_%J.log
-#BSUB -e err_%J.log
