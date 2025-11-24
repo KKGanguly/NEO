@@ -1,0 +1,2 @@
+iteration,config,value,elapsed_time
+0,"{'DATA': 2.096, ' ACAP': 4.267, ' AEXP': 3.461, ' CPLx': 3.841, ' DOCU': 1.367, ' ETAT': 2.629, ' FLEx': 2.267, ' KLOC': 52.185, ' LTEx': 2.333, ' PCAP': 3.405, ' PCON': 2.991, ' PLEx': 2.285, ' PMAT': 2.578, ' PREC': 1.472, ' PVOL': 3.64, ' RELY': 2.24, ' RESL': 2.773, ' RUSE': 5.653, ' SCED': 3.0, ' SITE': 1.575, ' STOR': 3.965, ' TEAM': 1.353, ' TIME': 3.245, ' TOOL': 2.0}",0.20469737976361646,1

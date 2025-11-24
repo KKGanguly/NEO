@@ -13,10 +13,10 @@ from tqdm import tqdm
 from models.configurations.model_config_static import ModelConfigurationStatic
 from models.model_wrapper_static import ModelWrapperStatic
 
-from optimizers.ActLearnOptimizer import ActLearnOptimizer
+from optimizers.ActLearnOptimizerNoSplit import ActLearnOptimizer
 from optimizers.DEHBOptimizer import DEHBOptimizer
-from optimizers.SMACOptimizer import SMACOptimizer
-from optimizers.AroundOptimizer import AroundOptimizer
+from optimizers.SMACOptimizerNoSplit import SMACOptimizer
+from optimizers.AroundOptimizerNoSplit import AroundOptimizer
 
 from utils.LoggingUtil import LoggingUtil
 from utils.data_loader_templated import load_data
