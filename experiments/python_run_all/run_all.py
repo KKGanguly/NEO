@@ -216,16 +216,15 @@ def green(s):
 def red(s):
     return "\033[31m" + s + "\033[0m"
 
-def csv(sFile):  # -> f (iterator for csv rows)
-    def f(s2, z):
-        for s3 in s2.split(','):
-            z.append(s3.strip())
-        return z
-    
-    src = open(sFile, 'r')
-    for s1 in src:
-        yield f(s1, [])
-    src.close()
+import csv as csvmod
+
+def csv(filename):
+    with open(filename, newline='') as f:
+        reader = csvmod.reader(f)
+        for row in reader:
+            # ALWAYS treat fields as plain strings
+            yield [cell.strip() for cell in row]
+
 
 fmt = lambda template, *args: template % args if args else str(template)
 
@@ -317,18 +316,33 @@ class Num:
             'sd': 0                                      # standard deviation
         })
     
-    def add(self, n):  # -> n. Updates Num using Welford's algorithm [3].
+    def add(self, n):  
         if n == "?":
             return n
-        self.n = self.n + 1
-        n = float(n)  # ensure we have numbers
+        self.n += 1
+
+        # Handle True/False
+        if isinstance(n, str):
+            if n.lower() == "true":
+                n = 1.0
+            elif n.lower() == "false":
+                n = 0.0
+
+        try:
+            n = float(n)
+        except Exception:
+            raise TypeError(
+                f"Column '{self.txt}' expected numeric but got '{n}' (type={type(n)})"
+            )
+
         delta = n - self.mu
-        self.mu = self.mu + delta / self.n
-        self.m2 = self.m2 + delta * (n - self.mu)
+        self.mu += delta / self.n
+        self.m2 += delta * (n - self.mu)
         self.sd = 0 if self.n < 2 else (self.m2 / (self.n - 1)) ** 0.5
         self.lo = min(n, self.lo)
         self.hi = max(n, self.hi)
         return n
+
     
     def normalize(self, n):  # -> 0...1
         if n == "?":
@@ -479,6 +493,37 @@ class Data:
         times = parse_list(list2_str)
         
         return scores, times
+
+    def random(self, file=None, budget=0, rp=0):
+        filepath = file or the['data']
+        command = (
+            f'python3 ../FileResultsReader.py '
+            f'--data_file_path {filepath} '
+            f'--folder_name ../../results/results_RandomSearch/RandomSearch '
+            f'--budget {budget}'
+        )
+
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        output = result.stdout
+
+        match = re.search(r'\((\[.*?\])\s*,\s*(\[.*?\])\)', output, re.DOTALL)
+        if not match:
+            return [], []
+
+        list1_str = match.group(1)
+        list2_str = match.group(2)
+
+        def parse_list(list_str):
+            numbers = []
+            for value in re.findall(r"'(.*?)'", list_str):
+                numbers.append(float(value.strip()))
+            return numbers
+
+        scores = parse_list(list1_str)
+        times = parse_list(list2_str)
+
+        return scores, times
+
     def smac(self, file=None, budget=0, rp=0):
         # Define the Python command to execute
         filepath = file or the['data']
@@ -1094,11 +1139,9 @@ def _acquire_adapt(data, budget):
 import time, re, sys
 def _comparez(file=None, IT="mu"):
     file = file or the['data']
-    Budget = 25
+    Budget  = 25
     Repeats = 20
     Epsilon = 0.35
-
-    from sklearn.model_selection import train_test_split
 
     data = Data.new(csv(file))
     Y = lambda row: data.ydist(row)
@@ -1106,120 +1149,117 @@ def _comparez(file=None, IT="mu"):
     N = lambda x: fmt("%.0f", 100 * x)
 
     # ----------------------------------------------------------
-    # B4 COMPUTATION (same as your version)
+    # B4 = adds(map(data.rows, Y))    (Lua behaviour)
     # ----------------------------------------------------------
-    B4_mus, B4_sds, B4_los = [], [], []
-
-    for r in range(Repeats):
-        seed = r + 1
-
-        train_rows, test_rows = train_test_split(
-            data.rows,
-            test_size=0.5,
-            random_state=seed,
-            shuffle=True
-        )
-
-        Ys = [Y(row) for row in test_rows]
-
-        B4_mus.append(np.mean(Ys))
-        B4_sds.append(np.std(Ys))
-        B4_los.append(min(Ys))
-
-    # Aggregate B4
-    class B4Obj:
-        pass
-    B4 = B4Obj()
-    B4.mu = __builtins__.sum(B4_mus) / len(B4_mus)
-    B4.sd = __builtins__.sum(B4_sds) / len(B4_sds)
-    B4.lo = __builtins__.sum(B4_los) / len(B4_los)
+    B4 = Sample.new("Before")
+    for r in data.rows:
+        B4.add(Y(r))
 
     # ----------------------------------------------------------
     # TASK DEFINITIONS
     # ----------------------------------------------------------
     TASKS = [
-        ["ACT-6", lambda: data.actLearn(file, 6, Repeats)],
-        ["ACT-12", lambda: data.actLearn(file, 12, Repeats)],
-        ["ACT-18", lambda: data.actLearn(file, 18, Repeats)],
-        ["ACT-24", lambda: data.actLearn(file, 24, Repeats)],
-        ["ACT-50", lambda: data.actLearn(file, 50, Repeats)],
+        ["ACT-6",   lambda: data.actLearn(file, 6, Repeats)],
+        ["ACT-12",  lambda: data.actLearn(file, 12, Repeats)],
+        ["ACT-18",  lambda: data.actLearn(file, 18, Repeats)],
+        ["ACT-24",  lambda: data.actLearn(file, 24, Repeats)],
+        ["ACT-50",  lambda: data.actLearn(file, 50, Repeats)],
         ["ACT-100", lambda: data.actLearn(file, 100, Repeats)],
         ["ACT-200", lambda: data.actLearn(file, 200, Repeats)],
 
-        ["SMAC-6", lambda: data.smac(file, 6, Repeats)],
-        ["SMAC-12", lambda: data.smac(file, 12, Repeats)],
-        ["SMAC-18", lambda: data.smac(file, 18, Repeats)],
-        ["SMAC-24", lambda: data.smac(file, 24, Repeats)],
-        ["SMAC-50", lambda: data.smac(file, 50, Repeats)],
+        ["SMAC-6",   lambda: data.smac(file, 6, Repeats)],
+        ["SMAC-12",  lambda: data.smac(file, 12, Repeats)],
+        ["SMAC-18",  lambda: data.smac(file, 18, Repeats)],
+        ["SMAC-24",  lambda: data.smac(file, 24, Repeats)],
+        ["SMAC-50",  lambda: data.smac(file, 50, Repeats)],
         ["SMAC-100", lambda: data.smac(file, 100, Repeats)],
         ["SMAC-200", lambda: data.smac(file, 200, Repeats)],
 
-        ["KM++-6", lambda: data.kmplusplus(file, 6, Repeats)],
-        ["KM++-12", lambda: data.kmplusplus(file, 12, Repeats)],
-        ["KM++-18", lambda: data.kmplusplus(file, 18, Repeats)],
-        ["KM++-24", lambda: data.kmplusplus(file, 24, Repeats)],
-        ["KM++-50", lambda: data.kmplusplus(file, 50, Repeats)],
-        ["KM++-100", lambda: data.kmplusplus(file, 100, Repeats)],
-        ["KM++-200", lambda: data.kmplusplus(file, 200, Repeats)],
+        # ---------- REPLACED KM++ WITH AROUND ----------
+        ["AROUND-6",   ("around", 6)],
+        ["AROUND-12",  ("around", 12)],
+        ["AROUND-18",  ("around", 18)],
+        ["AROUND-24",  ("around", 24)],
+        ["AROUND-50",  ("around", 50)],
+        ["AROUND-100", ("around", 100)],
+        ["AROUND-200", ("around", 200)],
+
+        ["RAND-6",   lambda: data.random(file, 6, Repeats)],
+        ["RAND-12",  lambda: data.random(file, 12, Repeats)],
+        ["RAND-18",  lambda: data.random(file, 18, Repeats)],
+        ["RAND-24",  lambda: data.random(file, 24, Repeats)],
+        ["RAND-50",  lambda: data.random(file, 50, Repeats)],
+        ["RAND-100", lambda: data.random(file, 100, Repeats)],
+        ["RAND-200", lambda: data.random(file, 200, Repeats)],
     ]
 
     # ----------------------------------------------------------
-    # EVALUATION LOOP (patched so rxs contains only Sample objects)
+    # EVALUATION LOOP (Lua-correct for around)
     # ----------------------------------------------------------
-    rxs = []  # MUST contain ONLY Sample objects (fixes merges, cliffs, zero-div)
-    total_start = time.time()
+    rxs = []
 
     for task in TASKS:
-        name, run_func = task[0], task[1]
+        name = task[0]
+        entry = task[1]
 
         sys.stderr.write("<" + name)
 
-        # Create two Sample objects per task
         score_samp = Sample.new(name)
-        time_samp = Sample.new(name + "_time")
-
-        # Store the samples inside task for reporting later
+        time_samp  = Sample.new(name + "_time")
         task.append(score_samp)
         task.append(time_samp)
-
-        # ADD ONLY score_samp to rxs (matching original Lua)
         rxs.append(score_samp)
 
-        task_start = time.time()
+        # ----------------------------------------------
+        # SPECIAL CASE: AROUND optimizer (Lua semantics)
+        # ----------------------------------------------
+        if isinstance(entry, tuple) and entry[0] == "around":
+            budget = entry[1]
 
-        # Run for 1 repeat only (same as your current logic for external algos)
-        scores, times = run_func()
+            for _ in range(Repeats):
+                shuffle(data.rows)
+                rows = data.around(budget)            # list of k centroids
+                best = Y(keysort(rows, Y)[0])         # EXACT Lua logic
+                score_samp.add(best)
+                time_samp.add(0)                      # Lua does not time around()
 
-        # Prevent downstream crashes
-        if not scores:
-            # Record dummy zero to avoid cliffs-delta crash
-            score_samp.add(0)
-            time_samp.add(0)
         else:
-            for s in scores: score_samp.add(float(s))
-            for t in times: time_samp.add(float(t))
+            # ------------------------------------------
+            # Standard optimizers (DEHB / SMAC / ACT / RANDOM)
+            # ------------------------------------------
+            scores, times = entry()
 
-        task_end = time.time()
+            if not scores:
+                score_samp.add(0)
+                time_samp.add(0)
+            else:
+                for s in scores: score_samp.add(float(s))
+                for t in times:  time_samp.add(float(t))
 
         sys.stderr.write(">")
 
-    total_end = time.time()
+    # ----------------------------------------------------------
+    # SKIP DATASET IF ANY OPTIMIZER HAS NO RESULTS
+    # ----------------------------------------------------------
+    for task in TASKS:
+        name = task[0]
+        if len(task) < 4:
+            continue
+
+        score_samp = task[2]
+
+        if len(score_samp.all) == 0 or (len(score_samp.all) == 1 and score_samp.all[0] == 0):
+            sys.stderr.write(
+                f"\n[SKIP] Dataset '{file}' skipped because optimizer '{name}' has no results.\n"
+            )
+            return
 
     # ----------------------------------------------------------
-    # INSERT B4 AS A Sample OBJECT (critical fix)
+    # ADD B4 + MERGE CLUSTERS (same as Lua)
     # ----------------------------------------------------------
-    B4_sample = Sample.new("Before")
-    B4_sample.mu = B4.mu
-    B4_sample.sd = B4.sd
-    B4_sample.lo = B4.lo
-    B4_sample.all = [B4.mu]  # avoid empty lists → no zero-division
+    rxs.append(B4)
+    TASKS.append(["Before", None, B4])
 
-    rxs.append(B4_sample)
-    TASKS.append(["Before", None, B4_sample])  # for reporting
-
-    # ----------------------------------------------------------
-    # SORT + MERGE (now safe!)
-    # ----------------------------------------------------------
     sorted_rxs = Sample.merges(sort(rxs, lt('mu')), B4.sd * Epsilon)
 
     # ----------------------------------------------------------
@@ -1228,8 +1268,7 @@ def _comparez(file=None, IT="mu"):
     print(" ")
 
     names = map(TASKS, lambda task: task[0] + "," + task[0] + "_time")
-
-    print("D,#R,#X,#Y,B4."+IT+",B4.lo,B4.sd,2B."+IT+"," + ",".join(names) + ",File")
+    print("D,#R,#X,#Y,B4."+IT+",B4.lo,B4.sd,2B."+IT+","+",".join(names)+",File")
 
     report = [
         N((B4.mu - sorted_rxs[0]._meta.mu) / (B4.mu - B4.lo)),
@@ -1239,18 +1278,20 @@ def _comparez(file=None, IT="mu"):
         fmt("%.0f", 100 * B4.mu),
         fmt("%.0f", 100 * B4.lo),
         fmt("%.0f", 100 * B4.sd),
-        fmt("%.0f", 100 * getattr(sorted_rxs[0]._meta, IT))
+        fmt("%.0f", 100 * getattr(sorted_rxs[0]._meta, IT)),
     ]
 
-    # Append each task's results
     for task in TASKS:
-        if len(task) < 4: continue
+        if len(task) < 4:
+            continue
         score_samp, time_samp = task[2], task[3]
         report.append(fmt("%.0f %s", 100 * getattr(score_samp, IT), score_samp._meta.rank))
         report.append(fmt("%.2f", 1000 * getattr(time_samp, IT)))
 
     report.append(re.sub(r'^.*/', '', file))
     print(", ".join(map(report, str)))
+
+
 
 
 def go_xomo(file=None):

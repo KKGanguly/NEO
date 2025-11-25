@@ -66,52 +66,60 @@ word: ## commit to main
 heading:
 	- echo -en "$(LOUD)Heading? $(SOFT)" ;  read x ; figlet -W -f mini $$x | gawk '{print "#  " $$0}'
 
-comparez: ../../data/moot/optimize/[bchm]*/*.csv
+comparez: ../../moot/optimize/[bcfhmprst]*/*.csv
 	echo -n "" > comparez.out
 	$(foreach f, $^, (lua run_all.lua --comparez $f >> $@.out& ); )
 
-branch: ../../data/moot/optimize/[bchm]*/*.csv
+branch: ../../moot/optimize/[bcfhmprst]*/*.csv
 	$(foreach f, $^, (lua run_all.lua --branch $f | sort -rn | fmt -100  &) ; )
 
 branches:; $(MAKE) branch | tee ~/tmp/$@.out
 comparezs:; $(MAKE) comparez | tee $@.out
 
 report:
-	    @mkdir -p ../../results/optimization_performance; \
-		echo "D,#R,#X,#Y,B4.mu,B4.lo,B4.sd,2B.mu,      DEHB-6,DEHB-6_time,DEHB-12,DEHB-12_time,DEHB-18,DEHB-18_time,DEHB-24,DEHB-24_time,DEHB-50,DEHB-50_time,DEHB-100,DEHB-100_time,DEHB-200,DEHB-200_time,LITE-6,LITE-6_time,LITE-12,LITE-12_time,LITE-18,LITE-18_time,LITE-24,LITE-24_time,LITE-50,LITE-50_time,LITE-100,LITE-100_time,LITE-200,LITE-200_time,XPLOIT,XPLOIT_time,XPLORE,XPLORE_time,ADAPT,ADAPT_time,SWAY,SWAY_time,  LINE-6 ,  6 _time,  RANDOM-6,  6r_time, LINE-12, 12_time, RANDOM-12, 12r_time, LINE-18, 18_time, RANDOM-18, 18r_time, LINE-24 , 24 _time, RANDOM-24, 24r_time, LINE-50 , 50 _time, RANDOM-50, 50r_time,LINE-100 ,100 _time,RANDOM-100,100r_time,LINE-200 ,200 _time,RANDOM-200,200r_time,Before,File" > ../../results/optimization_performance/report_tmp.csv
-		egrep csv comparez.out >>../../results/optimization_performance/report_tmp.csv
-		awk 'BEGIN{FS=OFS=","} \
-		NR==1 { \
-			for (i=1; i<=NF; i++) { \
-				if ($$i !~ /_time$$/ && $$i != "XPLOIT" && $$i != "XPLORE" && $$i != "ADAPT" && $$i != "SWAY") keep[i]=1 \
-			} \
-		} \
-		{ \
-			first = 1; \
-			for (i=1; i<=NF; i++) if (keep[i]) { \
-				if (!first) printf OFS; \
-				printf "%s", $$i; \
-				first=0 \
-			} \
-			print "" \
-		}' ../../results/optimization_performance/report_tmp.csv > ../../results/optimization_performance/report.csv; \
-		awk 'BEGIN{FS=OFS=","} \
-		NR==1 { total_fields = NF } \
-		NR>1 { \
-			for (i=9; i<total_fields; i++) { \
-				total[i]++; \
-				if ($$i ~ /a$$/) count[i]++; \
-			} \
-		} \
-		END { \
-			printf ",,,,,,,,"; \
-			for (i=9; i<total_fields; i++) { \
-				pct = (count[i] ? int((100.0 * count[i] / total[i]) + 0.5) : 0); \
-				printf "%s%d", (i>9 ? OFS : ""), pct; \
-			} \
-			printf ",\n" \
-		}' ../../results/optimization_performance/report.csv >> ../../results/optimization_performance/report.csv
+	@mkdir -p ../../results/optimization_performance
+
+	@echo "D,#R,#X,#Y,B4.mu,B4.lo,B4.sd,2B.mu,SMAC-6,SMAC-6_time,SMAC-12,SMAC-12_time,SMAC-18,SMAC-18_time,SMAC-24,SMAC-24_time,SMAC-50,SMAC-50_time,SMAC-100,SMAC-100_time,SMAC-200,SMAC-200_time,ACT-6,ACT-6_time,ACT-12,ACT-12_time,ACT-18,ACT-18_time,ACT-24,ACT-24_time,ACT-50,ACT-50_time,ACT-100,ACT-100_time,ACT-200,ACT-200_time,KM++-6,KM++-6_time,RAND-6,RAND-6_time,KM++-12,KM++-12_time,RAND-12,RAND-12_time,KM++-18,KM++-18_time,RAND-18,RAND-18_time,KM++-24,KM++-24_time,RAND-24,RAND-24_time,KM++-50,KM++-50_time,RAND-50,RAND-50_time,KM++-100,KM++-100_time,RAND-100,RAND-100_time,KM++-200,KM++-200_time,RAND-200,RAND-200_time,Before,File" \    > ../../results/optimization_performance/report_tmp.csv
+
+	# 2. Append results from comparez.out
+	egrep csv comparez.out >> ../../results/optimization_performance/report_tmp.csv
+
+	# 3. Remove *_time & XPLOIT-like algos (not used anymore)
+	awk 'BEGIN{FS=OFS=","} \
+	NR==1 { \
+	    for (i=1; i<=NF; i++) \
+		if ($$i !~ /_time$$/) keep[i]=1; \
+	} \
+	{ \
+	    first=1; \
+	    for (i=1; i<=NF; i++) if (keep[i]) { \
+		if (!first) printf OFS; \
+		printf "%s", $$i; \
+		first=0; \
+	    } \
+	    print ""; \
+	}' ../../results/optimization_performance/report_tmp.csv \
+	> ../../results/optimization_performance/report.csv
+
+	# 4. Append % "a" columns summary (same as before)
+	awk 'BEGIN{FS=OFS=","} \
+	NR==1 { total=NF } \
+	NR>1 { \
+	    for (i=9; i<total; i++) { \
+		N[i]++; if ($$i ~ /a$$/) A[i]++; \
+	    } \
+	} \
+	END { \
+	    printf ",,,,,,,,"; \
+	    for (i=9; i<total; i++) { \
+		p=int((A[i]?100*A[i]/N[i]:0)+0.5); \
+		printf "%s%d", OFS, p; \
+	    } \
+	    printf ",\n"; \
+	}' ../../results/optimization_performance/report.csv \
+	>> ../../results/optimization_performance/report.csv
+
 
 
 kill:
-		ps | grep lua | grep -v vi | gawk '{system("kill -9 " $$1)}'  
+		ps | grep python | grep run_all | gawk '{system("kill -9 " $$1)}'

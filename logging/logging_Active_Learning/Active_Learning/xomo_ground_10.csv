@@ -1,0 +1,2 @@
+iteration,config,value,elapsed_time
+0,"{'DATA': 2.635, 'AAX': 5.892, 'ACAP': 4.679, 'AEXP': 3.447, 'BX': 9.676, 'CPLx': 3.098, 'DOCU': 3.428, 'ETAT': 5.824, 'FLEx': 4.14, 'KLOC': 15.074, 'LTEx': 2.608, 'PCAP': 3.276, 'PCON': 2.457, 'PLEx': 3.797, 'PMAT': 2.686, 'PRX': 1.961, 'PREC': 4.893, 'PVOL': 2.654, 'RELY': 2.69, 'RESL': 1.239, 'RUSE': 3.737, 'SCED': 3.0, 'SITE': 4.245, 'STOR': 3.476}",0.9202742799140682,1

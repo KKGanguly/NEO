@@ -330,6 +330,37 @@ function Data:neighbors(row1,rows,  f)--> a (rows, sorted by distance to row1)
 function Data:anys(budget)--> rows
   return many(rows or self.rows,budget) end
 
+
+function Data:smac(file, budget, rp)
+  -- Path to Python reader
+  local filepath = file or self.data
+
+  local command = 'python3 ../FileResultsReader.py ' ..
+                  '--data_file_path ' .. filepath .. ' ' ..
+                  '--folder_name ../../results/results_SMAC/SMAC ' ..
+                  '--budget ' .. budget
+
+  local handle = io.popen(command)
+  local result = handle:read("*a")
+  handle:close()
+
+  local list1_str, list2_str = result:match("%((%b[])%s*,%s*(%b[])%)")
+
+  local function parse_list(list_str)
+      local numbers = {}
+      for value in list_str:gmatch("'(.-)'") do
+          local num = tonumber(value:match("^%s*(.-)%s*$"))
+          table.insert(numbers, num)
+      end
+      return numbers
+  end
+
+  local scores = parse_list(list1_str)
+  local times  = parse_list(list2_str)
+
+  return scores, times
+end
+
 function Data:dehb(file, budget, rp)
   -- Define the Python command to execute
   local filepath = file or self.data
@@ -725,13 +756,13 @@ function _comparez(file,IT)
   local BEST   = function(a)  return Y(keysort(a,Y)[1])  end 
   local N      = function(x) return fmt("%.0f",100*x) end
   local TASKS  = {
-    {"DEHB-6" , function() return data:dehb(file, 6, Repeats) end},
-    {"DEHB-12", function() return data:dehb(file, 12, Repeats) end},
-    {"DEHB-18", function() return data:dehb(file, 18, Repeats) end},
-    {"DEHB-24", function() return data:dehb(file, 24, Repeats) end},
-    {"DEHB-50", function() return data:dehb(file, 50, Repeats) end},
-    {"DEHB-100", function() return data:dehb(file, 100, Repeats) end},
-    {"DEHB-200", function() return data:dehb(file, 200, Repeats) end},
+    {"SMAC-6" , function() return data:smac(file, 6, Repeats) end},
+    {"SMAC-12", function() return data:smac(file, 12, Repeats) end},
+    {"SMAC-18", function() return data:smac(file, 18, Repeats) end},
+    {"SMAC-24", function() return data:smac(file, 24, Repeats) end},
+    {"SMAC-50", function() return data:smac(file, 50, Repeats) end},
+    {"SMAC-100", function() return data:smac(file, 100, Repeats) end},
+    {"SMAC-200", function() return data:smac(file, 200, Repeats) end},
     {"ACT-6" , function() return data:actLearn(file, 6, Repeats) end},
     {"ACT-12", function() return data:actLearn(file, 12, Repeats) end},
     {"ACT-18", function() return data:actLearn(file, 18, Repeats) end},
@@ -764,7 +795,7 @@ function _comparez(file,IT)
       push(rxs, push(task, Sample:new(task[1])))
       push(task, Sample:new(task[1].."_time"))
       for _=1,Repeats do
-        if string.match(task[1], "^DEHB") then
+        if string.match(task[1], "^SMAC") then
           -- Add the best value or perform any custom operation for "dumb"
           --task[3]:add(task[2]()[1])
           scores, times = task[2]()

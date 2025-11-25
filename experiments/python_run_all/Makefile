@@ -64,11 +64,11 @@ word: ## commit to main
 heading:
 	- echo -en "$(LOUD)Heading? $(SOFT)" ;  read x ; figlet -W -f mini $$x | gawk '{print "#  " $$0}'
 
-comparez: ../../data/moot/optimize/[bchm]*/*.csv
+comparez: ../../moot/optimize/[bcfhmprst]*/*.csv
 	echo -n "" > comparez.out
 	$(foreach f, $^, (python3 run_all.py --comparez $f >> $@.out& ); )
 
-branch: ../../data/moot/optimize/[bchm]*/*.csv
+branch: ../../moot/optimize/[bcfhmprst]*/*.csv
 	$(foreach f, $^, (python3 run_all.py --branch $f | sort -rn | fmt -100  &) ; )
 
 branches:; $(MAKE) branch | tee ~/tmp/$@.out
@@ -82,7 +82,8 @@ report:
 ACT-6,ACT-6_time,ACT-12,ACT-12_time,ACT-18,ACT-18_time,ACT-24,ACT-24_time,ACT-50,ACT-50_time,ACT-100,ACT-100_time,ACT-200,ACT-200_time, \
 SMAC-6,SMAC-6_time,SMAC-12,SMAC-12_time,SMAC-18,SMAC-18_time,SMAC-24,SMAC-24_time,SMAC-50,SMAC-50_time,SMAC-100,SMAC-100_time,SMAC-200,SMAC-200_time, \
 KM++-6,KM++-6_time,KM++-12,KM++-12_time,KM++-18,KM++-18_time,KM++-24,KM++-24_time,KM++-50,KM++-50_time,KM++-100,KM++-100_time,KM++-200,KM++-200_time, \
-Before,File" \
+RAND-6,RAND-6_time,RAND-12,RAND-12_time,RAND-18,RAND-18_time,RAND-24,RAND-24_time,RAND-50,RAND-50_time,RAND-100,RAND-100_time,RAND-200,RAND-200_time, \
+Before,Before_time,File" \
 	> ../../results/optimization_performance/report_tmp.csv
 
 	# 2. Append results from comparez.out

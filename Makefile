@@ -1,7 +1,7 @@
 DATASETS_DIR = moot/optimize
 COMMAND_FILE = commands.sh
 NAME ?= SMAC
-BASE_CMD = python3 experiment_runner_cluster.py --name $(NAME) --repeats 20 --budget 6 12 18 24 50 100 200 --runs_output_folder /share/tjmenzie/kgangul/results/results_$(NAME) --logging_folder /share/tjmenzie/kgangul/logging/logging_$(NAME) --output_directory /share/tjmenzie/kgangul/results/tmp/$(NAME)_tmp
+BASE_CMD = python3 experiment_runner_cluster.py --name $(NAME) --repeats 20 --budget 6 12 18 24 50 100 200 --runs_output_folder ../results/results_$(NAME) --logging_folder ../logging/logging_$(NAME) --output_directory ../results/tmp/$(NAME)_tmp
 generate-commands:
 	@echo "#!/bin/bash" > $(COMMAND_FILE)
 	@find $(DATASETS_DIR) -type f -name "*.csv" | while read dataset; do \
