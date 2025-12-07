@@ -20,6 +20,7 @@ from optimizers.AroundOptimizerNoSplit import AroundOptimizer
 from optimizers.RandomSearchOptimizer import RandomSearchOptimizer
 from utils.LoggingUtil import LoggingUtil
 from utils.data_loader_templated import load_data
+from utils.EncodingUtils import EncodingUtils
 
 
 def write_to_file(filepath, content):
@@ -83,11 +84,23 @@ def optimize_single_dataset(optimizers, repeats, checkpoints, tmp_output_dir, lo
     data_name = get_file_name(dataset_file)
 
     X, Y = load_data(dataset_file)
-    hyperparameter_configs = {col: X[col].tolist() for col in X.columns}
+    # 1. Infer column types from RAW X
+    column_types = {
+        col: EncodingUtils.infer_column_type(X[col].tolist())[0]
+        for col in X.columns
+    }
+    # 2. Encode X ONCE
+    X_encoded = EncodingUtils.encode_dataframe(X, column_types)
+
+    # 3. Build hyperparameter configs from ENCODED X
+    hyperparameter_configs = {
+        col: X_encoded[col].tolist()
+        for col in X_encoded.columns
+    }
 
    
-    model_config = ModelConfigurationStatic(hyperparameter_configs, dataset_file, 1)
-    model_wrapper = ModelWrapperStatic(X, Y, model_config)
+    model_config = ModelConfigurationStatic(hyperparameter_configs, dataset_file, 1, column_types=column_types)
+    model_wrapper = ModelWrapperStatic(X_encoded, Y, model_config)
     for optimizer in optimizers:
         if optimizer.get('disable'):
             continue

@@ -14,15 +14,30 @@ class EncodingUtils:
     
     @staticmethod
     def try_parse_date(s):
-        """Parse date string to numeric YYYYMMDD format"""
-        if not isinstance(s, str):
-            return None
-        for fmt in ["%m/%d/%y", "%m/%d/%Y", "%Y-%m-%d", "%d-%m-%Y"]:
-            try:
-                dt = datetime.strptime(s, fmt)
-                return dt.year * 10000 + dt.month * 100 + dt.day
-            except Exception:
-                pass
+        """Parse date string or int to numeric YYYYMMDD format.
+        If already in correct format (string or int), return as is."""
+        
+        # If input is an integer (already in correct YYYYMMDD format), return it as is (this is an optimistic check)
+        if isinstance(s, int):
+            # Check if the integer is in YYYYMMDD format
+            if 10000000 <= s <= 99999999:
+                return s
+        
+        # If the input is a string (check if it's in correct format directly, using an optimistic check)
+        if isinstance(s, str):
+            # If already in correct format (YYYYMMDD), return it as an integer
+            if len(s) == 8 and s.isdigit():
+                return int(s)  # Return as integer in YYYYMMDD format
+        
+        # If the string is not in correct format, try parsing with different formats
+        if isinstance(s, str):
+            for fmt in ["%m/%d/%y", "%m/%d/%Y", "%Y-%m-%d", "%d-%m-%Y"]:
+                try:
+                    dt = datetime.strptime(s, fmt)
+                    return dt.year * 10000 + dt.month * 100 + dt.day  # Return as YYYYMMDD format
+                except Exception:
+                    pass
+        
         return None
     
     @staticmethod
@@ -46,7 +61,8 @@ class EncodingUtils:
             parsed_dates.append(date_val)
         
         if all_dates:
-            return 'date', parsed_dates
+            parsed_dates_str = [str(d) for d in parsed_dates]
+            return "date", parsed_dates_str
         
         # Check if all numeric
         if all(isinstance(v, (int, float, np.number)) for v in values):
@@ -64,7 +80,7 @@ class EncodingUtils:
         if col_type == 'date':
             # Convert date string to numeric
             parsed = EncodingUtils.try_parse_date(value)
-            return float(parsed) if parsed is not None else value
+            return str(parsed) if parsed is not None else value
         elif col_type == 'numeric':
             return float(value)
         else:  # categorical

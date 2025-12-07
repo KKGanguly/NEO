@@ -10,9 +10,7 @@ class ModelWrapperStatic:
         self.model_config = model_config
         self.column_types = model_config.column_types
         
-        # CRITICAL: Encode X using the same rules as ConfigSpace
-        self.X_encoded = EncodingUtils.encode_dataframe(X, self.column_types)
-        self.X = self.X_encoded  # Store encoded version
+        self.X = X  # Store encoded version
         
 	# Convert only binary columns of y
         if isinstance(y, pd.Series):

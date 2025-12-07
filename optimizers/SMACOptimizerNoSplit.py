@@ -31,7 +31,7 @@ class SMACOptimizer(BaseOptimizer):
         super().__init__(config, model_wrapper, model_config, logging_util, seed)
 
         # Tabular encoded dataset
-        self.X_df = self.model_wrapper.X_encoded
+        self.X_df = self.model_wrapper.X
         self.columns = list(self.X_df.columns)
         self.cache = {}
 
