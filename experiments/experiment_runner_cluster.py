@@ -18,6 +18,8 @@ from optimizers.DEHBOptimizer import DEHBOptimizer
 from optimizers.SMACOptimizerNoSplit import SMACOptimizer
 from optimizers.AroundOptimizerNoSplit import AroundOptimizer
 from optimizers.RandomSearchOptimizer import RandomSearchOptimizer
+from optimizers.TPEOptimizer import TPEOptimizer
+from optimizers.HEBOOptimizer import HEBOOptimizer
 from utils.LoggingUtil import LoggingUtil
 from utils.data_loader_templated import load_data
 from utils.EncodingUtils import EncodingUtils
@@ -35,7 +37,9 @@ def init_optimizer(optimizer_name, optimizer_config, model_wrapper, model_config
         'Active_Learning': ActLearnOptimizer,
         'SMAC': SMACOptimizer,
         'KMPlusPlus': AroundOptimizer,
-        'RandomSearch': RandomSearchOptimizer
+        'RandomSearch': RandomSearchOptimizer,
+        'TPE' : TPEOptimizer,
+        'HEBO' : HEBOOptimizer
     }
     if optimizer_name not in optimizer_classes:
         raise ValueError(f"Unknown optimizer: {optimizer_name}")

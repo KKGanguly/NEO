@@ -7,3 +7,5 @@ ConfigSpace
 dehb
 tqdm
 smac
+optuna
+hebo
