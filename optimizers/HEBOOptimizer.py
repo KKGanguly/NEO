@@ -131,7 +131,7 @@ class HEBOOptimizer(BaseOptimizer):
         warmup = max(1, min(self.n_trials, self.n_trials // 10))
 
         opt = HEBO(
-            model_name="rf",
+            model_name="gp",
             space=self.design_space,
             rand_sample=warmup
         )

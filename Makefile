@@ -27,6 +27,7 @@ convert-commands:
 			echo "#BSUB -J $(NAME)_$${base}_$${B}" >> $$jobfile; \
 			echo "#BSUB -n 1" >> $$jobfile; \
 			echo "#BSUB -q short" >> $$jobfile; \
+			echo "#BSUB -W 120" >> $$jobfile; \
 			echo "#BSUB -o out_%J.log" >> $$jobfile; \
 			echo "#BSUB -e err_%J.log" >> $$jobfile; \
 			echo "" >> $$jobfile; \

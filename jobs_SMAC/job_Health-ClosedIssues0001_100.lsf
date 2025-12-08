@@ -1,0 +1,12 @@
+#!/bin/bash -l
+#BSUB -J SMAC_Health-ClosedIssues0001_100
+#BSUB -n 1
+#BSUB -q short
+#BSUB -o out_%J.log
+#BSUB -e err_%J.log
+
+source /usr/local/apps/miniconda20240526/etc/profile.d/conda.sh
+conda activate /share/tjmenzie/kgangul/SEOptBench/smac_env
+
+cd /share/tjmenzie/kgangul/SEOptBench/experiments
+python3 experiment_runner_cluster.py --name SMAC --repeats 20 --runs_output_folder ../results/results_SMAC --logging_folder ../logging/logging_SMAC --output_directory ../results/tmp/SMAC_tmp --datasets ../moot/optimize/hpo/Health-ClosedIssues0001.csv --budget 100
