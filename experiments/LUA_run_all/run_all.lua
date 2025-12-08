@@ -87,7 +87,7 @@ go["-T"] = function(s) the.Trainings = s+0 end
 -- [6] p4 of Yang, Ying, and Geoffrey I. Webb. "A comparative study of 
 --     discretization methods for naive-bayes classifiers." PKAW'02. 
 -- [7] https://doi.org/10.1145/568271.223812, p 169
--------------------------------------------------------------------------------
+␌-------------------------------------------------------------------------------
 --             
 --  |   o  |_  
 --  |_  |  |_) 
@@ -293,7 +293,7 @@ function Data:adds(src)--> Data, updated with many rows
   for a in src  do self:add(a) end
   return self end
 
--------------------------------------------------------------------------------
+␌-------------------------------------------------------------------------------
 --   _                                 
 --  | \  o   _  _|_   _.  ._    _   _  
 --  |_/  |  _>   |_  (_|  | |  (_  (/_ 
@@ -393,6 +393,38 @@ function Data:dehb(file, budget, rp)
   return scores, times
 end
 
+
+function Data:tpe(file, budget, rp)
+  -- Define the Python command to execute
+  local filepath = file or self.data
+  local command = 'python3 ../FileResultsReader.py ' ..
+                '--data_file_path ' .. filepath .. ' ' ..
+                '--folder_name ../../results/results_TPE/TPE' ..
+                '--budget ' .. budget
+
+  -- Run the command using io.popen and capture the output
+  local handle = io.popen(command)
+  local result = handle:read("*a")  -- Read the entire output
+  handle:close()
+  
+    -- Step 1: Extract the two lists using pattern matching
+  local list1_str, list2_str = result:match("%((%b[])%s*,%s*(%b[])%)")
+
+  -- Helper function to process each list string
+  local function parse_list(list_str)
+      local numbers = {}
+      for value in list_str:gmatch("'(.-)'") do
+          local num = tonumber(value:match("^%s*(.-)%s*$"))  -- trim spaces and convert to number
+          table.insert(numbers, num)
+      end
+      return numbers
+  end
+  -- Step 2: Parse both lists
+  local scores = parse_list(list1_str)
+  local times = parse_list(list2_str)
+
+  return scores, times
+end
 function Data:actLearn(file, budget, rp)
   -- Define the Python command to execute
   local filepath = file or self.data
@@ -529,7 +561,7 @@ function Data:acquire(budget)
       push(done, table.remove(todo,1)) end end
   return done, test, BR end     --- 7.
 
---------------------------------------------------------------------------------
+␌--------------------------------------------------------------------------------
 --   __                    
 --  (_   _|_   _.  _|_   _ 
 --  __)   |_  (_|   |_  _> 
@@ -756,6 +788,13 @@ function _comparez(file,IT)
   local BEST   = function(a)  return Y(keysort(a,Y)[1])  end 
   local N      = function(x) return fmt("%.0f",100*x) end
   local TASKS  = {
+    {"DEHB-6" , function() return data:dehb(file, 6, Repeats) end},
+    {"DEHB-12", function() return data:dehb(file, 12, Repeats) end},
+    {"DEHB-18", function() return data:dehb(file, 18, Repeats) end},
+    {"DEHB-24", function() return data:dehb(file, 24, Repeats) end},
+    {"DEHB-50", function() return data:dehb(file, 50, Repeats) end},
+    {"DEHB-100", function() return data:dehb(file, 100, Repeats) end},
+    {"DEHB-200", function() return data:dehb(file, 200, Repeats) end},
     {"SMAC-6" , function() return data:smac(file, 6, Repeats) end},
     {"SMAC-12", function() return data:smac(file, 12, Repeats) end},
     {"SMAC-18", function() return data:smac(file, 18, Repeats) end},
@@ -763,6 +802,13 @@ function _comparez(file,IT)
     {"SMAC-50", function() return data:smac(file, 50, Repeats) end},
     {"SMAC-100", function() return data:smac(file, 100, Repeats) end},
     {"SMAC-200", function() return data:smac(file, 200, Repeats) end},
+    {"TPE-6" , function() return data:tpe(file, 6, Repeats) end},
+    {"TPE-12", function() return data:tpe(file, 12, Repeats) end},
+    {"TPE-18", function() return data:tpe(file, 18, Repeats) end},
+    {"TPE-24", function() return data:tpe(file, 24, Repeats) end},
+    {"TPE-50", function() return data:tpe(file, 50, Repeats) end},
+    {"TPE-100", function() return data:tpe(file, 100, Repeats) end},
+    {"TPE-200", function() return data:tpe(file, 200, Repeats) end},
     {"ACT-6" , function() return data:actLearn(file, 6, Repeats) end},
     {"ACT-12", function() return data:actLearn(file, 12, Repeats) end},
     {"ACT-18", function() return data:actLearn(file, 18, Repeats) end},
@@ -790,45 +836,36 @@ function _comparez(file,IT)
     {"200r"   , function() return data:anys(200) end},
     }
   local rxs={}
-  for _,task in pairs(TASKS) do
-      io.stderr:write("<"..task[1])
-      push(rxs, push(task, Sample:new(task[1])))
-      push(task, Sample:new(task[1].."_time"))
-      for _=1,Repeats do
-        if string.match(task[1], "^SMAC") then
-          -- Add the best value or perform any custom operation for "dumb"
-          --task[3]:add(task[2]()[1])
-          scores, times = task[2]()
-          for _, val in ipairs(scores) do
-            task[3]:add(tonumber(val)) 
-          end
-          
-          for _, val in ipairs(times) do
-            task[4]:add(tonumber(val))
-          end
-          break
-        elseif string.match(task[1], "^ACT") then
-          scores, times = task[2]()
-          for _, val in ipairs(scores) do
-            task[3]:add(tonumber(val)) 
-          end
-          
-          for _, val in ipairs(times) do
-            task[4]:add(tonumber(val))
-          end
-          break
-        else
-          shuffle(data.rows)
-          local start_time = os.clock() -- Start timing
-          task[3]:add(BEST(task[2]()))
-          local end_time = os.clock() -- End timing
-          task[4]:add(end_time - start_time) -- Accumulate time
-        end
+  for _, task in pairs(TASKS) do
+    io.stderr:write("<" .. task[1])
+
+    push(rxs, push(task, Sample:new(task[1])))
+    push(task, Sample:new(task[1] .. "_time"))
+
+    local is_tabulated = string.match(task[1], "^SMAC") or string.match(task[1], "^ACT") or string.match(task[1], "^DEHB") or string.match(task[1], "^TPE")
+
+    for _ = 1, Repeats do
+      if is_tabulated then
+        local scores, times = task[2]()
+
+        for _, v in ipairs(scores) do task[3]:add(tonumber(v)) end
+        for _, v in ipairs(times)  do task[4]:add(tonumber(v)) end
+
+        break  -- same for both SMAC and ACT
+      else
+        shuffle(data.rows)
+        local t0 = os.clock()
+        task[3]:add(BEST(task[2]()))
+        task[4]:add(os.clock() - t0)
       end
-      io.stderr:write(">")
-  end 
+    end
+
+    io.stderr:write(">")
+  end
+
   print(" ")
-  push(rxs,B4)
+  push(rxs, B4)
+
   push(TASKS, {"Before",true,B4})
   local sorted=Sample.merges(sort(rxs,lt"mu"),B4.sd * Epsilon)
   local names = map(TASKS, function(task) 
@@ -858,7 +895,7 @@ go["--xomo"] = function(file)
   print(#Data:around(30))
   for _,row in pairs(Data:around(30)) do print(Y(row)) end end
 
-go["--compares"] = function(file)
+␌go["--compares"] = function(file)
   local SORTER,Y,X,G,G0,all,b4,copy,repeats,data,all,first,want,rand,u,report
   SORTER=function(a,b)
            return a._meta.mu < b._meta.mu or

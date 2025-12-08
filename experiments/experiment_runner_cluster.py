@@ -14,7 +14,7 @@ from models.configurations.model_config_static import ModelConfigurationStatic
 from models.model_wrapper_static import ModelWrapperStatic
 
 from optimizers.ActLearnOptimizer import ActLearnOptimizer
-from optimizers.DEHBOptimizer import DEHBOptimizer
+from optimizers.DEHBOptimizerNew import DEHBOptimizer
 from optimizers.SMACOptimizerNoSplit import SMACOptimizer
 from optimizers.AroundOptimizerNoSplit import AroundOptimizer
 from optimizers.RandomSearchOptimizer import RandomSearchOptimizer
