@@ -71,6 +71,8 @@ class SMACOptimizer(BaseOptimizer):
             raise ValueError("Logging util not set")
 
         n_trials = self.config["n_trials"]
+        total_budget = self.config["n_trials"]
+        init_design_size = 4 
         self.logging_util.start_logging()
 
         # ------------------------------------------------#
@@ -107,7 +109,8 @@ class SMACOptimizer(BaseOptimizer):
         )
 
         # SMAC driver
-        initial_design = HPOFacade.get_initial_design(scenario)
+        initial_design = HPOFacade.get_initial_design(scenario,
+            n_configs=init_design_size)
 
         smac = HPOFacade(
             scenario=scenario,

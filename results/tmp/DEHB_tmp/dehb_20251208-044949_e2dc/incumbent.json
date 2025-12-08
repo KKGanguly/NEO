@@ -1,1 +1,0 @@
-{"config": {"BlockSize": 64.0, "Files": 20.0, "Xval": 0.0, "bZip2": 1.0, "compressionMethod": 1.0, "deflate": 1.0, "filterOff": 1.0, "headerCompressionOff": 0.0, "lZMA": 1.0, "lZMA2": 0.0, "mtOff": 1.0, "pPMd": 0.0, "root": 1.0, "tmOff": 0.0}, "score": 0.011915936649426584, "info": {}}

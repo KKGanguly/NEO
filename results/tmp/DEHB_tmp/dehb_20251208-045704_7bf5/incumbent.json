@@ -1,1 +1,0 @@
-{"config": {"NumCore": 0.048, "Post": 0.667, "Pre": 0.333, "cGS": 0.0, "cGS_IP_AMG": 1.0, "cGS_IP_CG": 0.0, "cGS_RED_AMG": 1.0, "smoother": 0.0, "smoother_GS": 1.0, "smoother_GSAC": 1.0, "smoother_GSACBE": 1.0, "smoother_GSRB": 0.0, "smoother_GSRBAC": 0.0, "smoother_JAC": 0.0}, "score": 0.03267563280643593, "info": {}}

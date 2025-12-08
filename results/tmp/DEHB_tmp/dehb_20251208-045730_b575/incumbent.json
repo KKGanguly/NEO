@@ -1,1 +1,0 @@
-{"config": {"gvn": 0.0, "inline": 0.0, "instcombine": 0.0, "ipsccp": 1.0, "iv_users": 1.0, "jump_threading": 1.0, "licm": 0.0, "print_used_types": 1.0, "sccp": 0.0, "simplifycfg": 0.0}, "score": 0.04305489303765664, "info": {}}

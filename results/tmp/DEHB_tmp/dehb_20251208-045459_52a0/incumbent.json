@@ -1,1 +1,0 @@
-{"config": {"Max_depth": 6.0, "Min_impurity_decrease": 0.75, "Min_sample_leaves": 1.0, "N_estimators": 100.0, "criterion": "absolute_error"}, "score": 0.48481957318335644, "info": {}}

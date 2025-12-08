@@ -17,45 +17,45 @@ class ActLearnOptimizer(BaseOptimizer):
         self.best_config = None
         self.best_value = None
 
-        # Encoded table for nearest-row matching
+        # Encoded X table
         self.X_df = self.model_wrapper.X
         self.columns = list(self.X_df.columns)
 
-        # Build KD-tree on encoded data
+        # KD-tree for nearest row lookup
         self.nn = Data(
             self.X_df.values.tolist(),
             column_types=self.model_config.column_types
         )
 
-        # Pre-build BL CSV dataframe
+        # Build BL CSV
         self._bl_csv_path = self._make_bl_csv()
 
-
-    # -------------------------------------------------------
-    # Helper: convert BL row → dict of encoded hyperparameters
-    # -------------------------------------------------------
+    # ---------------------------
+    # Cleaning helpers
+    # ---------------------------
     def _clean(self, v):
         import numpy as np
-        if isinstance(v, (np.integer, np.int64)): return int(v)
-        if isinstance(v, (np.floating, np.float64)): return float(v)
+        if isinstance(v, (np.integer, np.int64)):
+            return int(v)
+        if isinstance(v, (np.floating, np.float64)):
+            return float(v)
         return v
 
     def _row_to_dict(self, row):
         return {col: self._clean(v) for col, v in zip(self.columns, row)}
 
-
-    # -------------------------------------------------------
-    # Build BL-compatible CSV (X cols get X; Y cols keep +/-)
-    # -------------------------------------------------------
+    # ---------------------------
+    # Build BL CSV
+    # ---------------------------
     def _make_bl_csv(self):
         X = self.model_wrapper.X.copy()
         Y = self.model_wrapper.y.copy()
 
-        # Check Y suffixes correctness
+        # Check Y suffixes
         for col in Y.columns:
             if not (col.endswith("+") or col.endswith("-")):
                 raise ValueError(
-                    f"Y column '{col}' must end with + or - for BL objective direction."
+                    f"Y column '{col}' must end with + or -"
                 )
 
         df = pd.concat([X, Y], axis=1)
@@ -63,14 +63,12 @@ class ActLearnOptimizer(BaseOptimizer):
         new_cols = []
         for col in df.columns:
             if col in Y.columns:
-                new_cols.append(col)   # keep + or -
+                new_cols.append(col)
             else:
-                # X column — add X suffix if missing
                 new_cols.append(col if col.endswith("X") else col + "X")
 
         df.columns = new_cols
 
-        # Write to temporary file
         tmp = tempfile.NamedTemporaryFile(
             delete=False,
             suffix="_bl.csv",
@@ -79,34 +77,38 @@ class ActLearnOptimizer(BaseOptimizer):
         df.to_csv(tmp.name, index=False)
         return tmp.name
 
-
-    # -------------------------------------------------------
-    # OPTIMIZE via BL.actLearn
-    # -------------------------------------------------------
+    # ---------------------------
+    # Main optimization
+    # ---------------------------
     def optimize(self):
+
         n_trials = self.config["n_trials"]
         print(f"=== Running ACTLEARN optimizer (budget={n_trials}) ===")
 
-        # Load BL dataset from temporary CSV
+        # Load BL CSV dataset
         bl_data = bl.Data(bl.csv(self._bl_csv_path))
 
         if len(bl_data.cols.y) == 0:
             raise ValueError("BL did not detect any Y objective columns.")
 
-        bl.the.Stop = n_trials
+        # NEW API: Stop budget follows the SMAC style
+        bl.the.budget = n_trials
 
-        # Run BL Active Learning
+        # Run Active Learning
+        # (new API: bl.actLearn returns a learner object with .best property)
         learner = bl.actLearn(bl_data, shuffle=True)
 
-        best_row_raw = bl.first(learner.best.rows)
+        # Get best row (new API)
+        best_row_raw = learner.best  # matches bl.first(learner.best.rows)
 
-        # Strip BL Y columns before KD-tree mapping
+        # Extract only X columns (strip Y)
         clean_row = best_row_raw[:len(self.columns)]
 
+        # Map to nearest actual row in table
         encoded_row = self.nn.nearestRow(clean_row)
         hp = self._row_to_dict(encoded_row)
 
-        # Evaluate with the TRUE model
+        # Evaluate using TRUE model
         self.logging_util.start_logging()
         score = self.model_wrapper.run_model(hp)
         fitness = 1 - score

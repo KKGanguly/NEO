@@ -1,1 +1,0 @@
-{"config": {"ActiveDefragIgnoreBytes": 270.0, "ActiveDefragThresholdLower": 17.0, "HashMaxZiplistEntries": 899.0, "HashMaxZiplistValue": 87.0, "HllSparseMaxBytes": 617.0, "Hz": 279.0, "ListMaxZiplistSize": -1.0, "ReplBacklogSize": 3.0, "replDisableTcpNodelay": 1.0}, "score": 0.37515641586583137, "info": {}}

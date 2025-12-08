@@ -1,1 +1,0 @@
-{"config": {"Aq_strength": 8.0, "B_bias": 16.0, "Bframes": 2.0, "Crf": 24.4, "Ipratio": 1.1, "Keyint": 760.0, "Qcomp": 9.0, "Qp": 31.0, "Rc_lookahead": 188.0, "Ref": 1.0, "Scenecut": 28.0, "Seek": 252.0, "Threads": 44.0, "no_asm": 1.0, "no_cabac": 0.0, "no_mbtree": 1.0, "no_scenecut": 0.0}, "score": 0.16065059209587673, "info": {}}

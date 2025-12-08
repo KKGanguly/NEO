@@ -87,7 +87,7 @@ go["-T"] = function(s) the.Trainings = s+0 end
 -- [6] p4 of Yang, Ying, and Geoffrey I. Webb. "A comparative study of 
 --     discretization methods for naive-bayes classifiers." PKAW'02. 
 -- [7] https://doi.org/10.1145/568271.223812, p 169
-␌-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 --             
 --  |   o  |_  
 --  |_  |  |_) 
@@ -293,7 +293,7 @@ function Data:adds(src)--> Data, updated with many rows
   for a in src  do self:add(a) end
   return self end
 
-␌-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 --   _                                 
 --  | \  o   _  _|_   _.  ._    _   _  
 --  |_/  |  _>   |_  (_|  | |  (_  (/_ 
@@ -561,7 +561,7 @@ function Data:acquire(budget)
       push(done, table.remove(todo,1)) end end
   return done, test, BR end     --- 7.
 
-␌--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 --   __                    
 --  (_   _|_   _.  _|_   _ 
 --  __)   |_  (_|   |_  _> 
@@ -895,7 +895,7 @@ go["--xomo"] = function(file)
   print(#Data:around(30))
   for _,row in pairs(Data:around(30)) do print(Y(row)) end end
 
-␌go["--compares"] = function(file)
+go["--compares"] = function(file)
   local SORTER,Y,X,G,G0,all,b4,copy,repeats,data,all,first,want,rand,u,report
   SORTER=function(a,b)
            return a._meta.mu < b._meta.mu or
