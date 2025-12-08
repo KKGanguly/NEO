@@ -1,0 +1,1 @@
+{"config": {"InnodbBufferPoolSize": 64.0, "InnodbLogBufferSize": 64.0, "TempTableSize": 4096.0, "binaryLog": 0.0, "delayedInnodbLogFlush": 1.0, "delayedInnodbLogWrite": 1.0, "directFlush": 1.0, "dsyncFlush": 0.0, "fsyncFlush": 1.0, "innodbDoubleWrite": 1.0, "innodbFlushMethod": 1.0}, "score": 0.26997187494520924, "info": {}}

@@ -1,0 +1,1 @@
+{"config": {"accessLog": 1.0, "base": 1.0, "enableSendfile": 1.0, "extendedStatus": 1.0, "followSymLinks": 1.0, "handle": 0.0, "hostnameLookups": 1.0, "inMemory": 0.0, "keepAlive": 0.0}, "score": 0.033333333333333326, "info": {}}

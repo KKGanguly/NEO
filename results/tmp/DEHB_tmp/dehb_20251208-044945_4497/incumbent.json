@@ -1,0 +1,1 @@
+{"config": {"Entcoef": 0.002, "Gaelambda": 0.936, "Gamma": 0.925, "Layer1Nodes": 256.0, "Layer2Nodes": 64.0, "Learninrate": -3.306, "Maxgrad_norm": 3.237, "Nsteps": 6.0, "NumLayers": 1.0, "Vfcoef": 0.799}, "score": 0.417850665890655, "info": {}}

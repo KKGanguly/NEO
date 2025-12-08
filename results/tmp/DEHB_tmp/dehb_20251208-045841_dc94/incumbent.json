@@ -1,0 +1,1 @@
+{"config": {"SharedBuffers": 256.0, "TempBuffers": 2.0, "WorkMem": 256.0, "fsync": 0.0, "fullPageWrites": 1.0, "root": 1.0, "synchronousCommit": 1.0, "trackActivities": 0.0, "trackCounts": 0.0}, "score": 0.007487720022350208, "info": {}}

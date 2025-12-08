@@ -1,0 +1,1 @@
+{"config": {"Poly_tileSize_x": 0.0, "Poly_tileSize_y": 64.0, "Poly_tileSize_z": 128.0, "data_alignFieldPointers": 0.0, "explorationId": 1.0, "no_explorationId": 1.0, "opt_unroll": 4.0, "opt_unroll_interleave": 0.0, "opt_useAddressPrecalc": 1.0, "opt_vectorize": 0.0, "root": 1.0, "simd_avoidUnaligned": 1.0}, "score": 0.04303901655448916, "info": {}}

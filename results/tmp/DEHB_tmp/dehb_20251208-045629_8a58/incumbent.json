@@ -1,0 +1,1 @@
+{"config": {"Max_depth": 2.0, "Min_impurity_decrease": 5.75, "Min_sample_leaves": 10.0, "N_estimators": 10.0, "criterion": "poisson"}, "score": 0.23980196462581382, "info": {}}

@@ -1,0 +1,1 @@
+{"config": {"no_8x8dct": 1.0, "no_asm": 1.0, "no_cabac": 1.0, "no_deblock": 1.0, "no_fast_pskip": 0.0, "no_mbtree": 0.0, "no_mixed_refs": 0.0, "no_weightb": 1.0, "rc_lookahead": 1.0, "rc_lookahead_20": 0.0, "rc_lookahead_40": 0.0, "rc_lookahead_60": 0.0, "ref": 1.0, "ref_1": 1.0, "ref_5": 0.0, "ref_9": 1.0}, "score": 0.000212901115221098, "info": {}}

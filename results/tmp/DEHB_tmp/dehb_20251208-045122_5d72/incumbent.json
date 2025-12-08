@@ -1,0 +1,1 @@
+{"config": {"batch_size": 0.0, "conv_1_filter_size": 1.0, "conv_1_num_filters": 0.0, "conv_2_filter_size": 0.0, "conv_2_num_filters": 0.0, "conv_3_filter_size": 1.0, "conv_3_num_filters": 0.0, "log_beta_1": 1.0, "log_beta_2": 1.0, "log_decay": 1.0, "log_epsilon": 0.0, "log_lr": 0.0}, "score": 0.07768358190524505, "info": {}}

@@ -1,0 +1,279 @@
+{
+  "DE_params": {
+    "mutation_factor": 0.5,
+    "crossover_prob": 0.5,
+    "strategy": "rand1_bin",
+    "configspace": true,
+    "boundary_fix_type": "random",
+    "max_age": Infinity,
+    "dimensions": 5,
+    "output_path": "../results/tmp/DEHB_tmp/dehb_20251208-045414_1795",
+    "async_strategy": "immediate"
+  },
+  "HB_params": {
+    "min_fidelity": 1,
+    "max_fidelity": 10,
+    "min_clip": null,
+    "max_clip": null,
+    "eta": 3
+  },
+  "internals": {
+    "initial_configs": [
+      {
+        "config_id": 0,
+        "config": [
+          0.85,
+          0.5365853658536586,
+          0.95,
+          0.5,
+          0.6666666666666666
+        ],
+        "results": {
+          "1.1111111111111112": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 1,
+        "config": [
+          0.85,
+          0.5609756097560976,
+          0.95,
+          0.3,
+          0.6666666666666666
+        ],
+        "results": {
+          "1.1111111111111112": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 2,
+        "config": [
+          0.75,
+          0.8048780487804879,
+          0.5,
+          0.6,
+          0.3333333333333333
+        ],
+        "results": {
+          "1.1111111111111112": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 3,
+        "config": [
+          0.7,
+          0.8536585365853658,
+          0.2,
+          0.0,
+          0.6666666666666666
+        ],
+        "results": {
+          "1.1111111111111112": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 4,
+        "config": [
+          0.45,
+          0.43902439024390244,
+          0.45,
+          0.85,
+          0.0
+        ],
+        "results": {
+          "1.1111111111111112": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 5,
+        "config": [
+          0.4,
+          0.024390243902439025,
+          0.95,
+          0.75,
+          0.3333333333333333
+        ],
+        "results": {
+          "1.1111111111111112": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 6,
+        "config": [
+          0.0,
+          0.4146341463414634,
+          0.3,
+          0.75,
+          0.3333333333333333
+        ],
+        "results": {
+          "1.1111111111111112": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 7,
+        "config": [
+          0.05,
+          0.0,
+          0.8,
+          0.95,
+          0.6666666666666666
+        ],
+        "results": {
+          "1.1111111111111112": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 8,
+        "config": [
+          0.8,
+          0.0975609756097561,
+          0.75,
+          0.55,
+          0.3333333333333333
+        ],
+        "results": {
+          "1.1111111111111112": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 9,
+        "config": [
+          0.2,
+          0.2926829268292683,
+          0.35,
+          0.55,
+          0.0
+        ],
+        "results": {
+          "3.333333333333333": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 10,
+        "config": [
+          0.7,
+          0.12195121951219512,
+          0.9,
+          0.3,
+          0.6666666666666666
+        ],
+        "results": {
+          "3.333333333333333": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 11,
+        "config": [
+          0.95,
+          0.6585365853658537,
+          0.8,
+          0.55,
+          0.6666666666666666
+        ],
+        "results": {
+          "3.333333333333333": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 12,
+        "config": [
+          0.75,
+          0.7804878048780488,
+          0.75,
+          0.2,
+          0.0
+        ],
+        "results": {
+          "10.0": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 13,
+        "config": [
+          0.85,
+          0.8048780487804879,
+          0.35,
+          0.25,
+          0.0
+        ],
+        "results": {
+          "10.0": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      },
+      {
+        "config_id": 14,
+        "config": [
+          0.8,
+          0.2926829268292683,
+          0.05,
+          0.1,
+          0.6666666666666666
+        ],
+        "results": {
+          "10.0": {
+            "score": Infinity,
+            "cost": -1,
+            "info": {}
+          }
+        }
+      }
+    ]
+  }
+}
