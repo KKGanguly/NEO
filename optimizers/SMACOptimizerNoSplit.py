@@ -72,7 +72,6 @@ class SMACOptimizer(BaseOptimizer):
 
         n_trials = self.config["n_trials"]
         total_budget = self.config["n_trials"]
-        init_design_size = 4 
         self.logging_util.start_logging()
 
         # ------------------------------------------------#
@@ -109,8 +108,7 @@ class SMACOptimizer(BaseOptimizer):
         )
 
         # SMAC driver
-        initial_design = HPOFacade.get_initial_design(scenario,
-            n_configs=init_design_size)
+        initial_design = HPOFacade.get_initial_design(scenario)
 
         smac = HPOFacade(
             scenario=scenario,

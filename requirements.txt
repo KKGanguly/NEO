@@ -8,4 +8,5 @@ dehb
 tqdm
 smac
 optuna
+optunahub
 hebo

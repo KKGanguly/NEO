@@ -19,7 +19,13 @@ from optimizers.SMACOptimizerNoSplit import SMACOptimizer
 from optimizers.AroundOptimizerNoSplit import AroundOptimizer
 from optimizers.RandomSearchOptimizer import RandomSearchOptimizer
 from optimizers.TPEOptimizer import TPEOptimizer
-from optimizers.HEBOOptimizer import HEBOOptimizer
+from optimizers.HEBOIIOptimizer import HEBOOptimizer
+from optimizers.FLASHOptimizer import FLASHOptimizer
+from optimizers.BOCAOptimizer import BOCAOptimizer
+from optimizers.TurBOOptimizer import TurBOOptimizer
+from optimizers.DEOptimizer import DEOptimizer
+from optimizers.NSGAIIIOptimizer import NSGAIIIOptimizer
+from optimizers.IraceOptimizer import IraceOptimizer
 from utils.LoggingUtil import LoggingUtil
 from utils.data_loader_templated import load_data
 from utils.EncodingUtils import EncodingUtils
@@ -39,7 +45,13 @@ def init_optimizer(optimizer_name, optimizer_config, model_wrapper, model_config
         'KMPlusPlus': AroundOptimizer,
         'RandomSearch': RandomSearchOptimizer,
         'TPE' : TPEOptimizer,
-        'HEBO' : HEBOOptimizer
+        'HEBO' : HEBOOptimizer,
+        'FLASH' : FLASHOptimizer,
+        'BOCA' : BOCAOptimizer,
+        'TURBO' : TurBOOptimizer,
+        'DE' : DEOptimizer,
+        'NSGAIII' : NSGAIIIOptimizer,
+        'IRACE' : IraceOptimizer
     }
     if optimizer_name not in optimizer_classes:
         raise ValueError(f"Unknown optimizer: {optimizer_name}")
