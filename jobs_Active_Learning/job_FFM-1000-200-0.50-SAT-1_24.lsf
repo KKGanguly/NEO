@@ -2,6 +2,7 @@
 #BSUB -J Active_Learning_FFM-1000-200-0.50-SAT-1_24
 #BSUB -n 1
 #BSUB -q short
+#BSUB -W 120
 #BSUB -o out_%J.log
 #BSUB -e err_%J.log
 
@@ -9,4 +10,4 @@ source /usr/local/apps/miniconda20240526/etc/profile.d/conda.sh
 conda activate /share/tjmenzie/kgangul/SEOptBench/smac_env
 
 cd /share/tjmenzie/kgangul/SEOptBench/experiments
-python3 experiment_runner_cluster.py --name Active_Learning --repeats 20 --runs_output_folder /share/tjmenzie/kgangul/results/results_Active_Learning --logging_folder /share/tjmenzie/kgangul/logging/logging_Active_Learning --output_directory /share/tjmenzie/kgangul/results/tmp/Active_Learning_tmp --datasets ../moot/optimize/binary_config/FFM-1000-200-0.50-SAT-1.csv --budget 24
+python3 experiment_runner_cluster.py --name Active_Learning --repeats 20 --runs_output_folder ../results/results_Active_Learning --logging_folder ../logging/logging_Active_Learning --output_directory ../results/tmp/Active_Learning_tmp --datasets ../moot/optimize/binary_config/FFM-1000-200-0.50-SAT-1.csv --budget 24

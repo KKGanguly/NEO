@@ -2,6 +2,7 @@
 #BSUB -J SMAC_rs-6d-c3_obj1_12
 #BSUB -n 1
 #BSUB -q short
+#BSUB -W 120
 #BSUB -o out_%J.log
 #BSUB -e err_%J.log
 
