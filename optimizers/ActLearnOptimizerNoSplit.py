@@ -99,7 +99,7 @@ class ActLearnOptimizer(BaseOptimizer):
         learner = bl.actLearn(bl_data, shuffle=True)
 
         # Get best row (new API)
-        best_row_raw = learner.best  # matches bl.first(learner.best.rows)
+        best_row_raw = bl.first(learner.best.rows)  # matches bl.first(learner.best.rows)
 
         # Extract only X columns (strip Y)
         clean_row = best_row_raw[:len(self.columns)]
