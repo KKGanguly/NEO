@@ -1,134 +1,116 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
+import re
 import os
 import sys
 from io import StringIO
 
 file_path = "../results/optimization_performance/report.csv"
 
-# ----------------------------------------------------------------------
-# 1. LOAD + CLEAN CSV (remove final broken summary line)
-# ----------------------------------------------------------------------
-
-if not os.path.exists(file_path):
-    print(f"Error: File not found: {file_path}")
-    sys.exit(1)
-
-if os.stat(file_path).st_size == 0:
-    print(f"Error: File is empty: {file_path}")
-    sys.exit(1)
-
+# ----------------------------------------------------
+# FIX MALFORMED LAST ROW (trim to expected #columns)
+# ----------------------------------------------------
 with open(file_path, "r") as f:
     lines = f.readlines()
 
-clean_lines = []
-for line in lines:
-    line = line.strip()
-    if not line:
-        continue
+header = lines[0]
+expected_cols = header.count(",") + 1
 
-    # keep header
-    if line.startswith("D,#R,#X,#Y"):
-        clean_lines.append(line + "\n")
-        continue
+# Fix last line
+raw_last = lines[-1].strip().split(",")
+fixed_last = ",".join(raw_last[:expected_cols]) + "\n"
 
-    # keep dataset rows (must end with .csv)
-    if line.endswith(".csv"):
-        clean_lines.append(line + "\n")
+# Replace the last line with fixed version
+clean_lines = lines[:-1] + [fixed_last]
 
-# load cleaned CSV
 df = pd.read_csv(StringIO("".join(clean_lines)))
 df.columns = df.columns.str.strip()
 
-# ----------------------------------------------------------------------
-# 2. MAPPING OF OPTIMIZERS
-# ----------------------------------------------------------------------
-mapping = {
-    "DEHB": "SMAC",       # DEHB replaced by SMAC
-    "LITE": "ACT",        # LITE replaced ACT
-    "LINE": "KM++",       # LINE replaced KM++
-    "RANDOM": "RAND"      # RANDOM replaced RAND
-}
+# ----------------------------------------------------
+# SUMMARY ROW = LAST ROW IN FILE
+# ----------------------------------------------------
+summary_row = df.tail(1)
 
-# ----------------------------------------------------------------------
-# 3. EXTRACT THE LAST REAL DATASET ROW
-# ----------------------------------------------------------------------
-last_row = df.tail(1)
+# ----------------------------------------------------
+# Extract optimizers and budgets automatically
+# ----------------------------------------------------
+optimizers = {}
+pattern = re.compile(r"([A-Za-z\+\~]+)-(\d+)$")
 
-samples = [6, 12, 18, 24, 50, 100, 200]
+for col in df.columns:
+    m = pattern.match(col)
+    if m:
+        family, budget = m.group(1), int(m.group(2))
+        optimizers.setdefault(family, []).append(budget)
 
-def get_values(prefix):
-    """Return the numeric best-percentage values for a given method prefix."""
+for fam in optimizers:
+    optimizers[fam] = sorted(optimizers[fam])
+
+samples = sorted({b for budgets in optimizers.values() for b in budgets})
+
+# ----------------------------------------------------
+# Numeric extractor for cells like "43 a"
+# ----------------------------------------------------
+def numeric_only(cell):
+    if isinstance(cell, str):
+        m = re.match(r"\s*([0-9]*\.?[0-9]+)", cell)
+        return float(m.group(1)) if m else np.nan
+    return float(cell)
+
+# ----------------------------------------------------
+# Extract percent-best values from summary row
+# ----------------------------------------------------
+def extract_percent_values(family):
     vals = []
-    for s in samples:
-        col = f"{prefix}-{s}"
-        if col not in df.columns:
-            print(f"Warning: Column '{col}' missing. Filling with 0.")
-            vals.append(0)
-            continue
-
-        val = last_row[col].dropna()
-        if val.empty:
-            vals.append(0)
+    for b in optimizers[family]:
+        col = f"{family}-{b}"
+        if col in summary_row:
+            vals.append(numeric_only(summary_row[col].values[0]))
         else:
-            # extract number before the rank letter (e.g. "14 b" → 14)
-            raw = str(val.values[0]).strip()
-            num = raw.split()[0]  # keep only "14"
-            try:
-                vals.append(int(num))
-            except:
-                vals.append(0)
-
+            vals.append(np.nan)
     return vals
 
-# ----------------------------------------------------------------------
-# 4. BUILD DATA FOR PLOTTING
-# ----------------------------------------------------------------------
-data = {
-    "Samples": samples,
-    "DEHB": get_values(mapping["DEHB"]),
-    "LITE": get_values(mapping["LITE"]),
-    "LINE": get_values(mapping["LINE"]),
-    "RANDOM": get_values(mapping["RANDOM"])
-}
+plot_data = {"Samples": samples}
+for fam in optimizers:
+    plot_data[fam] = extract_percent_values(fam)
 
-plot_df = pd.DataFrame(data)
+plot_df = pd.DataFrame(plot_data)
 
-# ----------------------------------------------------------------------
-# 5. PLOT
-# ----------------------------------------------------------------------
+# ----------------------------------------------------
+# PLOT
+# ----------------------------------------------------
 plt.figure(figsize=(7, 5))
-markers = ['o', 's', 'D', '^']
-colors = ['royalblue', 'firebrick', 'gold', 'forestgreen']
-linestyles = ['-', '--', '-.', ':']
+
+markers = ['o', 's', 'D', '^', 'v', 'P', 'X', '*']
+linestyles = ['-', '--', '-.', ':', (0, (3, 1, 1, 1))]
+colors = plt.cm.tab10.colors
 font_size = 14
 
-for idx, method in enumerate(["DEHB", "LITE", "LINE", "RANDOM"]):
+families = list(optimizers.keys())
+
+for idx, fam in enumerate(families):
     plt.plot(
-        plot_df["Samples"], plot_df[method],
-        marker=markers[idx],
-        linestyle=linestyles[idx],
-        color=colors[idx],
+        plot_df["Samples"],
+        plot_df[fam],
+        marker=markers[idx % len(markers)],
+        linestyle=linestyles[idx % len(linestyles)],
+        color=colors[idx % len(colors)],
+        label=fam,
         linewidth=2.5,
-        markersize=7,
-        label=method
+        markersize=7
     )
 
 plt.xscale("log")
-tick_values = [6, 12, 24, 50, 100, 200]
-plt.xticks(tick_values, [str(v) for v in tick_values], fontsize=font_size)
-
 plt.xlabel("Samples", fontsize=font_size)
 plt.ylabel("% Best", fontsize=font_size)
-plt.ylim(0, 105)
 
-plt.grid(True, linestyle='--', alpha=0.5)
-plt.legend(loc='lower right', fontsize=font_size)
-
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.legend(loc="lower right", fontsize=font_size)
 plt.tight_layout()
 
-out_path = "../results/optimization_performance/optimization_performance_comparison.png"
-plt.savefig(out_path, dpi=300)
+save_path = "../results/optimization_performance/optimization_performance_comparison.png"
+plt.savefig(save_path, dpi=300)
 plt.show()
 
-print(f"Saved plot to: {out_path}")
+print("Saved plot to:", save_path)

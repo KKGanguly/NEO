@@ -79,44 +79,42 @@ comparezs:; $(MAKE) comparez | tee $@.out
 report:
 	@mkdir -p ../../results/optimization_performance
 
-	@echo "D,#R,#X,#Y,B4.mu,B4.lo,B4.sd,2B.mu,DEHB-6,DEHB-6_time,DEHB-12,DEHB-12_time,DEHB-18,DEHB-18_time,DEHB-24,DEHB-24_time,DEHB-50,DEHB-50_time,DEHB-100,DEHB-100_time,DEHB-200,DEHB-200_time,DE-6,DE-6_time,DE-12,DE-12_time,DE-18,DE-18_time,DE-24,DE-24_time,DE-50,DE-50_time,DE-100,DE-100_time,DE-200,DE-200_time,NSGAIII-6,NSGAIII-6_time,NSGAIII-12,NSGAIII-12_time,NSGAIII-18,NSGAIII-18_time,NSGAIII-24,NSGAIII-24_time,NSGAIII-50,NSGAIII-50_time,NSGAIII-100,NSGAIII-100_time,NSGAIII-200,NSGAIII-200_time,SMAC-6,SMAC-6_time,SMAC-12,SMAC-12_time,SMAC-18,SMAC-18_time,SMAC-24,SMAC-24_time,SMAC-50,SMAC-50_time,SMAC-100,SMAC-100_time,SMAC-200,SMAC-200_time,TPE-6,TPE-6_time,TPE-12,TPE-12_time,TPE-18,TPE-18_time,TPE-24,TPE-24_time,TPE-50,TPE-50_time,TPE-100,TPE-100_time,TPE-200,TPE-200_time,ACT-6,ACT-6_time,ACT-12,ACT-12_time,ACT-18,ACT-18_time,ACT-24,ACT-24_time,ACT-50,ACT-50_time,ACT-100,ACT-100_time,ACT-200,ACT-200_time,KM++-6,KM++-6_time,RAND-6,RAND-6_time,KM++-12,KM++-12_time,RAND-12,RAND-12_time,KM++-18,KM++-18_time,RAND-18,RAND-18_time,KM++-24,KM++-24_time,RAND-24,RAND-24_time,KM++-50,KM++-50_time,RAND-50,RAND-50_time,KM++-100,KM++-100_time,RAND-100,RAND-100_time,KM++-200,KM++-200_time,RAND-200,RAND-200_time,Before,File" > ../../results/optimization_performance/report_tmp.csv
+	@echo "D,#R,#X,#Y,B4.mu,B4.lo,B4.sd,2B.mu,DEHB-6,DEHB-6_time,DEHB-12,DEHB-12_time,DEHB-18,DEHB-18_time,DEHB-24,DEHB-24_time,DEHB-50,DEHB-50_time,DEHB-100,DEHB-100_time,DEHB-200,DEHB-200_time,NSGAIII-6,NSGAIII-6_time,NSGAIII-12,NSGAIII-12_time,NSGAIII-18,NSGAIII-18_time,NSGAIII-24,NSGAIII-24_time,NSGAIII-50,NSGAIII-50_time,NSGAIII-100,NSGAIII-100_time,NSGAIII-200,NSGAIII-200_time,SMAC-6,SMAC-6_time,SMAC-12,SMAC-12_time,SMAC-18,SMAC-18_time,SMAC-24,SMAC-24_time,SMAC-50,SMAC-50_time,SMAC-100,SMAC-100_time,SMAC-200,SMAC-200_time,TPE-6,TPE-6_time,TPE-12,TPE-12_time,TPE-18,TPE-18_time,TPE-24,TPE-24_time,TPE-50,TPE-50_time,TPE-100,TPE-100_time,TPE-200,TPE-200_time,ACT-6,ACT-6_time,ACT-12,ACT-12_time,ACT-18,ACT-18_time,ACT-24,ACT-24_time,ACT-50,ACT-50_time,ACT-100,ACT-100_time,ACT-200,ACT-200_time,KM++-6,KM++-6_time,RAND-6,RAND-6_time,KM++-12,KM++-12_time,RAND-12,RAND-12_time,KM++-18,KM++-18_time,RAND-18,RAND-18_time,KM++-24,KM++-24_time,RAND-24,RAND-24_time,KM++-50,KM++-50_time,RAND-50,RAND-50_time,KM++-100,KM++-100_time,RAND-100,RAND-100_time,KM++-200,KM++-200_time,RAND-200,RAND-200_time,Before,File" > ../../results/optimization_performance/report_tmp.csv
 	# 2. Append results from comparez.out
 	egrep csv comparez.out >> ../../results/optimization_performance/report_tmp.csv
 
 	# 3. Remove *_time & XPLOIT-like algos (not used anymore)
 	awk 'BEGIN{FS=OFS=","} \
-	NR==1 { \
-	    for (i=1; i<=NF; i++) \
-		if ($$i !~ /_time$$/) keep[i]=1; \
-	} \
-	{ \
-	    first=1; \
-	    for (i=1; i<=NF; i++) if (keep[i]) { \
-		if (!first) printf OFS; \
-		printf "%s", $$i; \
-		first=0; \
-	    } \
-	    print ""; \
-	}' ../../results/optimization_performance/report_tmp.csv \
-	> ../../results/optimization_performance/report.csv
-
-	# 4. Append % "a" columns summary (same as before)
-	awk 'BEGIN{FS=OFS=","} \
-	NR==1 { total=NF } \
-	NR>1 { \
-	    for (i=9; i<total; i++) { \
-		N[i]++; if ($$i ~ /a$$/) A[i]++; \
-	    } \
-	} \
-	END { \
-	    printf ",,,,,,,,"; \
-	    for (i=9; i<total; i++) { \
-		p=int((A[i]?100*A[i]/N[i]:0)+0.5); \
-		printf "%s%d", OFS, p; \
-	    } \
-	    printf ",\n"; \
-	}' ../../results/optimization_performance/report.csv \
-	>> ../../results/optimization_performance/report.csv
+		NR==1 { \
+			for (i=1; i<=NF; i++) { \
+				if ($$i !~ /_time$$/ && $$i != "XPLOIT" && $$i != "XPLORE" && $$i != "ADAPT" && $$i != "SWAY") keep[i]=1 \
+			} \
+		} \
+		{ \
+			first = 1; \
+			for (i=1; i<=NF; i++) if (keep[i]) { \
+				if (!first) printf OFS; \
+				printf "%s", $$i; \
+				first=0 \
+			} \
+			print "" \
+		}' ../../results/optimization_performance/report_tmp.csv > ../../results/optimization_performance/report.csv; \
+		awk 'BEGIN{FS=OFS=","} \
+		NR==1 { total_fields = NF } \
+		NR>1 { \
+			for (i=9; i<total_fields; i++) { \
+				total[i]++; \
+				if ($$i ~ /a$$/) count[i]++; \
+			} \
+		} \
+		END { \
+			printf ",,,,,,,,"; \
+			for (i=9; i<total_fields; i++) { \
+				pct = (count[i] ? int((100.0 * count[i] / total[i]) + 0.5) : 0); \
+				printf "%s%d", (i>9 ? OFS : ""), pct; \
+			} \
+			printf ",\n" \
+		}' ../../results/optimization_performance/report.csv >> ../../results/optimization_performance/report.csv
 
 
 
