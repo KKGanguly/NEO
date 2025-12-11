@@ -44,7 +44,7 @@ the= {p= 2,
       far = 0.9, length=10 }
 
 local Big=1E32
-
+local XD_CACHE = setmetatable({}, { __mode = "k" })   -- weak cache
 go["-a"] = function(s) the.acquire = s end
 go["-b"] = function(s) the.budget = s+0 end
 go["-B"] = function(s) the.Budget = s+0 end
@@ -221,6 +221,7 @@ function Data:clone( rows)--> Data. Copies self's column structure.
   self = new(Data, {cols = Cols:new(self.cols.names), rows={} })   
   return self:adds(items(rows))  end
 
+
 function Cols:new(ss) -- Make and store Nums and Syms
   return new(Cols, {
       names = ss,     -- all the names
@@ -355,8 +356,15 @@ function Data:smac(file, budget, rp)
       return numbers
   end
 
-  local scores = parse_list(list1_str)
-  local times  = parse_list(list2_str)
+  local ok, scores = pcall(parse_list, list1_str)
+  if not ok then
+      os.exit(1)
+  end
+
+  local ok2, times = pcall(parse_list, list2_str)
+  if not ok2 then
+      os.exit(1)
+  end
 
   return scores, times
 end
@@ -387,8 +395,85 @@ function Data:dehb(file, budget, rp)
       return numbers
   end
   -- Step 2: Parse both lists
-  local scores = parse_list(list1_str)
-  local times = parse_list(list2_str)
+  local ok, scores = pcall(parse_list, list1_str)
+  if not ok then
+      os.exit(1)
+  end
+
+  local ok2, times = pcall(parse_list, list2_str)
+  if not ok2 then
+      os.exit(1)
+  end
+
+  return scores, times
+end
+
+function Data:de(file, budget, rp)
+  local filepath = file or self.data
+  local command = 'python3 ../FileResultsReader.py ' ..
+                '--data_file_path ' .. filepath .. ' ' ..
+                '--folder_name ../../results/results_DE/DE ' ..
+                '--budget ' .. budget
+
+  local handle = io.popen(command)
+  local result = handle:read("*a")
+  handle:close()
+
+  local list1_str, list2_str = result:match("%((%b[])%s*,%s*(%b[])%)")
+
+  local function parse_list(list_str)
+      local numbers = {}
+      for value in list_str:gmatch("'(.-)'") do
+          local num = tonumber(value:match("^%s*(.-)%s*$"))
+          table.insert(numbers, num)
+      end
+      return numbers
+  end
+
+  local ok, scores = pcall(parse_list, list1_str)
+  if not ok then
+      os.exit(1)
+  end
+
+  local ok2, times = pcall(parse_list, list2_str)
+  if not ok2 then
+      os.exit(1)
+  end
+
+  return scores, times
+end
+
+function Data:nsgaiii(file, budget, rp)
+  local filepath = file or self.data
+  local command = 'python3 ../FileResultsReader.py ' ..
+                '--data_file_path ' .. filepath .. ' ' ..
+                '--folder_name ../../results/results_NSGAIII/NSGAIII ' ..
+                '--budget ' .. budget
+
+  local handle = io.popen(command)
+  local result = handle:read("*a")
+  handle:close()
+
+  local list1_str, list2_str = result:match("%((%b[])%s*,%s*(%b[])%)")
+
+  local function parse_list(list_str)
+      local numbers = {}
+      for value in list_str:gmatch("'(.-)'") do
+          local num = tonumber(value:match("^%s*(.-)%s*$"))
+          table.insert(numbers, num)
+      end
+      return numbers
+  end
+
+  local ok, scores = pcall(parse_list, list1_str)
+  if not ok then
+      os.exit(1)
+  end
+
+  local ok2, times = pcall(parse_list, list2_str)
+  if not ok2 then
+      os.exit(1)
+  end
 
   return scores, times
 end
@@ -399,7 +484,7 @@ function Data:tpe(file, budget, rp)
   local filepath = file or self.data
   local command = 'python3 ../FileResultsReader.py ' ..
                 '--data_file_path ' .. filepath .. ' ' ..
-                '--folder_name ../../results/results_TPE/TPE' ..
+                '--folder_name ../../results/results_TPE/TPE ' ..
                 '--budget ' .. budget
 
   -- Run the command using io.popen and capture the output
@@ -420,8 +505,15 @@ function Data:tpe(file, budget, rp)
       return numbers
   end
   -- Step 2: Parse both lists
-  local scores = parse_list(list1_str)
-  local times = parse_list(list2_str)
+  local ok, scores = pcall(parse_list, list1_str)
+  if not ok then
+      os.exit(1)
+  end
+
+  local ok2, times = pcall(parse_list, list2_str)
+  if not ok2 then
+      os.exit(1)
+  end
 
   return scores, times
 end
@@ -451,31 +543,56 @@ function Data:actLearn(file, budget, rp)
       return numbers
   end
   -- Step 2: Parse both lists
-  local scores = parse_list(list1_str)
-  local times = parse_list(list2_str)
+  local ok, scores = pcall(parse_list, list1_str)
+  if not ok then
+      os.exit(1)
+  end
+
+  local ok2, times = pcall(parse_list, list2_str)
+  if not ok2 then
+      os.exit(1)
+  end
 
   return scores, times
 end
 
 -- kmeans++ initialization. Find  centroids are distance^2 from existing ones.
-function Data:around(budget,  rows,      z)--> rows
+
+function Data:around(budget, rows, z) --> rows
   rows = rows or self.rows
   z = {any(rows)}
-  for k = 2,budget do 
-    local all,u = 0,{}
-    for _ = 1,math.min(the.samples, #rows) do
+
+  for k = 2, budget do
+    local all, u = 0, {}
+
+    -- sample points
+    for _ = 1, math.min(the.samples, #rows) do
       local row = any(rows)
-      local closest = min(z, function(maybe) return self:xdist(row,maybe) end) 
-      all = all + push(u,{row=row, d=self:xdist(row,closest)^2}).d end 
+
+      local closest = min(z, function(maybe)
+        return cachedDistance(self, row, maybe)
+      end)
+
+      local d = cachedDistance(self, row, closest)
+      all = all + push(u, {row = row, d = d * d}).d
+    end  -- <<< 🔥 This was missing
+
+    -- weighted choice
     local r = all * math.random()
     local one
-    for _,x in pairs(u) do
+
+    for _, x in pairs(u) do
       one = x.row
       r = r - x.d
-      if r <= 0 then break end end 
+      if r <= 0 then break end
+    end
+
     push(z, one)
   end
-  return z end
+
+  return z
+end
+
 
 function Data:twoFar(repeats,rows,sortp,above,    a,b,far) --> n,row,row
   far = (the.far * #rows)//1
@@ -776,13 +893,27 @@ function printTable(tbl, indent)
       end
   end
 end
+function cachedDistance(data, r1, r2)
+  local rowCache = XD_CACHE[r1]
+  if not rowCache then
+    rowCache = {}
+    XD_CACHE[r1] = rowCache
+  end
 
+  local d = rowCache[r2]
+  if d then return d end
+
+  d = data:xdist(r1, r2)
+  rowCache[r2] = d
+  return d
+end
 function _comparez(file,IT)  
   file = file or the.data
   local Budget = 25
   local Repeats = 20
   local Epsilon = 0.35
   local data= Data:new(csv(file or the.data))
+  for i,row in ipairs(data.rows) do row._i = i end
   local Y  = function(row) return data:ydist(row) end
   local B4  =adds(map(data.rows,Y))
   local BEST   = function(a)  return Y(keysort(a,Y)[1])  end 
@@ -795,6 +926,20 @@ function _comparez(file,IT)
     {"DEHB-50", function() return data:dehb(file, 50, Repeats) end},
     {"DEHB-100", function() return data:dehb(file, 100, Repeats) end},
     {"DEHB-200", function() return data:dehb(file, 200, Repeats) end},
+    {"DE-6" , function() return data:de(file, 6, Repeats) end},
+    {"DE-12", function() return data:de(file, 12, Repeats) end},
+    {"DE-18", function() return data:de(file, 18, Repeats) end},
+    {"DE-24", function() return data:de(file, 24, Repeats) end},
+    {"DE-50", function() return data:de(file, 50, Repeats) end},
+    {"DE-100", function() return data:de(file, 100, Repeats) end},
+    -- {"DE-200", function() return data:de(file, 200, Repeats) end},
+    {"NSGAIII-6" , function() return data:nsgaiii(file, 6, Repeats) end},
+    {"NSGAIII-12", function() return data:nsgaiii(file, 12, Repeats) end},
+    {"NSGAIII-18", function() return data:nsgaiii(file, 18, Repeats) end},
+    {"NSGAIII-24", function() return data:nsgaiii(file, 24, Repeats) end},
+    {"NSGAIII-50", function() return data:nsgaiii(file, 50, Repeats) end},
+    {"NSGAIII-100", function() return data:nsgaiii(file, 100, Repeats) end},
+    {"NSGAIII-200", function() return data:nsgaiii(file, 200, Repeats) end},
     {"SMAC-6" , function() return data:smac(file, 6, Repeats) end},
     {"SMAC-12", function() return data:smac(file, 12, Repeats) end},
     {"SMAC-18", function() return data:smac(file, 18, Repeats) end},
@@ -842,7 +987,7 @@ function _comparez(file,IT)
     push(rxs, push(task, Sample:new(task[1])))
     push(task, Sample:new(task[1] .. "_time"))
 
-    local is_tabulated = string.match(task[1], "^SMAC") or string.match(task[1], "^ACT") or string.match(task[1], "^DEHB") or string.match(task[1], "^TPE")
+    local is_tabulated = string.match(task[1], "^NSGAIII") or string.match(task[1], "^SMAC") or string.match(task[1], "^ACT") or string.match(task[1], "^DEHB") or string.match(task[1], "^DE") or string.match(task[1], "^TPE")
 
     for _ = 1, Repeats do
       if is_tabulated then

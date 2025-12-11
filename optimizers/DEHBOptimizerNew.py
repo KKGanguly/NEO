@@ -7,31 +7,7 @@ from ConfigSpace.configuration import Configuration
 from ConfigSpace import ConfigurationSpace
 import numpy as np
 from models.Data import Data
-import copy
 
-# -------------------------------------------------------------------
-# NEW: Custom configuration space that samples only predefined configs
-# -------------------------------------------------------------------
-class CustomConfigurationSpace(ConfigurationSpace):
-    def __init__(self, predefined_configs, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        #safe copy to ensure no side effects
-        self.predefined_configs = copy.deepcopy(predefined_configs)
-
-    def sample_configuration(self, size=1):
-        #to ensure immutability
-        frozen = tuple(self.predefined_configs)
-        if size == 1:
-            cfg = random.choice(self.predefined_configs)
-            return Configuration(self, values=cfg)
-        else:
-            return [Configuration(self, values=c)
-                    for c in random.sample(self.predefined_configs, size)]
-
-
-# -------------------------------------------------------------------
-# DEHB Optimizer (your original, minimally modified)
-# -------------------------------------------------------------------
 class DEHBOptimizer(BaseOptimizer):
 
     def __init__(self, config, model_wrapper, model_config, logging_util, seed):
@@ -40,20 +16,17 @@ class DEHBOptimizer(BaseOptimizer):
         self.X_df = self.model_wrapper.X
         self.columns = list(self.X_df.columns)
 
-        # Data class from your model for NN snapping
         self.nn = Data(
             self.X_df.values.tolist(),
             column_types=self.model_config.column_types
         )
 
-        # ORIGINAL configspace (we replace it below)
-        self.orig_config_space, self.param_names, self.space = self.model_config.get_configspace()
-        
+        self.config_space, self.param_names, _ = self.model_config.get_configspace()
+
         self.cache = {}
         self.best_config = None
         self.best_value = None
 
-    # -------------------------------------------------------------------
     def _clean(self, v):
         if isinstance(v, (np.integer, np.int64)): return int(v)
         if isinstance(v, (np.floating, np.float64)): return float(v)
@@ -70,23 +43,20 @@ class DEHBOptimizer(BaseOptimizer):
     def _row_tuple(self, d):
         return tuple(d[p] for p in self.param_names)
 
-    def create_configspace(self):
-        combined_space = list(zip(*self.model_config.get_hyperparam_dict().values()))
-        config_dict = [dict(zip(self.param_names, values)) for values in combined_space]
-        cs = CustomConfigurationSpace(config_dict)
-        for hyperparameter in self.orig_config_space.get_hyperparameters():
-            cs.add_hyperparameter(hyperparameter)       
-        return cs
-
-    # -------------------------------------------------------------------
-    # Validation wrapper
-    # -------------------------------------------------------------------
+    # ----------------------------------------------------
+    # Correct validated configuration reconstruction
+    # ----------------------------------------------------
     def make_validated_config(self, hp_dict):
-        c = Configuration(self.config_space, hp_dict, allow_inactive_with_values=False)
+        c = Configuration(
+            self.config_space,
+            hp_dict,
+            allow_inactive_with_values=False
+        )
+        # Trigger full ConfigSpace validation
         self.config_space.check_configuration(c)
         return c
 
-    # -------------------------------------------------------------------
+    # ----------------------------------------------------
     def optimize(self):
 
         if not self.logging_util:
@@ -95,11 +65,8 @@ class DEHBOptimizer(BaseOptimizer):
         n_trials = self.config["n_trials"]
         self.logging_util.start_logging()
 
-        # -------------------------------------------------------------------
-        # Objective wrapper (unchanged)
-        # -------------------------------------------------------------------
         def objective(config, fidelity, **kwargs):
-            raw_hp = copy.deepcopy(self._config_to_dict(config))
+            raw_hp = self._config_to_dict(config)
             snapped_hp = self._nearest_row(raw_hp)
 
             key = self._row_tuple(snapped_hp)
@@ -115,8 +82,6 @@ class DEHBOptimizer(BaseOptimizer):
             return {"fitness": fitness, "cost": 1}
 
         print("Starting DEHB optimization")
-        #discretize tabular space so that initial selection is within search space
-        self.config_space = self.create_configspace()
 
         output_directory = (
             f"{self.config['output_directory']}/"
@@ -125,41 +90,40 @@ class DEHBOptimizer(BaseOptimizer):
 
         random.seed(self.seed)
 
-        # -------------------------------------------------------------------
-        # Use our *discrete config space* here
-        # -------------------------------------------------------------------
         dehb = DEHB(
             f=objective,
             cs=self.config_space,
             min_fidelity=1,
-            max_fidelity=10,
+            max_fidelity=100,
             n_workers=1,
             seed=self.seed,
             output_path=output_directory
         )
+
+        
         dehb.vectorized = False
 
-        # -------------------------------------------------------------------
-        # MAIN LOOP (unchanged except configspace behavior)
-        # -------------------------------------------------------------------
         for _ in range(n_trials):
 
             job = dehb.ask()
-            raw_cfg = job["config"]
+            raw_config = job["config"]
 
-            raw_hp = self._config_to_dict(raw_cfg)
+            # Convert to dict and snap
+            raw_hp = self._config_to_dict(raw_config)
             snapped_hp = self._nearest_row(raw_hp)
 
-            cfg_obj = self.make_validated_config(snapped_hp)
-            cfg_obj = Configuration(self.config_space,
-                                   copy.deepcopy(cfg_obj.get_dictionary()))
 
-            result = objective(cfg_obj, fidelity=job["fidelity"])
+            config_obj = self.make_validated_config(snapped_hp)
+
+            # Force encoding and decoding cycle
+            v = dehb.configspace_to_vector(config_obj)
+            config_obj = dehb.vector_to_configspace(v)
+
+            # Evaluate
+            result = objective(config_obj, fidelity=job.get("fidelity"))
             dehb.tell(job, result)
 
-        # -------------------------------------------------------------------
-        # FINAL RESULT (same as before)
-        # -------------------------------------------------------------------
+        # Final result
         inc = dehb.vector_to_configspace(dehb.inc_config)
         raw_inc = self._config_to_dict(inc)
         final_hp = self._nearest_row(raw_inc)

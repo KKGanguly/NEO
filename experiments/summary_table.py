@@ -5,7 +5,7 @@ import re
 # --------------------------------------------
 # Load data
 # --------------------------------------------
-df = pd.read_csv("your_data.csv")
+df = pd.read_csv("../results/optimization_performance/report_tmp.csv")
 
 # --------------------------------------------
 # Extract optimizer families + budgets
