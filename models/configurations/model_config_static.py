@@ -64,10 +64,11 @@ class ModelConfigurationStatic:
         if recompute or self.configspace is None:
             self.configspace = self.get_hyperconfig_distribution()
             self.param_names = list(self.config.keys())
-            self.hyperparam_space = [sorted(set(v)) for v in self.config.values()]
-            self.hyperparam_dict = {
-                name: sorted(set(vals)) for name, vals in self.config.items()
-            }
+            self.hyperparam_space = [[value for value in config_values] for config_values in self.config.values()]
+            param_values = {param: [] for param in  self.param_names}
+            for index, param_set in enumerate(self.hyperparam_space):
+                param_values[self.param_names[index]].extend(param_set)
+            self.hyperparam_dict = param_values
         return self.configspace, self.param_names, self.hyperparam_space
     
     def cs_to_dict(self, config):
