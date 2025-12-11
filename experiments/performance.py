@@ -18,131 +18,144 @@ if os.stat(file_path).st_size == 0:
     sys.exit(1)
 
 try:
+    # Read CSV, tolerate spaces around commas
     df = pd.read_csv(file_path, engine="python", sep=r"\s*,\s*")
 except Exception as e:
     print(f"Error reading CSV: {e}")
     sys.exit(1)
-print(df)
-# Ensure File column exists
-if "File" not in df.columns:
-    print("Error: 'File' column missing.")
-    sys.exit(1)
 
 # Clean column names
-df.columns = df.columns.str.strip().str.replace('"', '').str.replace(' ', '')
+df.columns = (
+    df.columns
+      .str.strip()
+      .str.replace('"', '', regex=False)
+      .str.replace(' ', '', regex=False)
+)
+
+# Ensure File column exists
+if "File" not in df.columns:
+    print("Error: 'File' column missing after cleaning. Columns are:")
+    print(df.columns.tolist())
+    sys.exit(1)
 
 # ===========================================
-# Identify all runtime columns automatically
-# method = EVERYTHING before "_time"
+# Identify runtime columns and group by FAMILY
+# e.g. DEHB-6_time, DEHB-12_time, ... -> family "DEHB"
 # ===========================================
 time_cols = [c for c in df.columns if c.endswith("_time")]
 
-method_groups = {}
+family_pattern = re.compile(r"^(.+)-\d+_time$")  # capture family before "-<budget>_time"
+family_groups = {}
+
 for col in time_cols:
-    method = col[:-5]  # remove "_time"
-    method_groups[method] = [col]
+    m = family_pattern.match(col)
+    if not m:
+        continue
+    family = m.group(1)  # e.g. "DEHB", "NSGAIII", "KM++", "RAND"
+    family_groups.setdefault(family, []).append(col)
 
-print("Detected methods:", list(method_groups.keys()))
+if not family_groups:
+    print("Error: No runtime families detected.")
+    sys.exit(1)
 
-# ===========================================
-# Output directory
-# ===========================================
-output_dir = "../results/runtime_plot"
-os.makedirs(output_dir, exist_ok=True)
-
-# ===========================================
-# Compute per-dataset averages
-# ===========================================
-combined_data = []
-print(df)
-for file_name in df["File"].unique():
-
-    subset = df[df["File"] == file_name]
-    entry = {"File": file_name}
-
-    for method, cols in method_groups.items():
-
-        try:
-            entry[method] = subset[cols].mean(axis=1).values[0]
-        except Exception:
-            entry[method] = None
-
-    combined_data.append(entry)
-
-# Build final table
-combined_df = pd.DataFrame(combined_data)
+print("Detected families:", list(family_groups.keys()))
 
 # ===========================================
-# Clean dataset names
+# Clean dataset names (optional, just cosmetic)
 # ===========================================
 def clean_label(label):
     if not isinstance(label, str):
         return label
-    label = label.replace(".csv", "")
-    label = label.replace("healthCloseIsses12mths0011-easy", "Health-easy")
-    label = label.replace("healthCloseIsses12mths0001-hard", "Health-hard")
-    return label
+    return label.replace(".csv", "")
 
-combined_df["File"] = combined_df["File"].apply(clean_label)
+df["File"] = df["File"].apply(clean_label)
 
 # ===========================================
-# Choose a default sort method
-# Use the first detected method
+# Compute per-dataset, per-family AVERAGE runtime
+# For each dataset:
+#   family runtime = mean over all budgets & rows for that family
 # ===========================================
-first_method = list(method_groups.keys())[0]
-combined_df_sorted = combined_df.sort_values(by=first_method)
+combined_rows = []
+
+for file_name, subset in df.groupby("File"):
+    entry = {"File": file_name}
+    for family, cols in family_groups.items():
+        # mean over all rows and all budget columns of this family
+        entry[family] = subset[cols].stack().mean()  # stack flattens to 1D
+    combined_rows.append(entry)
+
+combined_df = pd.DataFrame(combined_rows)
 
 # ===========================================
-# Plotting (same style as before)
+# Sort datasets by one reference family (prefer DEHB if present)
 # ===========================================
-plt.figure(figsize=(9, 6))
-x = combined_df_sorted["File"]
+if "DEHB" in family_groups:
+    sort_family = "DEHB"
+else:
+    sort_family = list(family_groups.keys())[0]
 
-# Simple style for now
+combined_df = combined_df.sort_values(by=sort_family).reset_index(drop=True)
+
+# Assign numeric dataset IDs for x-axis
+combined_df["DatasetID"] = combined_df.index + 1
+
+# ===========================================
+# Plotting: one curve per FAMILY
+# ===========================================
+output_dir = "../results/runtime_plot"
+os.makedirs(output_dir, exist_ok=True)
+
+plt.figure(figsize=(12, 7))
+x = combined_df["DatasetID"]
+
 colors = plt.cm.tab10.colors
 markers = ['o', 's', 'D', '^', 'v', 'P', 'X', '*']
 
+families = list(family_groups.keys())
 styles = {}
-method_list = list(method_groups.keys())
 
-for i, method in enumerate(method_list):
-    styles[method] = (
+for i, fam in enumerate(families):
+    styles[fam] = (
         markers[i % len(markers)],
         "-",
         colors[i % len(colors)]
     )
 
-# Plot each method
-for method in method_list:
-    if method in combined_df_sorted.columns:
-        marker, linestyle, color = styles[method]
+for fam in families:
+    if fam in combined_df.columns:
+        marker, linestyle, color = styles[fam]
         plt.plot(
             x,
-            combined_df_sorted[method],
+            combined_df[fam],
             marker=marker,
             linestyle=linestyle,
             color=color,
-            label=method,
+            label=fam,
         )
 
-plt.xticks(rotation=45, ha="right")
+# X-axis as dataset IDs, show every 10th tick if many datasets
+n_datasets = len(combined_df)
+step = 10 if n_datasets > 20 else 1
+ticks = list(range(1, n_datasets + 1, step))
+
+plt.xticks(ticks=ticks, labels=ticks)
+plt.xlabel("Dataset ID", fontsize=12)
+
 plt.yscale("log")
 plt.ylabel("Avg. Runtime (log scale)", fontsize=12)
-plt.xlabel("Dataset", fontsize=12)
 plt.yticks(fontsize=11)
 
-# Legend
 plt.legend(
     loc='upper center',
     bbox_to_anchor=(0.5, 1.15),
-    ncol=min(5, len(method_list)),
+    ncol=min(5, len(families)),
     frameon=False,
     fontsize=12
 )
 
 plt.tight_layout()
 
-save_path = os.path.join(output_dir, "all_datasets_performance_comparison.png")
+save_path = os.path.join(output_dir, "families_avg_runtime_comparison.png")
 plt.savefig(save_path)
 plt.close()
 
