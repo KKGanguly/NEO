@@ -76,6 +76,11 @@ for fam in optimizers:
     plot_data[fam] = extract_percent_values(fam)
 
 plot_df = pd.DataFrame(plot_data)
+rename_map = {
+    "ACT": "LINE",
+    "KM++": "LINE",
+    "RAND": "RANDOM"
+}
 
 # ----------------------------------------------------
 # PLOT
@@ -96,7 +101,7 @@ for idx, fam in enumerate(families):
         marker=markers[idx % len(markers)],
         linestyle=linestyles[idx % len(linestyles)],
         color=colors[idx % len(colors)],
-        label=fam,
+        label=rename_map.get(fam, fam),   # ← REPLACED
         linewidth=2.5,
         markersize=7
     )
