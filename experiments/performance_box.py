@@ -50,6 +50,17 @@ for col in time_cols:
     if not m:
         continue
     family = m.group(1)
+
+    # ===========================================
+    # Apply Renaming Rules
+    # ===========================================
+    if family.upper() == "ACT":
+        family = "LITE"
+    elif family.upper() in ["KM++", "KMPLUS", "KM_PP"]:
+        family = "LINE"
+    elif family.upper() in ["RAND", "RANDOM"]:
+        family = "RANDOM"
+
     family_groups.setdefault(family, []).append(col)
 
 if not family_groups:
@@ -110,7 +121,7 @@ for patch, color in zip(box['boxes'], colors):
 plt.yscale("log")
 plt.ylabel("Runtime (log scale)", fontsize=14)
 plt.xticks(rotation=30, fontsize=12)
-plt.title("Runtime Distribution per Algorithm", fontsize=16)
+plt.title("Runtime Distribution per Algorithm Family", fontsize=16)
 
 plt.grid(axis='y', linestyle='--', alpha=0.5)
 
