@@ -7,7 +7,7 @@ from ConfigSpace.configuration import Configuration
 from ConfigSpace import ConfigurationSpace
 import numpy as np
 from models.Data import Data
-
+import copy
 class DEHBOptimizer(BaseOptimizer):
 
     def __init__(self, config, model_wrapper, model_config, logging_util, seed):
@@ -44,7 +44,7 @@ class DEHBOptimizer(BaseOptimizer):
         return tuple(d[p] for p in self.param_names)
 
     # ----------------------------------------------------
-    # Correct validated configuration reconstruction
+    # validation
     # ----------------------------------------------------
     def make_validated_config(self, hp_dict):
         c = Configuration(
@@ -52,7 +52,7 @@ class DEHBOptimizer(BaseOptimizer):
             hp_dict,
             allow_inactive_with_values=False
         )
-        # Trigger full ConfigSpace validation
+        
         self.config_space.check_configuration(c)
         return c
 
@@ -66,7 +66,7 @@ class DEHBOptimizer(BaseOptimizer):
         self.logging_util.start_logging()
 
         def objective(config, fidelity, **kwargs):
-            raw_hp = self._config_to_dict(config)
+            raw_hp = copy.deepcopy(self._config_to_dict(config))
             snapped_hp = self._nearest_row(raw_hp)
 
             key = self._row_tuple(snapped_hp)
@@ -99,35 +99,27 @@ class DEHBOptimizer(BaseOptimizer):
             seed=self.seed,
             output_path=output_directory
         )
-
-        # Disable vectorized mutation
+        
         dehb.vectorized = False
 
         for _ in range(n_trials):
 
-            # Reset internal states each iteration
-            dehb.population = {}
-            dehb.parents = {}
-
             job = dehb.ask()
-            raw_config = job["config"]
+            raw_config = job.get("config")
 
-            # Convert to dict and snap
-            raw_hp = self._config_to_dict(raw_config)
+            # seperate copy prevents any side effects
+            raw_hp = copy.deepcopy(self._config_to_dict(raw_config))
             snapped_hp = self._nearest_row(raw_hp)
 
-            # -----------------------------
-            # Build fully validated config
-            # (this is the slow expensive part)
-            # -----------------------------
+            
+            # must validate to ensure valid config
             config_obj = self.make_validated_config(snapped_hp)
 
-            # Force encoding and decoding cycle
-            v = dehb.configspace_to_vector(config_obj)
-            config_obj = dehb.vector_to_configspace(v)
+            # Reconstruct from a deep-copied dictionary to avoid shared references during DEHB mutations
+            config_obj = Configuration(self.config_space, copy.deepcopy(config_obj.get_dictionary()))
 
             # Evaluate
-            result = objective(config_obj, fidelity=1)
+            result = objective(config_obj, fidelity=job.get("fidelity"))
             dehb.tell(job, result)
 
         # Final result
