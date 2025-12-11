@@ -105,10 +105,17 @@ for idx, fam in enumerate(families):
         linewidth=2.5,
         markersize=7
     )
-
 plt.xscale("log")
 plt.xlabel("Samples", fontsize=font_size)
 plt.ylabel("% Best", fontsize=font_size)
+
+# Explicit x-axis ticks
+custom_ticks = [6, 12, 24, 50, 100, 200]
+plt.xticks(custom_ticks, [str(t) for t in custom_ticks], fontsize=font_size)
+
+# Y-axis: 0 → 100 with ticks every 10
+plt.ylim(0, 100)
+plt.yticks(np.arange(0, 101, 10))
 
 plt.grid(True, linestyle="--", alpha=0.5)
 plt.legend(loc="lower right", fontsize=font_size)
