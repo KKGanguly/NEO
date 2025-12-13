@@ -24,7 +24,7 @@ from optimizers.FLASHOptimizer import FLASHOptimizer
 from optimizers.BOCAOptimizer import BOCAOptimizer
 from optimizers.TurBOOptimizer import TurBOOptimizer
 from optimizers.DEOptimizer import DEOptimizer
-from optimizers.NSGAIIIOptimizer import NSGAIIIOptimizer
+from optimizers.NSGAIIIOptimizerMO import NSGAIIIOptimizer
 from utils.LoggingUtil import LoggingUtil
 from utils.data_loader_templated import load_data
 from utils.EncodingUtils import EncodingUtils
