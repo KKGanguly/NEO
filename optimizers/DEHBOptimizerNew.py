@@ -94,14 +94,14 @@ class DEHBOptimizer(BaseOptimizer):
             f=objective,
             cs=self.config_space,
             min_fidelity=1,
-            max_fidelity=100,
+            max_fidelity=2,
+            eta=100,
             n_workers=1,
             seed=self.seed,
             output_path=output_directory
         )
 
         
-        dehb.vectorized = False
 
         for _ in range(n_trials):
 
