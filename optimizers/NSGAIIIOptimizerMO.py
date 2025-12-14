@@ -64,9 +64,10 @@ class NSGAIIIOptimizer(BaseOptimizer):
         if key in self.cache:
             return self.cache[key]
 
-        # 🔑 CRITICAL CHANGE:
-        # NSGA-III sees ONLY the raw objective vector
-        scores = self.model_wrapper.get_score(valid_hp)
+        try:
+            scores = self.model_wrapper.get_score(valid_hp)
+        except Exception:
+            return tuple(0.0 for _ in range(self.num_objectives))
 
         self.cache[key] = scores
         return scores  # tuple → multi-objective
@@ -80,10 +81,11 @@ class NSGAIIIOptimizer(BaseOptimizer):
             sampler=sampler,
         )
 
-        study.optimize(self._objective, n_trials=n_trials)
+        study.optimize(self._objective, n_trials=n_trials, catch=(Exception,))
 
         # Final population
-        trials = [t for t in study.trials if t.values is not None]
+        # Pareto-optimal trials only
+        trials = study.best_trials
 
         best_trial = None
         best_d2h = float("inf")
@@ -105,7 +107,7 @@ class NSGAIIIOptimizer(BaseOptimizer):
         final_hp = self._nearest_row(best_raw)
 
         self.best_config = final_hp
-        self.best_value = 1 - best_d2h  # same scale as SMAC/TPE
+        self.best_value = best_d2h  # same scale as SMAC/TPE
 
         return final_hp, self.best_value
 
