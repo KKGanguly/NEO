@@ -1,169 +1,192 @@
 import os
 import pickle
 import hashlib
+import math
 import numpy as np
-from sklearn.neighbors import KDTree
 import pandas as pd
+from sklearn.neighbors import KDTree
+from numba import njit
 
+
+# =========================================================
+# 🔥 NUMBA DISTANCE (NATIVE SPEED)
+# =========================================================
+@njit(fastmath=True)
+def _xdist_numba(i, j, num, cat, is_cat, is_missing, min_vals, norm_scale):
+    total = 0.0
+    n = is_cat.shape[0]
+
+    for k in range(n):
+        # both missing
+        if is_missing[i, k] == 1 and is_missing[j, k] == 1:
+            d = 1.0
+
+        # categorical / date
+        elif is_cat[k] == 1:
+            d = 0.0 if cat[i, k] == cat[j, k] else 1.0
+
+        # numeric
+        else:
+            if is_missing[i, k] == 1:
+                b = (num[j, k] - min_vals[k]) * norm_scale[k]
+                a = 1.0 if b < 0.5 else 0.0
+            elif is_missing[j, k] == 1:
+                a = (num[i, k] - min_vals[k]) * norm_scale[k]
+                b = 1.0 if a < 0.5 else 0.0
+            else:
+                a = (num[i, k] - min_vals[k]) * norm_scale[k]
+                b = (num[j, k] - min_vals[k]) * norm_scale[k]
+
+            d = abs(a - b)
+
+        total += d * d
+
+    return math.sqrt(total / n)
+
+
+# =========================================================
+# 🚀 DATA CLASS (DROP-IN)
+# =========================================================
 class Data:
     def __init__(self, rows, column_types, cache_dir=".cache_kdtree", use_kdtree=True):
         """
-        rows: List of lists/tuples containing ALREADY ENCODED values
-        column_types: Dict mapping column names to types ('date', 'numeric', 'categorical')
+        rows: List[List[Any]]  (encoded, may include str, float, "?")
+        column_types: Dict[col -> {'numeric','categorical','date'}]
         """
         self.rows = rows
         self.column_types = column_types
         self.cache_dir = cache_dir
         self.use_kdtree = use_kdtree
-        
+
         os.makedirs(cache_dir, exist_ok=True)
-        
+
+        # ----------------------------------
+        # COLUMN METADATA
+        # ----------------------------------
         self.col_types = list(column_types.values())
         self.n_cols = len(self.col_types)
 
-        self.min_vals, self.max_vals = self._compute_min_max()
-        self.norm_scale = [
-            (1.0 / (mx - mn)) if mx > mn else 0.0
-            for mn, mx in zip(self.min_vals, self.max_vals)
-        ]
+        self.is_cat = np.array(
+            [1 if t in ("categorical", "date") else 0 for t in self.col_types],
+            dtype=np.int8
+        )
 
-        self._dist_cache = {}
-        
-        # KD-tree loading/building
+        # ----------------------------------
+        # NUMERIC NORMALIZATION
+        # ----------------------------------
+        self.min_vals, self.max_vals = self._compute_min_max()
+        self.min_vals = np.array(self.min_vals, dtype=np.float64)
+        self.norm_scale = np.array(
+            [(1.0 / (mx - mn)) if mx > mn else 0.0
+             for mn, mx in zip(self.min_vals, self.max_vals)],
+            dtype=np.float64
+        )
+
+        # ----------------------------------
+        # 🔥 BUILD NUMERIC SHADOW DATA
+        # ----------------------------------
+        self._build_numeric_view()
+
+        # map row object → index (so API stays row-based)
+        self.row_index = {id(r): i for i, r in enumerate(self.rows)}
+
+        # warm up numba once
+        if len(self.rows) >= 2:
+            _xdist_numba(
+                0, 1,
+                self.num_view,
+                self.cat_view,
+                self.is_cat,
+                self.is_missing,
+                self.min_vals,
+                self.norm_scale
+            )
+
+        # ----------------------------------
+        # KD-TREE (UNCHANGED)
+        # ----------------------------------
         if self.use_kdtree:
             if not self._load_cache():
                 self._compute_vectors_for_kdtree()
                 self._build_kdtree()
                 self._save_cache()
-    
+
+    # =====================================================
+    # INTERNAL BUILDERS
+    # =====================================================
     def _compute_min_max(self):
-        mins = []
-        maxs = []
-        col_types_list = list(self.column_types.values())
-        
-        for idx, col_type in enumerate(col_types_list):
-            if col_type in ['numeric']:
-                vals = [row[idx] for row in self.rows 
-                       if isinstance(row[idx], (int, float)) and row[idx] != "?"]
+        mins, maxs = [], []
+        for j, t in enumerate(self.col_types):
+            if t == "numeric":
+                vals = [
+                    r[j] for r in self.rows
+                    if isinstance(r[j], (int, float)) and r[j] != "?"
+                ]
                 if vals:
                     mins.append(min(vals))
                     maxs.append(max(vals))
                 else:
-                    mins.append(0)
-                    maxs.append(1)
+                    mins.append(0.0)
+                    maxs.append(1.0)
             else:
-                mins.append(0)
-                maxs.append(1)
+                mins.append(0.0)
+                maxs.append(1.0)
         return mins, maxs
-    
-    def normalize(self, value, feature_index):
-        if value == "?" or pd.isna(value):
-            return "?"
-        mn, mx = self.min_vals[feature_index], self.max_vals[feature_index]
-        if mx > mn:
-            return (value - mn) / (mx - mn)
-        else:
-            return 0.0
-    
-    def dist(self, a, b, index):
-        col_types_list = list(self.column_types.values())
-        coltype = col_types_list[index]
-        
-        if (a == "?" or pd.isna(a)) and (b == "?" or pd.isna(b)):
-            return 1
-        
-        if coltype in ["categorical", "date"]:
-            return 0.0 if a == b else 1.0
-        
-        # Numeric/date columns: normalize and compute distance
-        a_norm = self.normalize(a, index)
-        b_norm = self.normalize(b, index)
-        
-        if a_norm == "?":
-            a_norm = 1 if b_norm < 0.5 else 0
-        if b_norm == "?":
-            b_norm = 1 if a_norm < 0.5 else 0
-            
-        return abs(a_norm - b_norm)
-    
-    def xdist(self, r1, r2):
-        """
-        EXACT same semantics as before:
-        - categorical/date: 0 if same else 1
-        - numeric: normalized L2
-        - missing handling unchanged
-        """
 
-        key = (id(r1), id(r2))
-        cached = self._dist_cache.get(key)
-        if cached is not None:
-            return cached
+    def _build_numeric_view(self):
+        n_rows = len(self.rows)
+        n_cols = self.n_cols
 
-        total = 0.0
-        n = self.n_cols
+        self.num_view = np.zeros((n_rows, n_cols), dtype=np.float64)
+        self.cat_view = np.zeros((n_rows, n_cols), dtype=np.int32)
+        self.is_missing = np.zeros((n_rows, n_cols), dtype=np.int8)
 
-        col_types = self.col_types
-        min_vals = self.min_vals
-        norm_scale = self.norm_scale
+        cat_maps = [{} for _ in range(n_cols)]
+        cat_counts = [0] * n_cols
 
-        for i in range(n):
-            a = r1[i]
-            b = r2[i]
-            t = col_types[i]
+        for i, row in enumerate(self.rows):
+            for j, v in enumerate(row):
+                if v == "?":
+                    self.is_missing[i, j] = 1
+                    continue
 
-            # both missing
-            if a == "?" and b == "?":
-                d = 1.0
-
-            # categorical / date
-            elif t == "categorical" or t == "date":
-                d = 0.0 if a == b else 1.0
-
-            # numeric
-            else:
-                if a == "?":
-                    b = (b - min_vals[i]) * norm_scale[i]
-                    a = 1.0 if b < 0.5 else 0.0
-                elif b == "?":
-                    a = (a - min_vals[i]) * norm_scale[i]
-                    b = 1.0 if a < 0.5 else 0.0
+                if self.is_cat[j]:
+                    m = cat_maps[j]
+                    if v not in m:
+                        m[v] = cat_counts[j]
+                        cat_counts[j] += 1
+                    self.cat_view[i, j] = m[v]
                 else:
-                    a = (a - min_vals[i]) * norm_scale[i]
-                    b = (b - min_vals[i]) * norm_scale[i]
+                    self.num_view[i, j] = float(v)
 
-                d = abs(a - b)
+    # =====================================================
+    # 🔥 FAST DISTANCE (DESTROYS LUA)
+    # =====================================================
+    def xdist(self, r1, r2):
+        i = self.row_index[id(r1)]
+        j = self.row_index[id(r2)]
+        return _xdist_numba(
+            i, j,
+            self.num_view,
+            self.cat_view,
+            self.is_cat,
+            self.is_missing,
+            self.min_vals,
+            self.norm_scale
+        )
 
-            total += d * d
-
-        dist = (total / n) ** 0.5
-
-        # symmetric memoization
-        self._dist_cache[key] = dist
-        self._dist_cache[(key[1], key[0])] = dist
-
-        return dist
-    
-    def nearestRow_bruteforce(self, target_row):
-        best_dist = float("inf")
-        best = None
-        for row in self.rows:
-            if row is target_row:
-                continue
-            d = self.xdist(target_row, row)
-            if d < best_dist:
-                best_dist = d
-                best = row
-        return best
-    
+    # =====================================================
+    # KD-TREE (UNCHANGED FROM YOUR CODE)
+    # =====================================================
     def _dataset_hash(self):
         h = hashlib.md5()
         for row in self.rows:
             h.update(str(row).encode())
         return h.hexdigest()
-    
+
     def _cache_path(self):
         return os.path.join(self.cache_dir, f"kdt_{self._dataset_hash()}.pkl")
-    
+
     def _load_cache(self):
         path = self._cache_path()
         if not os.path.exists(path):
@@ -176,40 +199,47 @@ class Data:
             return True
         except Exception:
             return False
-    
+
     def _save_cache(self):
         path = self._cache_path()
         if os.path.exists(path):
             return
         with open(path, "wb") as f:
             pickle.dump({"vectors": self.vectors, "kdtree": self.kdtree}, f)
-    
+
     def _encode_value_for_kdtree(self, v, idx):
-        col_types_list = list(self.column_types.values())
-        coltype = col_types_list[idx]
-        
         if v == "?" or pd.isna(v):
             return 0.5
-        
-        if coltype in ["categorical", "date"]:
-            # simple hash -> [0,1]
+        if self.col_types[idx] in ("categorical", "date"):
             return (hash(str(v)) % 10000) / 10000
-        
-        # Numeric/date: normalize (already encoded as float)
         mn, mx = self.min_vals[idx], self.max_vals[idx]
         return (v - mn) / (mx - mn) if mx > mn else 0.0
-    
+
     def _compute_vectors_for_kdtree(self):
         self.vectors = np.array([
             [self._encode_value_for_kdtree(v, idx)
              for idx, v in enumerate(row)]
             for row in self.rows
         ], dtype=float)
-    
+
     def _build_kdtree(self):
         self.kdtree = KDTree(self.vectors, leaf_size=40)
-    
-    # ---------- public ----------
+
+    # =====================================================
+    # PUBLIC
+    # =====================================================
+    def nearestRow_bruteforce(self, target_row):
+        best_dist = float("inf")
+        best = None
+        for row in self.rows:
+            if row is target_row:
+                continue
+            d = self.xdist(target_row, row)
+            if d < best_dist:
+                best_dist = d
+                best = row
+        return best
+
     def nearestRow(self, target_row):
         if not self.use_kdtree or getattr(self, "kdtree", None) is None:
             return self.nearestRow_bruteforce(target_row)
