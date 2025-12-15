@@ -18,8 +18,16 @@ class Data:
         
         os.makedirs(cache_dir, exist_ok=True)
         
-        # Compute min/max for numeric/date columns
+        self.col_types = list(column_types.values())
+        self.n_cols = len(self.col_types)
+
         self.min_vals, self.max_vals = self._compute_min_max()
+        self.norm_scale = [
+            (1.0 / (mx - mn)) if mx > mn else 0.0
+            for mn, mx in zip(self.min_vals, self.max_vals)
+        ]
+
+        self._dist_cache = {}
         
         # KD-tree loading/building
         if self.use_kdtree:
@@ -78,12 +86,62 @@ class Data:
             
         return abs(a_norm - b_norm)
     
-    def xdist(self, p1, p2, p=2):
-        total = 0
-        n = len(p1)
-        for idx, (a, b) in enumerate(zip(p1, p2)):
-            total += abs(self.dist(a, b, idx)) ** p
-        return (total / n) ** (1 / p)
+    def xdist(self, r1, r2):
+        """
+        EXACT same semantics as before:
+        - categorical/date: 0 if same else 1
+        - numeric: normalized L2
+        - missing handling unchanged
+        """
+
+        key = (id(r1), id(r2))
+        cached = self._dist_cache.get(key)
+        if cached is not None:
+            return cached
+
+        total = 0.0
+        n = self.n_cols
+
+        col_types = self.col_types
+        min_vals = self.min_vals
+        norm_scale = self.norm_scale
+
+        for i in range(n):
+            a = r1[i]
+            b = r2[i]
+            t = col_types[i]
+
+            # both missing
+            if a == "?" and b == "?":
+                d = 1.0
+
+            # categorical / date
+            elif t == "categorical" or t == "date":
+                d = 0.0 if a == b else 1.0
+
+            # numeric
+            else:
+                if a == "?":
+                    b = (b - min_vals[i]) * norm_scale[i]
+                    a = 1.0 if b < 0.5 else 0.0
+                elif b == "?":
+                    a = (a - min_vals[i]) * norm_scale[i]
+                    b = 1.0 if a < 0.5 else 0.0
+                else:
+                    a = (a - min_vals[i]) * norm_scale[i]
+                    b = (b - min_vals[i]) * norm_scale[i]
+
+                d = abs(a - b)
+
+            total += d * d
+
+        dist = (total / n) ** 0.5
+
+        # symmetric memoization
+        self._dist_cache[key] = dist
+        self._dist_cache[(key[1], key[0])] = dist
+
+        return dist
     
     def nearestRow_bruteforce(self, target_row):
         best_dist = float("inf")
