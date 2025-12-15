@@ -77,7 +77,7 @@ for fam in optimizers:
 
 plot_df = pd.DataFrame(plot_data)
 rename_map = {
-    "ACT": "LINE",
+    "ACT": "LITE",
     "KM++": "LINE",
     "RAND": "RANDOM"
 }

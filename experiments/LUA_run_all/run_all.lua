@@ -570,12 +570,12 @@ function Data:around(budget, rows, z) --> rows
       local row = any(rows)
 
       local closest = min(z, function(maybe)
-        return cachedDistance(self, row, maybe)
+        return cached_fast_xdist(self, row, maybe)
       end)
 
-      local d = cachedDistance(self, row, closest)
+      local d = cached_fast_xdist(self, row, closest)
       all = all + push(u, {row = row, d = d * d}).d
-    end  -- <<< 🔥 This was missing
+    end  
 
     -- weighted choice
     local r = all * math.random()
@@ -893,6 +893,21 @@ function printTable(tbl, indent)
       end
   end
 end
+XD_CACHE = {}
+
+function cached_fast_xdist(data, r1, r2)
+  local i = r1._i
+  local j = r2._i
+  if i > j then i, j = j, i end
+  local key = i * 100000 + j
+
+  local d = XD_CACHE[key]
+  if d then return d end
+
+  d = fast_xdist(data, r1, r2)
+  XD_CACHE[key] = d
+  return d
+end
 function cachedDistance(data, r1, r2)
   local rowCache = XD_CACHE[r1]
   if not rowCache then
@@ -906,6 +921,38 @@ function cachedDistance(data, r1, r2)
   d = data:xdist(r1, r2)
   rowCache[r2] = d
   return d
+end
+
+function fast_xdist(data, r1, r2)
+  local d = 0
+  local p = the.p
+  local cols = data.cols.x
+  local n = #cols
+
+  for i = 1, n do
+    local col = cols[i]
+    local a = r1[col.pos]
+    local b = r2[col.pos]
+    local delta
+
+    if col.dist == Sym.dist then
+      delta = (a == "?" and b == "?") and 1 or (a == b and 0 or 1)
+    else
+      if a == "?" and b == "?" then
+        delta = 1
+      else
+        a = col:normalize(a)
+        b = col:normalize(b)
+        a = (a ~= "?") and a or (b < 0.5 and 1 or 0)
+        b = (b ~= "?") and b or (a < 0.5 and 1 or 0)
+        delta = math.abs(a - b)
+      end
+    end
+
+    d = d + delta^p
+  end
+
+  return (d / n)^(1/p)
 end
 function _comparez(file,IT)  
   file = file or the.data

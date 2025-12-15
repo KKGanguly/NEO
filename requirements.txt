@@ -10,3 +10,4 @@ smac
 optuna
 optunahub
 hebo
+numba
