@@ -139,7 +139,7 @@ class AroundOptimizer(BaseOptimizer):
         self.logging_util.stop_logging()
 
         self.best_config = best_hp
-        self.best_value = best_score
+        self.best_value = 1- best_score
 
         print(f"Best config = {self.best_config}")
         print(f"Best score  = {self.best_value}")
