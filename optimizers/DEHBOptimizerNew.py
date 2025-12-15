@@ -94,8 +94,7 @@ class DEHBOptimizer(BaseOptimizer):
             f=objective,
             cs=self.config_space,
             min_fidelity=1,
-            max_fidelity=2,
-            eta=100,
+            max_fidelity=9,
             n_workers=1,
             seed=self.seed,
             output_path=output_directory
