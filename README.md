@@ -1,6 +1,4 @@
-# 🔍 Anonymous Repository for "How Low Can You Go? The Data-Light SE Challenge"
-
-> **Note:** This repository has been anonymized to comply with double-blind review requirements. All identifying information (author names, institutional references, Git history) has been redacted. Full attribution and licensing will be restored upon acceptance.
+# 🔍 Repository for "How Low Can You Go? The Data-Light SE Challenge"
 
 ---
 
@@ -9,7 +7,7 @@
 This repository contains the code, scripts, and data used to reproduce the results from our paper:
 
 > **"How Low Can You Go? The Data-Light SE Challenge"**
-> _Submitted to FSE 2026 (Double-Blind Review)_
+> _Accepted in FSE 2026_
 
 We present the **BINGO effect**, a prevalent data compression phenomenon in software engineering (SE) optimization. Leveraging this, we show that **simple optimizers**—`RANDOM`, `LITE`, `LINE`—perform on par with the state-of-the-art `DEHB`, `SMAC`, and `TPE`, while running up to **10,000× faster**.
 
@@ -114,7 +112,7 @@ cd experiments/
 
 ## 🔐 License
 
-> Temporarily redacted for double-blind review. Includes MIT-licensed components. Full license will be restored upon acceptance.
+> MIT-license.
 
 ---
 
